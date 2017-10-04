@@ -468,12 +468,12 @@ csmall2 {
 /*custom*/
 
 .searchbar {
-	max-width: 85%;
+	max-width: 75%;
 	margin: auto;
 }
 
 .snapshot {
-	max-width: 85%;
+	max-width: 75%;
 	border-radius: 5px;
 }
 
