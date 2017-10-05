@@ -10,17 +10,23 @@
 
 		$('.care-capture-btn').click(function(){
 
+			$('.capture-failed').hide();
+			$('.snapshot').show();
+
 			var url = $('.care-url').val()
 			console.debug(url);
-			$('.snapshot').attr("src", "http://localhost:8080/snapshot/"+url);	
+			$('.snapshot').attr("src", "assets/img/loading-squid.gif");	
 
-
-
-
-			// $.get("http://localhost:8080/snapshot/"+url, function(data) {
-
-			// 	console.log(data);
-			// })
+			$.get("api/snapshot/"+url).done(
+				function(snapshotName) {
+					$('.snapshot').attr("src", "snapshot/" + snapshotName);
+				}
+			).fail(
+				function() {
+					$('.snapshot').hide();
+					$('.capture-failed').show();
+				}
+			)
 
 
 		});

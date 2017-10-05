@@ -466,14 +466,22 @@ csmall2 {
 
 
 /*custom*/
+.care-wrapper {
+	padding-left: 100px;
+	padding-right: 100px;
+}
+
+.capture-failed {
+	display: none;
+}
 
 .searchbar {
-	max-width: 75%;
-	margin: auto;
+	/*max-width: 75%;*/
+	/*margin: auto;*/
 }
 
 .snapshot {
-	max-width: 75%;
+	/*max-width: 75%;*/
 	border-radius: 5px;
 }
 
