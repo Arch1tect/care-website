@@ -120,7 +120,7 @@ a:focus {
 	border-color: transparent;
 }
 
-.dropdown-menu {
+/*.dropdown-menu {
 	background: #384452;
 }
 
@@ -128,7 +128,7 @@ a:focus {
 	color: white;
 	font-weight: 700;
 	font-size: 12px;
-}
+}*/
 
 .btn-theme {
   color: #fff;
@@ -209,7 +209,7 @@ a:focus {
 	min-height: 550px;
 	padding-top: 100px;
 	padding-bottom: 0px;
-	text-align: center;
+	/*text-align: center;*/
 }
 
 #headerwrap h3, h5 {
@@ -471,7 +471,7 @@ csmall2 {
 	padding-right: 100px;
 }
 
-.capture-failed {
+.care-alert {
 	display: none;
 }
 
@@ -480,12 +480,29 @@ csmall2 {
 	/*margin: auto;*/
 }
 
-.snapshot {
+.screenshot {
 	/*max-width: 75%;*/
 	border-radius: 5px;
 }
 
+.dropdown-menu {
+	/*min-width: 150px;*/
+}
 
+.dropdown-menu li {
+	/*color: white;*/
+	/*padding-left: 20%;*/
+	text-align: center;
+	cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+	background-color: #e4e4e4;
+}
+
+span.interval {
+	padding-right: 5px;
+}
 
 
 
