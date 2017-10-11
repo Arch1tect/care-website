@@ -14,6 +14,7 @@
 	<link href="assets/css/bootstrap.css" rel="stylesheet">
 
 	<!-- Custom styles for this template -->
+	<link href="assets/css/jquery.Jcrop.css" rel="stylesheet">
 	<link href="assets/css/style.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
 
@@ -114,15 +115,23 @@
 						 	</span>
 						</div>
 
-<!-- 						<div class="dropdown">
-							<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Interval
-							<span class="caret"></span></button>
-							<ul class="dropdown-menu">
-						    	<li><a href="#">1 min</a></li>
-						    	<li><a href="#">5 min</a></li>
-						    	<li><a href="#">10 min</a></li>
-							</ul>
-						</div> -->
+
+					  <!-- This is the form that our event handler fills -->
+					  <br/>
+					  <form id="coords"
+					    class="coords"
+					    onsubmit="return false;"
+					    action="http://example.com/post.php">
+
+					    <div class="inline-labels">
+					    <label>X1 <input type="text" size="4" id="x1" name="x1" /></label>
+					    <label>Y1 <input type="text" size="4" id="y1" name="y1" /></label>
+					    <label>X2 <input type="text" size="4" id="x2" name="x2" /></label>
+					    <label>Y2 <input type="text" size="4" id="y2" name="y2" /></label>
+					    <label>W <input type="text" size="4" id="w" name="w" /></label>
+					    <label>H <input type="text" size="4" id="h" name="h" /></label>
+					    </div>
+					  </form>
 
 
 						<br/>
@@ -208,90 +217,10 @@
 	<script src="assets/js/jquery.hoverex.min.js"></script>
 	<script src="assets/js/jquery.prettyPhoto.js"></script>
 	<script src="assets/js/jquery.isotope.min.js"></script>
+	<script src="assets/js/jquery.Jcrop.min.js"></script>
 	<script src="assets/js/custom.js"></script>
 
 
-	<script>
-// Portfolio
-(function($) {
-	"use strict";
-	var $container = $('.portfolio'),
-		$items = $container.find('.portfolio-item'),
-		portfolioLayout = 'fitRows';
-		
-		if( $container.hasClass('portfolio-centered') ) {
-			portfolioLayout = 'masonry';
-		}
-				
-		$container.isotope({
-			filter: '*',
-			animationEngine: 'best-available',
-			layoutMode: portfolioLayout,
-			animationOptions: {
-			duration: 750,
-			easing: 'linear',
-			queue: false
-		},
-		masonry: {
-		}
-		}, refreshWaypoints());
-		
-		function refreshWaypoints() {
-			setTimeout(function() {
-			}, 1000);   
-		}
-				
-		$('nav.portfolio-filter ul a').on('click', function() {
-				var selector = $(this).attr('data-filter');
-				$container.isotope({ filter: selector }, refreshWaypoints());
-				$('nav.portfolio-filter ul a').removeClass('active');
-				$(this).addClass('active');
-				return false;
-		});
-		
-		function getColumnNumber() { 
-			var winWidth = $(window).width(), 
-			columnNumber = 1;
-		
-			if (winWidth > 1200) {
-				columnNumber = 5;
-			} else if (winWidth > 950) {
-				columnNumber = 4;
-			} else if (winWidth > 600) {
-				columnNumber = 3;
-			} else if (winWidth > 400) {
-				columnNumber = 2;
-			} else if (winWidth > 250) {
-				columnNumber = 1;
-			}
-				return columnNumber;
-			}       
-			
-			function setColumns() {
-				var winWidth = $(window).width(), 
-				columnNumber = getColumnNumber(), 
-				itemWidth = Math.floor(winWidth / columnNumber);
-				
-				$container.find('.portfolio-item').each(function() { 
-					$(this).css( { 
-					width : itemWidth + 'px' 
-				});
-			});
-		}
-		
-		function setPortfolio() { 
-			setColumns();
-			$container.isotope('reLayout');
-		}
-			
-		$container.imagesLoaded(function () { 
-			setPortfolio();
-		});
-		
-		$(window).on('resize', function () { 
-		setPortfolio();          
-	});
-})(jQuery);
-</script>
+
   </body>
 </html>

@@ -1,12 +1,31 @@
+// Simple event handler, called from onChange and onSelect
+// event handlers, as per the Jcrop invocation above
+function showCoords(c)
+{
+	$('#x1').val(c.x);
+	$('#y1').val(c.y);
+	$('#x2').val(c.x2);
+	$('#y2').val(c.y2);
+	$('#w').val(c.w);
+	$('#h').val(c.h);
+};
+
+function clearCoords()
+{
+	$('#coords input').val('');
+};
+
+
+
 (function($) {
 
-// prettyPhoto
+
+	// prettyPhoto
 	jQuery(document).ready(function(){
+
 		jQuery('a[data-gal]').each(function() {
 			jQuery(this).attr('rel', jQuery(this).data('gal'));
 		});
-
-
 
 		jQuery("a[data-rel^='prettyPhoto']").prettyPhoto({animationSpeed:'slow',theme:'light_square',slideshow:false,overlay_gallery: false,social_tools:false,deeplinking:false});
 
@@ -50,6 +69,13 @@
 
 		var takeScreenshot = function() {
 			hideAlert();
+			if (window.jcrop_api) {
+				console.log('remove jcrop');
+				$('.screenshot').data('Jcrop').destroy();
+				window.jcrop_api.destroy();
+				// $('.jcrop-holder').remove();
+			}
+			// $('.jcrop-holder').remove();
 			$('.screenshot').show();
 			var url = $('.care-url').val()
 			console.debug(url);
@@ -58,6 +84,22 @@
 			$.get("api/screenshot/"+url).done(
 				function(screenshotName) {
 					$('.screenshot').attr("src", "snapshot/" + screenshotName);
+					$('.screenshot').load(function() {
+
+						var naturalWidth = $('.screenshot')[0].naturalWidth
+						var naturalHeight = $('.screenshot')[0].naturalHeight
+
+						$('.screenshot').Jcrop({
+							trueSize: [naturalWidth, naturalHeight],
+							onChange:   showCoords,
+							onSelect:   showCoords,
+							onRelease:  clearCoords
+						},function(){
+						  window.jcrop_api = this;
+						});
+
+				    });
+
 				}
 			).fail(
 				function() {
@@ -90,14 +132,26 @@
 
 
 
+		window.jcrop_api = null;
+		// var naturalWidth = $('.screenshot')[0].naturalWidth
+		// var naturalHeight = $('.screenshot')[0].naturalHeight
 
+		// $('.screenshot').Jcrop({
+		// 	trueSize: [naturalWidth, naturalHeight],
+		// 	onChange:   showCoords,
+		// 	onSelect:   showCoords,
+		// 	onRelease:  clearCoords
+		// },function(){
+		//   jcrop_api = this;
+		// });
 
-
-
-
-
-
-
+		$('#coords').on('change','input',function(e){
+		  var x1 = $('#x1').val(),
+			  x2 = $('#x2').val(),
+			  y1 = $('#y1').val(),
+			  y2 = $('#y2').val();
+		  window.jcrop_api.setSelect([x1,y1,x2,y2]);
+		});
 
 
 
