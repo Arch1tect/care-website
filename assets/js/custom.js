@@ -14,7 +14,8 @@ function showCoords(c)
 	var y2 = parseInt(c.y2);
 	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
 	console.log('width: '+c.w+' height: '+c.h);
-	window.selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+	if(c.w>10&&c.h>10)
+		window.selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
 };
 
 function clearCoords()
@@ -52,7 +53,7 @@ function clearCoords()
 
 		var addTask = function() {
 			hideAlert();
-			payload = {
+			var payload = {
 				// 'name': 'yo',
 				'interval': interval,
 				'url': $('.care-url').val(),
@@ -101,8 +102,16 @@ function clearCoords()
 			var url = $('.care-url').val()
 			console.debug(url);
 			$('.screenshot').attr("src", loadingImg);	
-
-			$.get("api/screenshot/"+url).done(
+			
+			var payload = {
+				'url': url,
+			}
+			$.ajax ({
+				url: "api/screenshot/url",
+				type: "POST",
+				data: JSON.stringify(payload),
+				contentType: "application/json",
+			}).done(
 				function(screenshotName) {
 					$('.screenshot').attr("src", "snapshot/" + screenshotName);
 				}
