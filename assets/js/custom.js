@@ -2,12 +2,19 @@
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
 {
-	$('#x1').val(c.x);
-	$('#y1').val(c.y);
-	$('#x2').val(c.x2);
-	$('#y2').val(c.y2);
-	$('#w').val(c.w);
-	$('#h').val(c.h);
+	// $('#x1').val(c.x);
+	// $('#y1').val(c.y);
+	// $('#x2').val(c.x2);
+	// $('#y2').val(c.y2);
+	// $('#w').val(c.w);
+	// $('#h').val(c.h);
+	var x1 = parseInt(c.x);
+	var y1 = parseInt(c.y);
+	var x2 = parseInt(c.x2);
+	var y2 = parseInt(c.y2);
+	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
+	console.log('width: '+c.w+' height: '+c.h);
+	window.selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
 };
 
 function clearCoords()
@@ -19,7 +26,7 @@ function clearCoords()
 (function($) {
 
 	var loadingImg = 'assets/img/loading-squid.gif';
-	// prettyPhoto
+
 	jQuery(document).ready(function(){
 
 
@@ -49,6 +56,7 @@ function clearCoords()
 				// 'name': 'yo',
 				'interval': interval,
 				'url': $('.care-url').val(),
+				'roi': window.selectedBox,
 			}
 			$.ajax ({
 				url: "api/task",
@@ -86,6 +94,7 @@ function clearCoords()
 				console.log('remove jcrop');
 				window.jcrop_api.destroy();
 				$('.jcrop-holder').remove();
+				window.selectedBox = null;
 				$('.screenshot').removeAttr( 'style' );
 			}
 			$('.screenshot').show();
