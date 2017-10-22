@@ -23,4 +23,4 @@ def get_all_tasks_for_user(user_id):
 
 
 # TODO debug=True only for dev environment
-app.run(debug=True, host='0.0.0.0', port=8088)
+app.run(debug=True, host='0.0.0.0', port=9000)
