@@ -56,6 +56,7 @@ jQuery(document).ready(function(){
 			});
 
 	    	$('img').on('click', function() {
+	    		$('.modal-title').text($(this).closest('td').find('span').text());
 				$('.enlargeImageModalSource').attr('src', $(this).attr('src'));
 				$('#enlargeImageModal').modal('show');
 			});
