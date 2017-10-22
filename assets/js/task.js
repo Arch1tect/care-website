@@ -33,18 +33,24 @@ jQuery(document).ready(function(){
 				$lastImg.attr('src', 'snapshot/'+task.id+'-'+task.last_run_id+'.png');
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
-				// last check time
-				var $lastCheck = $("<span></span>");
-				var lastCheckTime = new Date(task.last_run_time);
-				$lastCheck.text(lastCheckTime.toLocaleString());
-				cells.push($lastCheck);
+				// settings
+				var $settings = $("<span></span>");
+				$settings.text(task.interval);
+				cells.push($settings);
+
+
+				addRow(cells);
 				// created time
 				var $created = $("<span></span>");
 				var createdTime = new Date(task.created);
 				$created.text(createdTime.toLocaleString());
-				cells.push($created);
+				$imgWrapper.after($created);
+				// last check time
+				var $lastCheck = $("<span></span>");
+				var lastCheckTime = new Date(task.last_run_time);
+				$lastCheck.text(lastCheckTime.toLocaleString());
+				$imgWrapper2.after($lastCheck);
 
-				addRow(cells);
 
 
 			});

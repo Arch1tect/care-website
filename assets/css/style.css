@@ -507,15 +507,27 @@ span.interval {
 .task-table {
 	margin: auto;
 	width: 80%;
+	max-width: 800px;
 }
 .cell {
-	max-height: 100px;
+	max-height: 150px;
 	overflow-y: hidden;
+	margin: 10px;
 }
 .task-table td img{
-	max-width: 200px;
+	max-width: 250px;
 }
-
+.task-table td span{
+	color: #777777;
+	font-size: smaller;
+	max-width: 100px;
+}
+table th {
+	text-align: center;
+}
+table td {
+	text-align: center;
+}
 .task-table tbody tr:nth-child(odd){
   background-color: #f3f3f3;;
 }
