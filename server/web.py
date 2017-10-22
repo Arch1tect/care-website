@@ -11,6 +11,12 @@ app = Flask(__name__)
 
 logger = logging.getLogger(__name__)
 
+
+@app.teardown_request
+def shutdown_session(exception=None):
+    session.remove()
+
+
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
