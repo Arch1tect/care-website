@@ -504,6 +504,22 @@ span.interval {
 	padding-right: 5px;
 }
 
+.task-table {
+	margin: auto;
+	width: 80%;
+}
+.cell {
+	max-height: 100px;
+	overflow-y: hidden;
+}
+.task-table td img{
+	max-width: 200px;
+}
+
+.task-table tbody tr:nth-child(odd){
+  background-color: #f3f3f3;;
+}
+
 
 
 
