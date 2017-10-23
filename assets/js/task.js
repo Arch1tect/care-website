@@ -54,19 +54,25 @@ jQuery(document).ready(function(){
 				// created time
 				var $created = $("<span></span>");
 				var createdTime = new Date(task.created);
-				$created.text(createdTime.toLocaleString());
+				$created.text(moment(createdTime).fromNow());
 				$imgWrapper.after($created);
 				// last check time
 				var $lastCheck = $("<span></span>");
 				var lastCheckTime = new Date(task.last_run_time);
-				$lastCheck.text(lastCheckTime.toLocaleString());
+				$lastCheck.text(moment(lastCheckTime).fromNow());
 				$imgWrapper2.after($lastCheck);
 
 			});
 
 	    	$('img').on('click', function() {
-	    		$('.modal-title').text($(this).closest('td').find('span').text());
-				$('.enlargeImageModalSource').attr('src', $(this).attr('src'));
+
+	    		var initialImageCell = $(this).closest('tr').find('td')[0];
+	    		var lastImageCell = $(this).closest('tr').find('td')[1];
+
+	    		$('.modal-title.initial').text($(initialImageCell).find('span').text());
+	    		$('.modal-title.last').text($(lastImageCell).find('span').text());
+				$('.initialImageLarge').attr('src', $(initialImageCell).find('img').attr('src'));
+				$('.lastImageLarge').attr('src', $(lastImageCell).find('img').attr('src'));
 				$('#enlargeImageModal').modal('show');
 			});
 

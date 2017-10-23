@@ -534,6 +534,9 @@ table td {
   background-color: #f3f3f3;;
 }
 
+.modal-title.last {
+	left: 50%;
+    position: fixed;}
 
 
 
