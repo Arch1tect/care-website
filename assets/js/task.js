@@ -13,6 +13,7 @@ function addRow(cells) {
 jQuery(document).ready(function(){
 	$.ajax ({
 		url: "api/tasks/user/123",
+		// url: "http://54.215.208.165/api/tasks/user/123",
 		type: "GET",
 		contentType: "application/json",
 	}).done(
@@ -34,10 +35,20 @@ jQuery(document).ready(function(){
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
 				// settings
-				var $settings = $("<span></span>");
-				$settings.text(task.interval);
-				cells.push($settings);
+				var $settings = $("<div></div>");
 
+				var $url = $("<a>URL</a>");
+				$url.attr('href', task.url);
+				$url.attr('target', '_blank');
+				$settings.append($url);
+
+				var $interval = $("<div></div>");
+				$interval.text('Check interval: ' + task.interval);
+				$settings.append($interval);
+
+
+
+				cells.push($settings);
 
 				addRow(cells);
 				// created time
@@ -50,8 +61,6 @@ jQuery(document).ready(function(){
 				var lastCheckTime = new Date(task.last_run_time);
 				$lastCheck.text(lastCheckTime.toLocaleString());
 				$imgWrapper2.after($lastCheck);
-
-
 
 			});
 
