@@ -538,5 +538,7 @@ table td {
 	left: 50%;
     position: fixed;}
 
-
+.modal img.screenshot {
+	display: inline-block;
+}
 

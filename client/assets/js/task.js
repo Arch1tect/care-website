@@ -25,13 +25,13 @@ jQuery(document).ready(function(){
 				// initial image
 				var $imgWrapper = $("<div class='cell'></div");
 				var $initImg = $("<img></img>");
-				$initImg.attr('src', 'snapshot/'+task.id+'-0.png');
+				$initImg.attr('src', 'screenshot/'+task.id+'-0.png');
 				$imgWrapper.append($initImg);
 				cells.push($imgWrapper);
-				// last snapshot
+				// last screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
 				var $lastImg = $("<img></img>");
-				$lastImg.attr('src', 'snapshot/'+task.id+'-'+task.last_run_id+'.png');
+				$lastImg.attr('src', 'screenshot/'+task.id+'-'+task.last_run_id+'.png');
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
 				// settings
@@ -64,7 +64,7 @@ jQuery(document).ready(function(){
 
 			});
 
-	    	$('img').on('click', function() {
+	    	$('.cell img').on('click', function() {
 
 	    		var initialImageCell = $(this).closest('tr').find('td')[0];
 	    		var lastImageCell = $(this).closest('tr').find('td')[1];

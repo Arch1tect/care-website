@@ -3,3 +3,182 @@
 2017-10-22 01:43:42,073 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
 2017-10-22 01:43:43,091 WARNING   * Debugger is active!
 2017-10-22 01:43:43,110 INFO      * Debugger PIN: 621-509-638
+2017-10-28 12:55:43,936 WARNING   * Debugger is active!
+2017-10-28 12:55:43,971 INFO      * Debugger PIN: 621-509-638
+2017-10-28 12:55:46,012 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 12:55:46,790 WARNING   * Debugger is active!
+2017-10-28 12:55:46,811 INFO      * Debugger PIN: 621-509-638
+2017-10-28 12:56:06,005 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 12:56:07,200 WARNING   * Debugger is active!
+2017-10-28 12:56:07,226 INFO      * Debugger PIN: 621-509-638
+2017-10-28 12:57:27,022 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 12:57:27,890 WARNING   * Debugger is active!
+2017-10-28 12:57:27,910 INFO      * Debugger PIN: 621-509-638
+2017-10-28 13:02:33,973 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 13:02:35,021 WARNING   * Debugger is active!
+2017-10-28 13:02:35,056 INFO      * Debugger PIN: 621-509-638
+2017-10-28 16:21:48,904 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 16:21:49,958 WARNING   * Debugger is active!
+2017-10-28 16:21:49,991 INFO      * Debugger PIN: 621-509-638
+2017-10-28 16:34:31,285 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 16:34:32,333 WARNING   * Debugger is active!
+2017-10-28 16:34:32,360 INFO      * Debugger PIN: 621-509-638
+2017-10-28 16:39:53,154 INFO     127.0.0.1 - - [28/Oct/2017 16:39:53] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-28 16:46:55,316 INFO     Creating new task with data {u'url': u'tttt.vom', u'interval': 600, u'snapshot': None}
+2017-10-28 16:46:55,465 INFO     127.0.0.1 - - [28/Oct/2017 16:46:55] "POST /api/task HTTP/1.0" 200 -
+2017-10-28 16:47:17,005 INFO     127.0.0.1 - - [28/Oct/2017 16:47:17] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-28 16:49:21,008 INFO     127.0.0.1 - - [28/Oct/2017 16:49:21] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-28 16:51:12,295 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-28 16:51:13,349 WARNING   * Debugger is active!
+2017-10-28 16:51:13,393 INFO      * Debugger PIN: 621-509-638
+2017-10-28 18:36:23,357 INFO     127.0.0.1 - - [28/Oct/2017 18:36:23] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-28 18:36:27,772 INFO     127.0.0.1 - - [28/Oct/2017 18:36:27] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-28 22:40:13,143 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-28 22:40:14,361 WARNING   * Debugger is active!
+2017-10-28 22:40:14,415 INFO      * Debugger PIN: 621-509-638
+2017-10-28 23:30:38,854 INFO     127.0.0.1 - - [28/Oct/2017 23:30:38] "GET /api/tasks/user/123 HTTP/1.0" 500 -
+2017-10-28 23:37:45,531 INFO      * Running on http://0.0.0.0:9000/ (Press CTRL+C to quit)
+2017-10-28 23:37:45,537 INFO      * Restarting with stat
+2017-10-28 23:37:46,331 WARNING   * Debugger is active!
+2017-10-28 23:37:46,369 INFO      * Debugger PIN: 621-509-638
+2017-10-28 23:38:12,829 INFO     127.0.0.1 - - [28/Oct/2017 23:38:12] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-28 23:38:51,759 INFO     127.0.0.1 - - [28/Oct/2017 23:38:51] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-28 23:38:54,198 INFO     Creating new task with data {u'url': u'123.com', u'interval': 300, u'snapshot': None}
+2017-10-28 23:38:54,324 INFO     127.0.0.1 - - [28/Oct/2017 23:38:54] "POST /api/task HTTP/1.0" 200 -
+2017-10-28 23:38:58,011 INFO     127.0.0.1 - - [28/Oct/2017 23:38:58] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 00:15:15,824 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 00:15:15,895 INFO      * Restarting with stat
+2017-10-29 00:15:17,282 WARNING   * Debugger is active!
+2017-10-29 00:15:17,302 INFO      * Debugger PIN: 621-509-638
+2017-10-29 00:15:29,043 INFO     127.0.0.1 - - [29/Oct/2017 00:15:29] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 00:17:03,825 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 00:17:03,908 INFO      * Restarting with stat
+2017-10-29 00:17:05,123 WARNING   * Debugger is active!
+2017-10-29 00:17:05,154 INFO      * Debugger PIN: 621-509-638
+2017-10-29 00:17:11,671 INFO     127.0.0.1 - - [29/Oct/2017 00:17:11] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 00:17:22,496 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 00:17:22,547 INFO      * Restarting with stat
+2017-10-29 00:17:23,799 WARNING   * Debugger is active!
+2017-10-29 00:17:23,819 INFO      * Debugger PIN: 621-509-638
+2017-10-29 00:17:34,823 INFO     127.0.0.1 - - [29/Oct/2017 00:17:34] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:11:25,849 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:11:25,899 INFO      * Restarting with stat
+2017-10-29 01:11:27,061 WARNING   * Debugger is active!
+2017-10-29 01:11:27,082 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:11:52,671 INFO     127.0.0.1 - - [29/Oct/2017 01:11:52] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:12:47,272 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:12:47,363 INFO      * Restarting with stat
+2017-10-29 01:12:48,606 WARNING   * Debugger is active!
+2017-10-29 01:12:48,633 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:13:05,350 INFO     127.0.0.1 - - [29/Oct/2017 01:13:05] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:13:55,785 INFO     127.0.0.1 - - [29/Oct/2017 01:13:55] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:14:40,866 INFO     127.0.0.1 - - [29/Oct/2017 01:14:40] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:15:08,476 INFO     127.0.0.1 - - [29/Oct/2017 01:15:08] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:24:48,722 INFO     127.0.0.1 - - [29/Oct/2017 01:24:48] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:29:30,230 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:29:30,297 INFO      * Restarting with stat
+2017-10-29 01:29:31,516 WARNING   * Debugger is active!
+2017-10-29 01:29:31,536 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:34:42,622 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:34:42,659 INFO      * Restarting with stat
+2017-10-29 01:34:43,907 WARNING   * Debugger is active!
+2017-10-29 01:34:43,924 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:35:54,877 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-29 01:35:54,914 INFO      * Restarting with stat
+2017-10-29 01:35:56,248 WARNING   * Debugger is active!
+2017-10-29 01:35:56,265 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:36:17,276 INFO     127.0.0.1 - - [29/Oct/2017 01:36:17] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:39:45,344 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:39:45,412 INFO      * Restarting with stat
+2017-10-29 01:39:46,658 WARNING   * Debugger is active!
+2017-10-29 01:39:46,677 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:40:21,142 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:40:21,173 INFO      * Restarting with stat
+2017-10-29 01:40:22,117 WARNING   * Debugger is active!
+2017-10-29 01:40:22,134 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:41:43,191 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:41:43,227 INFO      * Restarting with stat
+2017-10-29 01:41:44,458 WARNING   * Debugger is active!
+2017-10-29 01:41:44,475 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:42:01,233 INFO     127.0.0.1 - - [29/Oct/2017 01:42:01] "POST /api/screenshot/url HTTP/1.0" 500 -
+2017-10-29 01:42:37,270 INFO      * Detected change in '/Users/swotong/project/care-website/server/browser.py', reloading
+2017-10-29 01:42:37,337 INFO      * Restarting with stat
+2017-10-29 01:42:38,558 WARNING   * Debugger is active!
+2017-10-29 01:42:38,577 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:42:50,837 INFO     127.0.0.1 - - [29/Oct/2017 01:42:50] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:44:25,958 INFO     127.0.0.1 - - [29/Oct/2017 01:44:25] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:48:21,488 INFO     127.0.0.1 - - [29/Oct/2017 01:48:21] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:48:32,014 INFO     Creating new task with data {u'url': u'google.com', u'interval': 300, u'screenshot': None}
+2017-10-29 01:48:32,161 INFO     127.0.0.1 - - [29/Oct/2017 01:48:32] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 01:48:39,237 INFO     127.0.0.1 - - [29/Oct/2017 01:48:39] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:49:01,233 INFO     127.0.0.1 - - [29/Oct/2017 01:49:01] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:49:06,481 INFO     127.0.0.1 - - [29/Oct/2017 01:49:06] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:49:12,262 INFO     127.0.0.1 - - [29/Oct/2017 01:49:12] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:51:06,695 INFO     127.0.0.1 - - [29/Oct/2017 01:51:06] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:51:25,998 INFO     Creating new task with data {u'url': u'bilibili.com', u'roi': u'17 232 458 450', u'interval': 300, u'screenshot': None}
+2017-10-29 01:51:26,165 INFO     127.0.0.1 - - [29/Oct/2017 01:51:26] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 01:51:29,870 INFO     127.0.0.1 - - [29/Oct/2017 01:51:29] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:53:13,572 INFO     127.0.0.1 - - [29/Oct/2017 01:53:13] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:53:18,519 INFO     Creating new task with data {u'url': u'quora.com', u'roi': u'250 90 352 160', u'interval': 300, u'screenshot': u'1509267185.94.png'}
+2017-10-29 01:53:18,677 INFO     127.0.0.1 - - [29/Oct/2017 01:53:18] "POST /api/task HTTP/1.0" 500 -
+2017-10-29 01:53:34,751 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-29 01:53:34,814 INFO      * Restarting with stat
+2017-10-29 01:53:36,094 WARNING   * Debugger is active!
+2017-10-29 01:53:36,120 INFO      * Debugger PIN: 621-509-638
+2017-10-29 01:53:41,125 INFO     Creating new task with data {u'url': u'quora.com', u'roi': u'250 90 352 160', u'interval': 300, u'screenshot': u'1509267185.94.png'}
+2017-10-29 01:53:41,356 INFO     127.0.0.1 - - [29/Oct/2017 01:53:41] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 01:53:47,139 INFO     127.0.0.1 - - [29/Oct/2017 01:53:47] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:54:51,417 INFO     127.0.0.1 - - [29/Oct/2017 01:54:51] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 01:56:59,893 INFO     127.0.0.1 - - [29/Oct/2017 01:56:59] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 01:58:23,484 INFO     Creating new task with data {u'url': u'bilibili.com', u'roi': u'19 232 460 452', u'interval': 300, u'screenshot': u'1509267401.26.png'}
+2017-10-29 01:58:23,710 INFO     127.0.0.1 - - [29/Oct/2017 01:58:23] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 01:58:26,754 INFO     127.0.0.1 - - [29/Oct/2017 01:58:26] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:06:26,611 INFO      * Detected change in '/Users/swotong/project/care-website/server/setup.py', reloading
+2017-10-29 02:06:26,672 INFO      * Restarting with stat
+2017-10-29 02:06:27,880 WARNING   * Debugger is active!
+2017-10-29 02:06:27,900 INFO      * Debugger PIN: 621-509-638
+2017-10-29 02:07:23,632 INFO      * Detected change in '/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/backports/__init__.py', reloading
+2017-10-29 02:07:23,711 INFO      * Restarting with stat
+2017-10-29 02:07:24,946 WARNING   * Debugger is active!
+2017-10-29 02:07:24,969 INFO      * Debugger PIN: 621-509-638
+2017-10-29 02:07:41,497 INFO     [Task 51] last_run_time 2017-10-25 01:55:04
+2017-10-29 02:07:48,707 INFO     [Task 51] No previous screenshot.
+2017-10-29 02:07:48,707 INFO     [Task 52] last_run_time 2017-10-25 01:55:12
+2017-10-29 02:07:57,171 INFO     [Task 52] No previous screenshot.
+2017-10-29 02:07:57,171 INFO     [Task 63] last_run_time 2017-10-25 02:36:02
+2017-10-29 02:08:04,869 INFO     [Task 63] No previous screenshot.
+2017-10-29 02:08:04,870 INFO     [Task 65] last_run_time 2017-10-25 02:27:04
+2017-10-29 02:08:16,028 INFO     [Task 65] No previous screenshot.
+2017-10-29 02:08:16,028 INFO     [Task 66] last_run_time 2017-10-28 23:46:55
+2017-10-29 02:08:21,549 INFO     [Task 66] No previous screenshot.
+2017-10-29 02:08:21,550 INFO     [Task 67] last_run_time 2017-10-29 06:38:54
+2017-10-29 02:08:27,644 INFO     [Task 67] No previous screenshot.
+2017-10-29 02:08:27,644 INFO     [Task 68] last_run_time 2017-10-29 08:48:32
+2017-10-29 02:08:34,682 INFO     [Task 68] No previous screenshot.
+2017-10-29 02:08:34,682 INFO     [Task 69] last_run_time 2017-10-29 08:51:26
+2017-10-29 02:08:44,884 INFO     [Task 69] No previous screenshot.
+2017-10-29 02:08:44,884 INFO     [Task 70] last_run_time 2017-10-29 08:53:19
+2017-10-29 02:08:52,409 INFO     [Task 70] No previous screenshot.
+2017-10-29 02:08:52,410 INFO     [Task 71] last_run_time 2017-10-29 08:53:41
+2017-10-29 02:08:59,601 INFO     [Task 71] Getting ROI
+2017-10-29 02:08:59,628 INFO     [Task 71] Comparing SSIM
+2017-10-29 02:08:59,635 INFO     [Task 71] SSIM: 1.0
+2017-10-29 02:08:59,635 INFO     [Task 71] Hasn't changed
+2017-10-29 02:08:59,636 INFO     [Task 72] last_run_time 2017-10-29 08:58:23
+2017-10-29 02:09:10,305 INFO     [Task 72] Getting ROI
+2017-10-29 02:09:10,306 INFO     [Task 72] Comparing SSIM
+2017-10-29 02:09:10,326 INFO     [Task 72] SSIM: 0.967243560059
+2017-10-29 02:09:10,327 INFO     [Task 72] Detected change
+2017-10-29 02:09:10,338 INFO     [Task 72] Notify change
+2017-10-29 02:09:10,338 ERROR    [Errno 2] No such file or directory: '../screenshot/change/72-2.png'
+Traceback (most recent call last):
+  File "scan_all_jobs.py", line 52, in <module>
+    notify_change(email_subject, t.url, diff_img_path, diff_img_name)
+  File "/Users/swotong/project/care-website/server/mailgun.py", line 17, in notify_change
+    files = [("inline", open(img_path))]
+IOError: [Errno 2] No such file or directory: '../screenshot/change/72-2.png'
+2017-10-29 02:09:10,338 ERROR    [Task 72] fail to check update
+2017-10-29 02:11:11,854 INFO     127.0.0.1 - - [29/Oct/2017 02:11:11] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:16:23,929 INFO     127.0.0.1 - - [29/Oct/2017 02:16:23] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:17:46,205 INFO     127.0.0.1 - - [29/Oct/2017 02:17:46] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:17:53,153 INFO     127.0.0.1 - - [29/Oct/2017 02:17:53] "GET /api/tasks/user/123 HTTP/1.0" 200 -

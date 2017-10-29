@@ -27,7 +27,7 @@ function clearCoords()
 (function($) {
 
 	var loadingImg = 'assets/img/loading-squid.gif';
-	var snapshotName = null;
+	var screenshotName = null;
 	jQuery(document).ready(function(){
 
 
@@ -55,7 +55,7 @@ function clearCoords()
 			hideAlert();
 			var payload = {
 				// 'name': 'yo',
-				'snapshot': snapshotName,
+				'screenshot': screenshotName,
 				'interval': interval,
 				'url': $('.care-url').val(),
 				'roi': window.selectedBox,
@@ -113,9 +113,9 @@ function clearCoords()
 				data: JSON.stringify(payload),
 				contentType: "application/json",
 			}).done(
-				function(screenshotName) {
-					snapshotName = screenshotName;
-					$('.screenshot').attr("src", "snapshot/" + screenshotName);
+				function(imgName) {
+					screenshotName = imgName;
+					$('.screenshot').attr("src", "screenshot/" + screenshotName);
 				}
 			).fail(
 				function() {

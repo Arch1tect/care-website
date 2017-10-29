@@ -1,3 +1,6 @@
 /server/care-web/*
 *.pyc
 /log/log.txt
+/log/*
+/screenshot/*.png
+/screenshot/change/*.png

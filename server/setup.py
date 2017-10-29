@@ -1,7 +1,7 @@
 import os
 import logging
 
-# Always change directory to /src
+# Always change directory to /server
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
