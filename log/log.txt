@@ -182,3 +182,182 @@ IOError: [Errno 2] No such file or directory: '../screenshot/change/72-2.png'
 2017-10-29 02:16:23,929 INFO     127.0.0.1 - - [29/Oct/2017 02:16:23] "GET /api/tasks/user/123 HTTP/1.0" 200 -
 2017-10-29 02:17:46,205 INFO     127.0.0.1 - - [29/Oct/2017 02:17:46] "GET /api/tasks/user/123 HTTP/1.0" 200 -
 2017-10-29 02:17:53,153 INFO     127.0.0.1 - - [29/Oct/2017 02:17:53] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:23:21,643 INFO     127.0.0.1 - - [29/Oct/2017 02:23:21] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 02:23:51,096 INFO     Creating new task with data {u'url': u'renren.com', u'interval': 300, u'screenshot': u'1509268984.13.png'}
+2017-10-29 02:23:51,318 INFO     127.0.0.1 - - [29/Oct/2017 02:23:51] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 02:23:53,514 INFO     127.0.0.1 - - [29/Oct/2017 02:23:53] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:24:15,288 INFO     [Task 63] last_run_time 2017-10-29 09:07:57
+2017-10-29 02:24:24,579 INFO     [Task 63] Getting ROI
+2017-10-29 02:24:24,604 INFO     [Task 63] Comparing SSIM
+2017-10-29 02:24:24,608 INFO     [Task 63] SSIM: 1.0
+2017-10-29 02:24:24,608 INFO     [Task 63] Hasn't changed
+2017-10-29 02:24:24,609 INFO     [Task 65] last_run_time 2017-10-29 09:08:05
+2017-10-29 02:24:36,047 INFO     [Task 65] Getting ROI
+2017-10-29 02:24:36,048 INFO     [Task 65] Comparing SSIM
+2017-10-29 02:24:36,051 INFO     [Task 65] SSIM: 1.0
+2017-10-29 02:24:36,051 INFO     [Task 65] Hasn't changed
+2017-10-29 02:24:36,053 INFO     [Task 69] last_run_time 2017-10-29 09:08:35
+2017-10-29 02:24:48,319 INFO     [Task 70] last_run_time 2017-10-29 09:08:45
+2017-10-29 02:24:55,299 INFO     [Task 70] Getting ROI
+2017-10-29 02:24:55,300 INFO     [Task 70] Comparing SSIM
+2017-10-29 02:24:55,301 INFO     [Task 70] SSIM: 1.0
+2017-10-29 02:24:55,301 INFO     [Task 70] Hasn't changed
+2017-10-29 02:25:43,394 INFO     [Task 69] last_run_time 2017-10-29 09:08:35
+2017-10-29 02:25:51,814 INFO     [Task 69] Getting ROI
+2017-10-29 02:25:51,838 INFO     [Task 69] Comparing SSIM
+2017-10-29 02:25:51,868 INFO     [Task 69] SSIM: 1.0
+2017-10-29 02:25:51,868 INFO     [Task 69] Hasn't changed
+2017-10-29 02:26:11,367 INFO     127.0.0.1 - - [29/Oct/2017 02:26:11] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:26:43,271 INFO     127.0.0.1 - - [29/Oct/2017 02:26:43] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:27:41,643 INFO     127.0.0.1 - - [29/Oct/2017 02:27:41] "POST /api/screenshot/url HTTP/1.0" 200 -
+2017-10-29 02:27:51,657 INFO     Creating new task with data {u'url': u'time.is', u'interval': 300, u'screenshot': u'1509269249.28.png'}
+2017-10-29 02:27:51,883 INFO     127.0.0.1 - - [29/Oct/2017 02:27:51] "POST /api/task HTTP/1.0" 200 -
+2017-10-29 02:27:54,703 INFO     127.0.0.1 - - [29/Oct/2017 02:27:54] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 02:28:24,229 INFO     [Task 74] last_run_time 2017-10-29 09:27:52
+2017-10-29 02:28:35,301 INFO     [Task 74] Comparing SSIM
+2017-10-29 02:28:35,523 INFO     [Task 74] SSIM: 0.945143143048
+2017-10-29 02:28:35,523 INFO     [Task 74] Detected change
+2017-10-29 02:28:35,560 INFO     [Task 74] Notify change
+2017-10-29 02:28:43,340 INFO     127.0.0.1 - - [29/Oct/2017 02:28:43] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 12:38:29,282 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-29 12:38:29,395 INFO      * Restarting with stat
+2017-10-29 12:38:31,511 WARNING   * Debugger is active!
+2017-10-29 12:38:31,537 INFO      * Debugger PIN: 621-509-638
+2017-10-29 12:38:49,908 INFO     127.0.0.1 - - [29/Oct/2017 12:38:49] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-29 12:39:22,422 INFO     [Task 51] last_run_time 2017-10-29 09:07:41
+2017-10-29 12:39:30,540 INFO     [Task 51] Getting ROI
+2017-10-29 12:39:30,559 INFO     [Task 51] Comparing SSIM
+2017-10-29 12:39:30,575 INFO     [Task 51] SSIM: 0.386783454038
+2017-10-29 12:39:30,575 INFO     [Task 51] Detected change
+2017-10-29 12:39:30,586 INFO     [Task 51] Notify change
+2017-10-29 12:39:31,378 INFO     [Task 52] last_run_time 2017-10-29 09:07:49
+2017-10-29 12:39:40,200 INFO     [Task 52] Comparing SSIM
+2017-10-29 12:39:40,865 INFO     [Task 52] SSIM: 0.712640015662
+2017-10-29 12:39:40,865 INFO     [Task 52] Detected change
+2017-10-29 12:39:41,006 INFO     [Task 52] Notify change
+2017-10-29 12:39:43,594 INFO     [Task 63] last_run_time 2017-10-29 09:24:15
+2017-10-29 12:39:50,522 INFO     [Task 63] Getting ROI
+2017-10-29 12:39:50,522 INFO     [Task 63] Comparing SSIM
+2017-10-29 12:39:50,523 INFO     [Task 63] SSIM: 1.0
+2017-10-29 12:39:50,523 INFO     [Task 63] Hasn't changed
+2017-10-29 12:39:50,527 INFO     [Task 65] last_run_time 2017-10-29 09:24:25
+2017-10-29 12:40:01,484 INFO     [Task 65] Getting ROI
+2017-10-29 12:40:01,484 INFO     [Task 65] Comparing SSIM
+2017-10-29 12:40:01,486 INFO     [Task 65] SSIM: 1.0
+2017-10-29 12:40:01,486 INFO     [Task 65] Hasn't changed
+2017-10-29 12:40:01,490 INFO     [Task 69] last_run_time 2017-10-29 09:25:43
+2017-10-29 12:40:10,397 INFO     [Task 69] Getting ROI
+2017-10-29 12:40:10,398 INFO     [Task 69] Comparing SSIM
+2017-10-29 12:40:10,426 INFO     [Task 69] SSIM: 0.163416677425
+2017-10-29 12:40:10,426 INFO     [Task 69] Detected change
+2017-10-29 12:40:10,436 INFO     [Task 69] Notify change
+2017-10-29 12:40:11,225 INFO     [Task 70] last_run_time 2017-10-29 09:24:48
+2017-10-29 12:40:16,163 INFO     [Task 70] Getting ROI
+2017-10-29 12:40:16,163 INFO     [Task 70] Comparing SSIM
+2017-10-29 12:40:16,165 INFO     [Task 70] SSIM: 1.0
+2017-10-29 12:40:16,165 INFO     [Task 70] Hasn't changed
+2017-10-29 12:40:16,165 INFO     [Task 73] last_run_time 2017-10-29 09:23:51
+2017-10-29 12:40:35,263 INFO     [Task 73] Comparing SSIM
+2017-10-29 12:40:35,456 INFO     [Task 73] SSIM: 1.0
+2017-10-29 12:40:35,457 INFO     [Task 73] Hasn't changed
+2017-10-29 12:40:35,461 INFO     [Task 74] last_run_time 2017-10-29 09:28:24
+2017-10-29 12:40:46,794 INFO     [Task 74] Comparing SSIM
+2017-10-29 12:40:46,947 INFO     [Task 74] SSIM: 0.834556219422
+2017-10-29 12:40:46,947 INFO     [Task 74] Detected change
+2017-10-29 12:40:46,984 INFO     [Task 74] Notify change
+2017-10-29 12:40:48,373 INFO     127.0.0.1 - - [29/Oct/2017 12:40:48] "GET /api/tasks/scan HTTP/1.0" 200 -
+2017-10-29 12:40:48,378 ERROR    Error on request:
+Traceback (most recent call last):
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 209, in run_wsgi
+    execute(self.server.app)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 200, in execute
+    write(data)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 168, in write
+    self.send_header(key, value)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/BaseHTTPServer.py", line 401, in send_header
+    self.wfile.write("%s: %s\r\n" % (keyword, value))
+IOError: [Errno 32] Broken pipe
+2017-10-29 12:51:04,428 INFO     [Task 63] last_run_time 2017-10-29 19:39:44
+2017-10-29 12:51:14,401 INFO     [Task 63] Getting ROI
+2017-10-29 12:51:14,402 INFO     [Task 63] Comparing SSIM
+2017-10-29 12:51:14,402 INFO     [Task 63] SSIM: 1.0
+2017-10-29 12:51:14,402 INFO     [Task 63] Hasn't changed
+2017-10-29 12:51:14,404 INFO     [Task 65] last_run_time 2017-10-29 19:39:51
+2017-10-29 12:51:27,098 INFO     [Task 65] Getting ROI
+2017-10-29 12:51:27,099 INFO     [Task 65] Comparing SSIM
+2017-10-29 12:51:27,100 INFO     [Task 65] SSIM: 1.0
+2017-10-29 12:51:27,100 INFO     [Task 65] Hasn't changed
+2017-10-29 12:51:27,102 INFO     [Task 69] last_run_time 2017-10-29 19:40:01
+2017-10-29 12:51:36,140 INFO     [Task 69] Getting ROI
+2017-10-29 12:51:36,141 INFO     [Task 69] Comparing SSIM
+2017-10-29 12:51:36,163 INFO     [Task 69] SSIM: 1.0
+2017-10-29 12:51:36,163 INFO     [Task 69] Hasn't changed
+2017-10-29 12:51:36,165 INFO     [Task 70] last_run_time 2017-10-29 19:40:11
+2017-10-29 12:51:42,538 INFO     [Task 70] Getting ROI
+2017-10-29 12:51:42,538 INFO     [Task 70] Comparing SSIM
+2017-10-29 12:51:42,539 INFO     [Task 70] SSIM: 1.0
+2017-10-29 12:51:42,539 INFO     [Task 70] Hasn't changed
+2017-10-29 12:51:42,540 INFO     [Task 73] last_run_time 2017-10-29 19:40:16
+2017-10-29 12:51:54,507 INFO     [Task 73] Comparing SSIM
+2017-10-29 12:51:54,692 INFO     [Task 73] SSIM: 1.0
+2017-10-29 12:51:54,693 INFO     [Task 73] Hasn't changed
+2017-10-29 12:51:54,697 INFO     [Task 74] last_run_time 2017-10-29 19:40:35
+2017-10-29 12:52:05,895 INFO     [Task 74] Comparing SSIM
+2017-10-29 12:52:06,046 INFO     [Task 74] SSIM: 0.970263748794
+2017-10-29 12:52:06,046 INFO     [Task 74] Detected change
+2017-10-29 12:52:06,077 INFO     [Task 74] Notify change
+2017-10-29 12:52:07,917 INFO     127.0.0.1 - - [29/Oct/2017 12:52:07] "GET /api/tasks/scan HTTP/1.0" 200 -
+2017-10-29 12:52:07,920 ERROR    Error on request:
+Traceback (most recent call last):
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 209, in run_wsgi
+    execute(self.server.app)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 200, in execute
+    write(data)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 168, in write
+    self.send_header(key, value)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/BaseHTTPServer.py", line 401, in send_header
+    self.wfile.write("%s: %s\r\n" % (keyword, value))
+IOError: [Errno 41] Protocol wrong type for socket
+2017-10-29 12:54:58,939 INFO     [Task 74] last_run_time 2017-10-29 19:51:55
+2017-10-29 12:55:10,785 INFO     [Task 74] Comparing SSIM
+2017-10-29 12:55:10,933 INFO     [Task 74] SSIM: 0.986092920497
+2017-10-29 12:55:10,934 INFO     [Task 74] Detected change
+2017-10-29 12:55:10,958 INFO     [Task 74] Notify change
+2017-10-29 12:55:12,483 INFO     127.0.0.1 - - [29/Oct/2017 12:55:12] "GET /api/tasks/scan HTTP/1.0" 200 -
+2017-10-29 13:09:26,485 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-29 13:09:26,680 INFO      * Restarting with stat
+2017-10-29 13:09:27,935 WARNING   * Debugger is active!
+2017-10-29 13:09:27,955 INFO      * Debugger PIN: 621-509-638
+2017-10-29 17:27:09,753 INFO     127.0.0.1 - - [29/Oct/2017 17:27:09] "GET /api/tasks/user/123 HTTP/1.0" 500 -
+2017-10-29 17:27:09,761 ERROR    Error on request:
+Traceback (most recent call last):
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 209, in run_wsgi
+    execute(self.server.app)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 200, in execute
+    write(data)
+  File "/Users/swotong/project/care-website/server/care-web/lib/python2.7/site-packages/werkzeug/serving.py", line 173, in write
+    self.send_header('Connection', 'close')
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/BaseHTTPServer.py", line 401, in send_header
+    self.wfile.write("%s: %s\r\n" % (keyword, value))
+IOError: [Errno 32] Broken pipe
+2017-10-29 17:27:10,118 INFO     127.0.0.1 - - [29/Oct/2017 17:27:10] "GET /api/tasks/user/123 HTTP/1.0" 500 -
+2017-10-30 02:25:08,183 INFO      * Running on http://0.0.0.0:9000/ (Press CTRL+C to quit)
+2017-10-30 02:25:08,184 INFO      * Restarting with stat
+2017-10-30 02:25:09,121 WARNING   * Debugger is active!
+2017-10-30 02:25:09,144 INFO      * Debugger PIN: 621-509-638
+2017-10-30 02:25:14,234 INFO     127.0.0.1 - - [30/Oct/2017 02:25:14] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:26:06,258 INFO     127.0.0.1 - - [30/Oct/2017 02:26:06] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:41:48,786 INFO     127.0.0.1 - - [30/Oct/2017 02:41:48] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:41:52,347 INFO     127.0.0.1 - - [30/Oct/2017 02:41:52] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:44:15,878 INFO     127.0.0.1 - - [30/Oct/2017 02:44:15] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:44:57,445 INFO     127.0.0.1 - - [30/Oct/2017 02:44:57] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:45:03,593 INFO     127.0.0.1 - - [30/Oct/2017 02:45:03] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 02:53:45,017 INFO      * Detected change in '/Users/swotong/project/care-website/server/web.py', reloading
+2017-10-30 02:53:45,069 INFO      * Restarting with stat
+2017-10-30 02:53:46,323 WARNING   * Debugger is active!
+2017-10-30 02:53:46,340 INFO      * Debugger PIN: 621-509-638
+2017-10-30 03:02:17,947 INFO     127.0.0.1 - - [30/Oct/2017 03:02:17] "GET /api/task/76 HTTP/1.0" 200 -
+2017-10-30 03:02:41,841 INFO     127.0.0.1 - - [30/Oct/2017 03:02:41] "GET /api/task/76 HTTP/1.0" 200 -
+2017-10-30 03:03:18,136 INFO     127.0.0.1 - - [30/Oct/2017 03:03:18] "GET /api/task/76 HTTP/1.0" 200 -
+2017-10-30 03:03:40,654 INFO     127.0.0.1 - - [30/Oct/2017 03:03:40] "GET /api/tasks/user/123 HTTP/1.0" 200 -
+2017-10-30 03:03:54,288 INFO     127.0.0.1 - - [30/Oct/2017 03:03:54] "GET /api/task/78 HTTP/1.0" 200 -

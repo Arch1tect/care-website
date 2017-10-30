@@ -12,60 +12,42 @@ function addRow(cells) {
 
 jQuery(document).ready(function(){
 	$.ajax ({
-		url: "api/tasks/user/123",
-		// url: "http://54.215.208.165/api/tasks/user/123",
+		url: "api/task/"+window.location.search.substring(4),
 		type: "GET",
 		contentType: "application/json",
 	}).done(
-		function(data) {
-			console.log(data);
-			$.each(data, function(i, task){
+		function(task) {
+			console.log(task);
+			var i = 0;
+			for (; i <= task.last_run_id; i++) {
 				var cells = []
 
 				// initial image
 				var $imgWrapper = $("<div class='cell'></div");
 				var $initImg = $("<img></img>");
-				$initImg.attr('src', 'screenshot/'+task.id+'-0.png');
+				$initImg.attr('src', 'screenshot/'+task.id+'-'+i+'.png');
 				$imgWrapper.append($initImg);
 				cells.push($imgWrapper);
-				// last screenshot
-				var $imgWrapper2 = $("<div class='cell'></div");
-				var $lastImg = $("<img></img>");
-				$lastImg.attr('src', 'screenshot/'+task.id+'-'+task.last_run_id+'.png');
-				$imgWrapper2.append($lastImg);
-				cells.push($imgWrapper2);
-				// settings
-				var $settings = $("<div></div>");
 
+				// change
+				var $settings = $("<div></div>");
 				var $url = $("<a>URL</a>");
 				$url.attr('href', task.url);
 				$url.attr('target', '_blank');
 				$settings.append($url);
 
-				var $interval = $("<div></div>");
-				$interval.text('Check interval: ' + task.interval);
-				$settings.append($interval);
-
-				var $history = $("<a></a>");
-				$history.text('History');
-				$history.attr('href', 'task-history.html?id='+task.id)
-				$settings.append($history);
-
 				cells.push($settings);
 
 				addRow(cells);
-				// created time
-				var $created = $("<span></span>");
-				var createdTime = new Date(task.created);
-				$created.text(moment(createdTime).fromNow());
-				$imgWrapper.after($created);
-				// last check time
-				var $lastCheck = $("<span></span>");
-				var lastCheckTime = new Date(task.last_run_time);
-				$lastCheck.text(moment(lastCheckTime).fromNow());
-				$imgWrapper2.after($lastCheck);
+				// // created time
+				// var $created = $("<span></span>");
+				// var createdTime = new Date(task.created);
+				// $created.text(moment(createdTime).fromNow());
+				// $imgWrapper.after($created);
 
-			});
+
+			}
+
 
 	    	$('.cell img').on('click', function() {
 

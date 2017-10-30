@@ -18,6 +18,13 @@ logger = logging.getLogger(__name__)
 def shutdown_session(exception=None):
     session.remove()
 
+@app.route("/api/task/<task_id>")
+def get_task(task_id):
+	'''return a task row from db'''
+
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	return jsonify(task.as_dict())
+
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
