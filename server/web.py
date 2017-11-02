@@ -3,20 +3,28 @@ import os
 import logging
 
 from flask import Flask, jsonify, request
+from flask_sqlalchemy import SQLAlchemy
 
 import setup
-from db_session import session
+from cfg.credentials import db_user, db_password
 from db.model import CareTask
 from browser import take_screenshot
 
 app = Flask(__name__)
 
+db_url = 'chat-anywhere-mysql.cjwz9xnh80ai.us-west-1.rds.amazonaws.com/care'
+connection_str = 'mysql://{}:{}@{}'.format(db_user, db_password, db_url)
+app.config['SQLALCHEMY_DATABASE_URI'] = connection_str
+
+database = SQLAlchemy(app)
+session = database.session
+
 logger = logging.getLogger(__name__)
 
 
-@app.teardown_request
-def shutdown_session(exception=None):
-    session.remove()
+# @app.teardown_request
+# def shutdown_session(exception=None):
+#     session.remove()
 
 @app.route("/api/task/<task_id>")
 def get_task(task_id):

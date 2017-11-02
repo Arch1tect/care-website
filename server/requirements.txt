@@ -2,6 +2,7 @@ SQLAlchemy==1.1.14
 MySQL-python==1.2.5
 requests==2.18.4
 flask==0.12.2
+flask-sqlalchemy==2.3.2
 docker==2.5.1
 imutils==0.4.3
 scikit-image==0.13.0
