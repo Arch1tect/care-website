@@ -22,10 +22,6 @@ session = database.session
 logger = logging.getLogger(__name__)
 
 
-# @app.teardown_request
-# def shutdown_session(exception=None):
-#     session.remove()
-
 @app.route("/api/task/<task_id>")
 def get_task(task_id):
 	'''return a task row from db'''

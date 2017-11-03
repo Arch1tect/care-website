@@ -1,3 +1,7 @@
+var pageSize = 5;
+var pageNum = 1;
+var totalPages = 1;
+var task = {};
 
 function addRow(cells) {
 		
@@ -10,55 +14,60 @@ function addRow(cells) {
 	$('.task-table tbody').append($row);
 }
 
+function loadHisotry() {
+	$(window).scrollTop(0);
+	$('.task-table tr').remove();
+	var i = (pageNum-1)*pageSize;
+
+	for (; i <= Math.min(task.last_run_id, pageNum*pageSize-1); i++) {
+		var cells = []
+
+		// initial image
+		var $imgWrapper = $("<div class='cell'></div");
+		var $initImg = $("<img></img>");
+		$initImg.attr('src', 'screenshot/'+task.id+'-'+i+'.png');
+		$imgWrapper.append($initImg);
+		cells.push($imgWrapper);
+
+		// change
+		var $settings = $("<div></div>");
+		var $url = $("<a>URL</a>");
+		$url.attr('href', task.url);
+		$url.attr('target', '_blank');
+		$settings.append($url);
+
+		cells.push($settings);
+
+		addRow(cells);
+		// // created time
+		// var $created = $("<span></span>");
+		// var createdTime = new Date(task.created);
+		// $created.text(moment(createdTime).fromNow());
+		// $imgWrapper.after($created);
+
+
+	}
+
+}
+
 jQuery(document).ready(function(){
 	$.ajax ({
 		url: "api/task/"+window.location.search.substring(4),
 		type: "GET",
 		contentType: "application/json",
 	}).done(
-		function(task) {
-			console.log(task);
-			var i = 0;
-			for (; i <= task.last_run_id; i++) {
-				var cells = []
-
-				// initial image
-				var $imgWrapper = $("<div class='cell'></div");
-				var $initImg = $("<img></img>");
-				$initImg.attr('src', 'screenshot/'+task.id+'-'+i+'.png');
-				$imgWrapper.append($initImg);
-				cells.push($imgWrapper);
-
-				// change
-				var $settings = $("<div></div>");
-				var $url = $("<a>URL</a>");
-				$url.attr('href', task.url);
-				$url.attr('target', '_blank');
-				$settings.append($url);
-
-				cells.push($settings);
-
-				addRow(cells);
-				// // created time
-				// var $created = $("<span></span>");
-				// var createdTime = new Date(task.created);
-				// $created.text(moment(createdTime).fromNow());
-				// $imgWrapper.after($created);
-
-
-			}
-
-
-	    	$('.cell img').on('click', function() {
-
-	    		var initialImageCell = $(this).closest('tr').find('td')[0];
-	    		var lastImageCell = $(this).closest('tr').find('td')[1];
-
-	    		$('.modal-title.initial').text($(initialImageCell).find('span').text());
-	    		$('.modal-title.last').text($(lastImageCell).find('span').text());
-				$('.initialImageLarge').attr('src', $(initialImageCell).find('img').attr('src'));
-				$('.lastImageLarge').attr('src', $(lastImageCell).find('img').attr('src'));
-				$('#enlargeImageModal').modal('show');
+		function(data) {
+			console.log(data);
+			task = data;
+			totalPages = Math.max(1, (task.last_run_id+1)/pageSize);
+			$('.history-pagination').twbsPagination({
+				totalPages: totalPages,
+				visiblePages: 7,
+				onPageClick: function (event, page) {
+					console.log('go to page ' + page);
+					pageNum = page;
+					loadHisotry();
+				}
 			});
 
 		}
