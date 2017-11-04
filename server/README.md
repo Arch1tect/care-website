@@ -1,6 +1,9 @@
 # Care
 Monitor web page change that you care
 
+# Mysql
+sudo yum install mysql-devel gcc gcc-devel python-devel
+
 
 # Docker
 It's not very easy to set up environment correctly for headless chrome, so we use docker to set up chrome for taking screenshots, build docker image with included Dockerfile:

@@ -3,7 +3,7 @@ import os
 
 client = docker.from_env()
 volume_bindings = {
-					'/Users/swotong/project/care-website/': {
+					'/public/care-website/': {
 										'bind': '/mnt/care-website',
 										'mode': 'rw'
 									}
@@ -13,7 +13,6 @@ volume_bindings = {
 def take_screenshot(url, screenshot_path):
 	'''Run docker image to take a screenshot'''
 	print 'taking screenshot...'
-	"python /mnt/care-website/server/screenshot.py"
 	program = 'python'
 	script = '/mnt/care-website/server/screenshot.py'
 	arguments = '{} {}'.format(url, screenshot_path)
