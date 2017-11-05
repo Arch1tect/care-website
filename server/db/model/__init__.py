@@ -40,6 +40,20 @@ class TaskLog(Base):
 	# Notice that each column is also a normal Python instance attribute.
 	id = Column(Integer, primary_key=True)
 	task_id = Column(Integer)
+	run_id = Column(Integer)
 	timestamp = Column(TIMESTAMP)
 	changed = Column(Boolean)
 	success = Column(Boolean)
+
+	def as_dict(self):
+		return {
+			'id': self.id,
+			'task_id': self.task_id,
+			'run_id': self.run_id,
+			'timestamp': self.timestamp,
+			'changed': self.changed,
+			'success': self.success
+		}
+
+
+

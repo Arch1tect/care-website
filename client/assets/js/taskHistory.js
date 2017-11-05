@@ -1,7 +1,8 @@
 var pageSize = 5;
 var pageNum = 1;
 var totalPages = 1;
-var task = {};
+var taskLogs = [];
+var taskId = null;
 
 function addRow(cells) {
 		
@@ -19,31 +20,32 @@ function loadHisotry() {
 	$('.task-table tr').remove();
 	var i = (pageNum-1)*pageSize;
 
-	for (; i <= Math.min(task.last_run_id, pageNum*pageSize-1); i++) {
+	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
+		var taskLog = taskLogs[i];
 		var cells = []
 
-		// initial image
+		// screenshot
 		var $imgWrapper = $("<div class='cell'></div");
 		var $initImg = $("<img></img>");
-		$initImg.attr('src', 'screenshot/'+task.id+'-'+i+'.png');
+		$initImg.attr('src', 'screenshot/'+taskId+'-'+(i+1)+'.png');
 		$imgWrapper.append($initImg);
 		cells.push($imgWrapper);
 
 		// change
-		var $settings = $("<div></div>");
-		var $url = $("<a>URL</a>");
-		$url.attr('href', task.url);
-		$url.attr('target', '_blank');
-		$settings.append($url);
+		// var $settings = $("<div></div>");
+		// var $url = $("<a>URL</a>");
+		// $url.attr('href', task.url);
+		// $url.attr('target', '_blank');
+		// $settings.append($url);
 
-		cells.push($settings);
+		// cells.push($settings);
 
 		addRow(cells);
-		// // created time
-		// var $created = $("<span></span>");
-		// var createdTime = new Date(task.created);
-		// $created.text(moment(createdTime).fromNow());
-		// $imgWrapper.after($created);
+		// created time
+		var $created = $("<span></span>");
+		var createdTime = new Date(taskLog.timestamp);
+		$created.text(moment(createdTime).format('YY/MM/DD HH:mm:SS'));
+		$imgWrapper.after($created);
 
 
 	}
@@ -51,15 +53,16 @@ function loadHisotry() {
 }
 
 jQuery(document).ready(function(){
+	taskId = window.location.search.substring(4)
 	$.ajax ({
-		url: "api/task/"+window.location.search.substring(4),
+		url: "api/task/"+taskId,
 		type: "GET",
 		contentType: "application/json",
 	}).done(
 		function(data) {
 			console.log(data);
-			task = data;
-			totalPages = Math.max(1, (task.last_run_id+1)/pageSize);
+			taskLogs = data;
+			totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
 			$('.history-pagination').twbsPagination({
 				totalPages: totalPages,
 				visiblePages: 7,
@@ -69,15 +72,11 @@ jQuery(document).ready(function(){
 					loadHisotry();
 				}
 			});
-
 		}
 	).fail(
 		function() {
 
 		}
 	);
-
-
-
 
 });

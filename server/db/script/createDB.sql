@@ -8,7 +8,7 @@ CREATE TABLE `task` (
   `last_run_id` int(10) unsigned DEFAULT '0',
   `roi` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `log` (
@@ -17,5 +17,6 @@ CREATE TABLE `log` (
   `timestamp` timestamp NULL DEFAULT NULL,
   `success` bit(1) DEFAULT NULL,
   `task_id` int(11) NOT NULL,
+  `run_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

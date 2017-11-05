@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import setup
 from cfg.credentials import db_user, db_password
-from db.model import CareTask
+from db.model import CareTask, TaskLog
 from browser import take_screenshot
 
 app = Flask(__name__)
@@ -26,8 +26,9 @@ logger = logging.getLogger(__name__)
 def get_task(task_id):
 	'''return a task row from db'''
 
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
-	return jsonify(task.as_dict())
+	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
+
+	return jsonify([t.as_dict() for t in task_logs])
 
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
