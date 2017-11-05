@@ -79,7 +79,7 @@ jQuery(document).ready(function(){
 				var $historyWrapper = $("<div></div>");
 				var $historyIcon = $("<i class='fa fa-calendar fa-fw'></i>");
 				var $history = $("<a></a>");
-				$history.text(' View history >>');
+				$history.text(' View history');
 				$history.attr('href', 'task-history.html?id='+task.id)
 				$historyWrapper.append($historyIcon);
 				$historyWrapper.append($history);
