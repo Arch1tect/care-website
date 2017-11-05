@@ -38,7 +38,7 @@ for t in session.query(CareTask).all():
 				# ensure there's a previous screenshot to compare
 				if os.path.isfile(old_screenshot_path):
 					# compare new screenshot with old screenshot
-					diff_img_name = '{}-{}.png'.format(t.id, t.last_run_id+1)
+					diff_img_name = '{}-{}.png'.format(t.id, t.last_run_id)
 					diff_img_path = '../screenshot/change/{}'.format(diff_img_name)
 
 					changed = compare_img(t, old_screenshot_path, new_screenshot_path, diff_img_path)

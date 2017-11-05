@@ -31,8 +31,6 @@ function loadHisotry() {
 	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
 		var taskLog = taskLogs[i];
 		var cells = []
-
-
 		// ID
 		var $idDiv = $("<div></div>");
 		$idDiv.text(taskLog.run_id);
@@ -46,15 +44,22 @@ function loadHisotry() {
 
 		// screenshot
 		var $imgWrapper = $("<div class='cell'></div");
-		var $initImg = $("<img></img>");
-		$initImg.attr('src', 'screenshot/'+taskId+'-'+taskLog.run_id+'.png');
-		$imgWrapper.append($initImg);
+		var $screenshotImg = $("<img></img>");
+		$screenshotImg.attr('src', 'screenshot/'+taskId+'-'+taskLog.run_id+'.png');
+		$imgWrapper.append($screenshotImg);
 		cells.push($imgWrapper);
 
 		// changed
-		var $changeDiv = $("<div></div>");
-		var changed = taskLog.changed ? "Yes" : "No";
-		$changeDiv.text(changed);
+		var $changeDiv = $("<div class='cell'></div>");
+		if (taskLog.changed) {
+			var $changedImg = $("<img></img>");
+			$changedImg.attr('src', 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png');
+			$changeDiv.append($changedImg);
+		}else {
+			// taskLog.changed can be null
+			var changed = taskLog.changed === false ? "No" : "N/A";
+			$changeDiv.text(changed);
+		}
 		cells.push($changeDiv);
 
 		addRow(cells);
