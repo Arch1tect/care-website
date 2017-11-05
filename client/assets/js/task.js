@@ -108,6 +108,20 @@ jQuery(document).ready(function(){
 
 			});
 
+
+			$('.delete-task').on('click', function() {
+				$.ajax ({
+					url: "api/task/"+$(this).closest('tr').data('id'),
+					type: "DELETE",
+					contentType: "application/json",
+				}).done(
+					function() {
+						location.reload();
+					}
+				);
+			});
+
+
 			$('.cell img').on('click', function() {
 
 				var initialImageCell = $(this).closest('tr').find('td')[0];
@@ -130,7 +144,8 @@ jQuery(document).ready(function(){
 				}).done(
 					function(data) {
 						$(that).closest('td').find('span.interval').text($(that).text());
-				});
+					}
+				);
 
 			
 			});

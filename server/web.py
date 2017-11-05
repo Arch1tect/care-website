@@ -59,6 +59,14 @@ def get_screenshot_for_task(task_id):
 		return send_file(new_screenshot_path, mimetype='image/png')
 	return 'Failed to take screenshot.'
 
+@app.route("/api/task/<task_id>", methods=['DELETE'])
+def delete_task(task_id):
+	'''Delete a task in DB'''
+	# TODO: also delete logs and images
+	session.query(CareTask).filter(CareTask.id==task_id).delete()
+	session.commit()
+	return 'success!'
+
 @app.route("/api/task", methods=['POST'])
 def create_new_task():
 	'''Create new task, also properly rename initial screenshot if exist'''
@@ -73,7 +81,7 @@ def create_new_task():
 	if initial_screenshot:
 		os.rename('../screenshot/{}'.format(initial_screenshot),
 				  '../screenshot/{}-0.png'.format(task.id))
-	return 'success'
+	return 'success!'
 
 @app.route("/api/screenshot/url", methods=['POST'])
 def take_screenshot_for_url():
