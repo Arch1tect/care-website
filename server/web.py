@@ -4,6 +4,7 @@ import logging
 
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+import git
 
 import setup
 from cfg.credentials import db_user, db_password
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 @app.route("/api/git")
 def githubUpdated():
 
-	g = git.cmd.Git(git_dir)
+	g = git.cmd.Git(os.getcwd())
 	g.pull()
 	return "succeed!"
 
