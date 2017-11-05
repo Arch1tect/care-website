@@ -35,21 +35,38 @@ jQuery(document).ready(function(){
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
 				// settings
-				var $settings = $("<div></div>");
-
-				var $url = $("<a>URL</a>");
+				var $settings = $("<div class='task-setting'></div>");
+				var $urlWrapper = $("<div></div>");
+				var $urlIcon = $("<i class='fa fa-link fa-fw'></i>");
+				var $url = $("<a></a>");
+				var url = task.url;
+				if (url.length > 25) {
+					url = url.substring(0, 20) + '...';
+				}
+				$url.text(url);
 				$url.attr('href', task.url);
 				$url.attr('target', '_blank');
-				$settings.append($url);
+				$urlWrapper.append($urlIcon);
+				$urlWrapper.append($url);
+				$settings.append($urlWrapper);
 
-				var $interval = $("<div></div>");
-				$interval.text('Check interval: ' + task.interval);
-				$settings.append($interval);
+				var $intervalWrapper = $("<div></div>");
+				var $interval = $("<span></span>");
+				var $clockIcon = $("<i class='fa fa-clock-o fa-fw'></i>");
+				$intervalWrapper.append($clockIcon);
+				$intervalWrapper.append($interval);
+				$interval.text(task.interval);
+				$settings.append($intervalWrapper);
+
+				var $historyWrapper = $("<div></div>");
+				var $historyIcon = $("<i class='fa fa-calendar fa-fw'></i>");
 
 				var $history = $("<a></a>");
 				$history.text('History');
 				$history.attr('href', 'task-history.html?id='+task.id)
-				$settings.append($history);
+				$historyWrapper.append($historyIcon);
+				$historyWrapper.append($history);
+				$settings.append($historyWrapper);
 
 				cells.push($settings);
 

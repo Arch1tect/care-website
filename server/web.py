@@ -71,7 +71,6 @@ def create_new_task():
 def take_screenshot_for_url():
 	data = request.get_json()
 	url = correct_url(data['url'])
-	# task = CareTask(id=0, name='new', url=url)
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
 	screenshot_path = '../screenshot/{}'.format(screenshot_name)

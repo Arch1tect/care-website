@@ -542,3 +542,13 @@ table td {
 	display: inline-block;
 }
 
+.task-setting {
+	width: 170px;
+    text-align: left;
+    margin: auto;
+}
+
+.task-setting div{
+	margin-bottom: 10px;
+}
+
