@@ -485,9 +485,7 @@ csmall2 {
 	border-radius: 5px;
 }
 
-.dropdown-menu {
-	/*min-width: 150px;*/
-}
+
 
 .dropdown-menu li {
 	/*color: white;*/
@@ -503,6 +501,7 @@ csmall2 {
 span.interval {
 	padding-right: 5px;
 }
+/*task page*/
 
 .task-table {
 	margin: auto;
@@ -518,7 +517,7 @@ span.interval {
 	max-width: 250px;
 	cursor: pointer;
 }
-.task-table td span{
+.task-table td span.friendly-time{
 	color: #777777;
 	font-size: smaller;
 	max-width: 100px;
@@ -529,6 +528,14 @@ table th {
 table td {
 	text-align: center;
 	vertical-align: middle !important;
+}
+
+table td a {
+	color: black;
+}
+
+table td .dropdown-menu {
+	min-width: 100px;
 }
 .task-table tbody tr:nth-child(odd){
   background-color: #f3f3f3;;
@@ -542,6 +549,10 @@ table td {
 	display: inline-block;
 }
 
+
+.dropdown-toggle {
+	cursor: pointer;
+}
 .task-setting {
 	width: 170px;
     text-align: left;
@@ -552,3 +563,14 @@ table td {
 	margin-bottom: 10px;
 }
 
+.interval-wrapper {
+	position: relative;
+}
+
+.delete-task {
+	cursor: pointer;
+}
+
+.danger:hover {
+	color: red;
+}

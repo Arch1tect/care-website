@@ -34,6 +34,14 @@ def get_task(task_id):
 	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
 	return jsonify([t.as_dict() for t in task_logs])
 
+@app.route("/api/task/<task_id>/interval/<interval>")
+def update_task_interval(task_id, interval):
+
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task.interval = interval
+	session.commit()
+	return 'success!'
+
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''

@@ -53,7 +53,8 @@ function loadHisotry() {
 
 		// changed
 		var $changeDiv = $("<div></div>");
-		$changeDiv.text(taskLog.changed);
+		var changed = taskLog.changed ? "Yes" : "No";
+		$changeDiv.text(changed);
 		cells.push($changeDiv);
 
 		addRow(cells);
