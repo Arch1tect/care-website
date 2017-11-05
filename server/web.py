@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 
 @app.route("/api/git")
 def githubUpdated():
-
 	g = git.cmd.Git(os.getcwd())
 	g.pull()
 	return "succeed!"
@@ -32,9 +31,7 @@ def githubUpdated():
 @app.route("/api/task/<task_id>")
 def get_task(task_id):
 	'''return a task row from db'''
-
 	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
-
 	return jsonify([t.as_dict() for t in task_logs])
 
 @app.route("/api/tasks/user/<user_id>")
