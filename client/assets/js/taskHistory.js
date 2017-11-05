@@ -72,7 +72,7 @@ jQuery(document).ready(function(){
 	}).done(
 		function(data) {
 			console.log(data);
-			taskLogs = data;
+			taskLogs = data.reverse();
 			if (taskLogs.length > 0) {
 				totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
 				$('.history-pagination').twbsPagination({
