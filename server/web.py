@@ -21,6 +21,12 @@ session = database.session
 
 logger = logging.getLogger(__name__)
 
+@app.route("/api/git")
+def githubUpdated():
+
+	g = git.cmd.Git(git_dir)
+	g.pull()
+	return "succeed!"
 
 @app.route("/api/task/<task_id>")
 def get_task(task_id):

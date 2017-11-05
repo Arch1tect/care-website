@@ -7,3 +7,4 @@ docker==2.5.1
 imutils==0.4.3
 scikit-image==0.13.0
 opencv-python==3.3.0.10
+gitpython==2.1.0

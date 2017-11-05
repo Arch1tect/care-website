@@ -13,6 +13,14 @@ function addRow(cells) {
 		$row.append($td);
 	});
 	$('.task-table tbody').append($row);
+
+	$('.cell img').on('click', function() {
+
+		$('.modal-title').text( $($(this).closest('tr').find('td')[1]).text());
+		$('.imageLarge').attr('src', $(this).attr('src'));
+
+		$('#enlargeImageModal').modal('show');
+	});
 }
 
 function loadHisotry() {
