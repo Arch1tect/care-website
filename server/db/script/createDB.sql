@@ -13,10 +13,10 @@ CREATE TABLE `task` (
 
 CREATE TABLE `log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `changed` bit(1) DEFAULT NULL,
+  `changed` tinyint(1) DEFAULT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
-  `success` bit(1) DEFAULT NULL,
+  `success` tinyint(1) DEFAULT NULL,
   `task_id` int(11) NOT NULL,
   `run_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7265 DEFAULT CHARSET=utf8;

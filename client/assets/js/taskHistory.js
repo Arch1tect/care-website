@@ -17,36 +17,38 @@ function addRow(cells) {
 
 function loadHisotry() {
 	$(window).scrollTop(0);
-	$('.task-table tr').remove();
+	$('.task-table tbody tr').remove();
 	var i = (pageNum-1)*pageSize;
 
 	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
 		var taskLog = taskLogs[i];
 		var cells = []
 
+
+		// ID
+		var $idDiv = $("<div></div>");
+		$idDiv.text(taskLog.run_id);
+		cells.push($idDiv);
+
+		// Time
+		var $timeDiv = $("<div></div>");
+		var createdTime = new Date(taskLog.timestamp);
+		$timeDiv.text(moment(createdTime).format('YY/MM/DD HH:mm'));
+		cells.push($timeDiv);
+
 		// screenshot
 		var $imgWrapper = $("<div class='cell'></div");
 		var $initImg = $("<img></img>");
-		$initImg.attr('src', 'screenshot/'+taskId+'-'+(i+1)+'.png');
+		$initImg.attr('src', 'screenshot/'+taskId+'-'+taskLog.run_id+'.png');
 		$imgWrapper.append($initImg);
 		cells.push($imgWrapper);
 
-		// change
-		// var $settings = $("<div></div>");
-		// var $url = $("<a>URL</a>");
-		// $url.attr('href', task.url);
-		// $url.attr('target', '_blank');
-		// $settings.append($url);
-
-		// cells.push($settings);
+		// changed
+		var $changeDiv = $("<div></div>");
+		$changeDiv.text(taskLog.changed);
+		cells.push($changeDiv);
 
 		addRow(cells);
-		// created time
-		var $created = $("<span></span>");
-		var createdTime = new Date(taskLog.timestamp);
-		$created.text(moment(createdTime).format('YY/MM/DD HH:mm:SS'));
-		$imgWrapper.after($created);
-
 
 	}
 
@@ -62,16 +64,23 @@ jQuery(document).ready(function(){
 		function(data) {
 			console.log(data);
 			taskLogs = data;
-			totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
-			$('.history-pagination').twbsPagination({
-				totalPages: totalPages,
-				visiblePages: 7,
-				onPageClick: function (event, page) {
-					console.log('go to page ' + page);
-					pageNum = page;
-					loadHisotry();
-				}
-			});
+			if (taskLogs.length > 0) {
+				totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
+				$('.history-pagination').twbsPagination({
+					totalPages: totalPages,
+					visiblePages: 7,
+					onPageClick: function (event, page) {
+						console.log('go to page ' + page);
+						pageNum = page;
+						loadHisotry();
+					}
+				});
+
+			} else {
+
+				// TODO: show a message, job hasn't been ran
+
+			}
 		}
 	).fail(
 		function() {
