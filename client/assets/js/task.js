@@ -112,15 +112,37 @@ jQuery(document).ready(function(){
 
 
 			$('.delete-task').on('click', function() {
-				$.ajax ({
-					url: "api/task/"+$(this).closest('tr').data('id'),
-					type: "DELETE",
-					contentType: "application/json",
-				}).done(
-					function() {
-						location.reload();
-					}
-				);
+				var that = this;
+				bootbox.confirm({
+				    message: "Are you sure you want to delete this task? This cannot be undone.",
+				    buttons: {
+				        confirm: {
+				            label: 'Yes',
+				            className: 'btn-danger'
+				        },
+				        cancel: {
+				            label: 'No',
+				            className: 'btn-default'
+				        }
+				    },
+				    callback: function (confirm) {
+
+				    	if (confirm) {
+							$.ajax ({
+								url: "api/task/"+$(that).closest('tr').data('id'),
+								type: "DELETE",
+								contentType: "application/json",
+							}).done(
+								function() {
+									location.reload();
+								}
+							);
+						};
+
+
+				    }
+				});
+
 			});
 
 
