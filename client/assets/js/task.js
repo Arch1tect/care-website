@@ -81,18 +81,20 @@ jQuery(document).ready(function(){
 				var $historyWrapper = $("<div></div>");
 				var $historyIcon = $("<i class='fa fa-calendar fa-fw'></i>");
 				var $history = $("<a></a>");
-				$history.text(' View history');
+				// var $history = $("<button class='btn btn-success'></button>");
+				$history.text(' Check history >>');
 				$history.attr('href', 'task-history.html?id='+task.id)
 				$historyWrapper.append($historyIcon);
 				$historyWrapper.append($history);
 				$settings.append($historyWrapper);
 
-				var $removeWrapper = $("<div class='delete-task'></div>");
-				var $crossIcon = $("<i class='fa fa-times fa-fw'></i>");
-				var $remove = $("<a class='danger'> Delete task</a>");
-				$removeWrapper.append($crossIcon);
-				$removeWrapper.append($remove);
-				$settings.append($removeWrapper);
+
+				var $buttonsWrapper = $("<div class='btn-group'></div>");
+				var $pause = $("<button class='btn btn-info'>Pause</button>");
+				var $remove = $("<button class='btn btn-danger delete-task'>Delete</button>");
+				$buttonsWrapper.append($pause);
+				$buttonsWrapper.append($remove);
+				$settings.append($buttonsWrapper);
 
 				cells.push($settings);
 				var $row = addRow(cells);
@@ -115,6 +117,7 @@ jQuery(document).ready(function(){
 				var that = this;
 				bootbox.confirm({
 					size: "small",
+					backdrop: true,
 				    message: "Are you sure you want to delete this task? This cannot be undone.",
 				    buttons: {
 				        confirm: {

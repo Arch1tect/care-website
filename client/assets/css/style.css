@@ -563,12 +563,16 @@ table td .dropdown-menu {
 	margin-bottom: 10px;
 }
 
+.task-setting .btn-group {
+	margin-top: 30px;
+}
+
 .interval-wrapper {
 	position: relative;
 }
 
 .delete-task {
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 .danger:hover {
