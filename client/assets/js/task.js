@@ -114,6 +114,7 @@ jQuery(document).ready(function(){
 			$('.delete-task').on('click', function() {
 				var that = this;
 				bootbox.confirm({
+					size: "small",
 				    message: "Are you sure you want to delete this task? This cannot be undone.",
 				    buttons: {
 				        confirm: {
@@ -141,6 +142,8 @@ jQuery(document).ready(function(){
 
 
 				    }
+				}).find('.modal-sm').css({
+				    'top': '30%'
 				});
 
 			});

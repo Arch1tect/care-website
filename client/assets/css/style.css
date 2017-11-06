@@ -574,3 +574,7 @@ table td .dropdown-menu {
 .danger:hover {
 	color: red;
 }
+
+#noty_layout__topRight {
+	top: 70px;
+}
