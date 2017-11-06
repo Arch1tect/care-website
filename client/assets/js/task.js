@@ -13,6 +13,7 @@ function addRow(cells) {
 }
 
 jQuery(document).ready(function(){
+
 	$.ajax ({
 		url: "api/tasks/user/123",
 		// url: "http://54.215.208.165/api/tasks/user/123",
@@ -21,6 +22,7 @@ jQuery(document).ready(function(){
 	}).done(
 		function(data) {
 			console.log(data);
+
 			$.each(data, function(i, task){
 				var cells = []
 

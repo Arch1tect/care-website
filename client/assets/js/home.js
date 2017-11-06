@@ -30,8 +30,7 @@ function clearCoords()
 	var screenshotName = null;
 	jQuery(document).ready(function(){
 
-
-		$('.screenshot').load(function() {
+		$('.screenshot').on("load",function(){
 
 			if ($('.screenshot').attr("src") == loadingImg)
 				return;
