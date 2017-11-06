@@ -26,7 +26,7 @@ function clearCoords()
 
 (function($) {
 
-	var loadingImg = 'assets/img/loading-squid.gif';
+	var loadingImg = 'assets/img/loading-spinner.gif';
 	var screenshotName = null;
 	jQuery(document).ready(function(){
 
