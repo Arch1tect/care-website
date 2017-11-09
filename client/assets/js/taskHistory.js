@@ -14,13 +14,17 @@ function addRow(cells) {
 	});
 	$('.task-table tbody').append($row);
 
-	$('.cell img').on('click', function() {
 
-		$('.modal-title').text( $($(this).closest('tr').find('td')[1]).text());
-		$('.imageLarge').attr('src', $(this).attr('src'));
+}
 
+function showImageInModal(time, url) {
+
+	return function() {
+		$('.modal-title').text(time);
+		$('.imageLarge').attr('src', url);
 		$('#enlargeImageModal').modal('show');
-	});
+	}
+
 }
 
 function loadHisotry() {
@@ -39,21 +43,19 @@ function loadHisotry() {
 		// Time
 		var $timeDiv = $("<div></div>");
 		var createdTime = new Date(taskLog.timestamp);
-		$timeDiv.text(moment(createdTime).format('YY/MM/DD HH:mm'));
+		var formattedTime = moment(createdTime).format('YY/MM/DD HH:mm');
+		$timeDiv.text(formattedTime);
 		cells.push($timeDiv);
 
-		// screenshot
-		var $imgWrapper = $("<div class='cell'></div");
-		var $screenshotImg = $("<img></img>");
-		$screenshotImg.attr('src', 'screenshot/'+taskId+'-'+taskLog.run_id+'.png');
-		$imgWrapper.append($screenshotImg);
-		cells.push($imgWrapper);
-
 		// changed
+
 		var $changeDiv = $("<div class='cell'></div>");
 		if (taskLog.changed) {
+
 			var $changedImg = $("<img></img>");
-			$changedImg.attr('src', 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png');
+			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
+			$changedImg.attr('src', changedImgUrl);
+			$changedImg.click(showImageInModal(formattedTime, changedImgUrl));
 			$changeDiv.append($changedImg);
 		}else {
 			// taskLog.changed can be null
@@ -62,11 +64,19 @@ function loadHisotry() {
 		}
 		cells.push($changeDiv);
 
+
+		// screenshot btn
+		var $btn = $("<button class='btn btn-primary'></button");
+		$btn.text('View');
+		var fullScreeshotUrl = 'screenshot/'+taskId+'-'+taskLog.run_id+'.png';
+		$btn.click(showImageInModal(formattedTime, fullScreeshotUrl));
+		cells.push($btn);
+
 		addRow(cells);
 
 	}
-
 }
+
 
 jQuery(document).ready(function(){
 	taskId = window.location.search.substring(4)
