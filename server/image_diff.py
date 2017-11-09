@@ -45,15 +45,19 @@ def compare_img(task, old_img_path, new_img_path, diff_img_path):
 		cv2.CHAIN_APPROX_SIMPLE)
 	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
+	# Create an overlay for drawing all the solid red boxes
+	# Finally we'll blend it with original image
+	overlay = imageB.copy()
+
 	# loop over the contours
 	for c in cnts:
 		# compute the bounding box of the contour and then draw the
 		# bounding box on both input images to represent where the two
 		# images differ
 		(x, y, w, h) = cv2.boundingRect(c)
-		cv2.rectangle(imageA, (x, y), (x + w, y + h), (0, 0, 255), 2)
-		cv2.rectangle(imageB, (x, y), (x + w, y + h), (0, 0, 255), 2)
+		cv2.rectangle(overlay, (x, y), (x + w, y + h), (0, 255, 255), -1)
 
+	cv2.addWeighted(overlay, 0.5, imageB, 0.5, 0, imageB)
 
 
 	# show the output images
