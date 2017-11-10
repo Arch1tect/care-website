@@ -3088,17 +3088,25 @@ $(document).ajaxStart(function() {
 });
 
 $(document).ajaxStop(function() {
-  window.loadingNoty.setTimeout(500);
-  var noty = new Noty({
-      text: 'Complete!',
-      type: 'success',
-      progressBar: false,
-      animation: {
-          // open: 'animated fadeInUp',
-          close: 'animated fadeOut'
-      },
-      timeout: 3000
-  }).show();
+  window.loadingNoty.setTimeout(2500);
+  setTimeout(function(){ 
+    window.loadingNoty.setType('success');
+    window.loadingNoty.setText('Complete!');
+  }, 300);
+
+
+
+
+  // var noty = new Noty({
+  //     text: 'Complete!',
+  //     type: 'success',
+  //     progressBar: false,
+  //     animation: {
+  //         // open: 'animated fadeInUp',
+  //         close: 'animated fadeOut'
+  //     },
+  //     timeout: 3000
+  // }).show();
 });
 
 

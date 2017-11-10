@@ -12,6 +12,37 @@ function addRow(cells) {
 	return $row;
 }
 
+function pauseOrContinueTask(taskId, $btn) {
+	return function() {
+
+		var pause = $btn.data('pause');
+		var endpoint = 'pause';
+		if (pause)
+			endpoint = 'continue';
+
+		$.ajax ({
+			url: "api/task/"+taskId+'/'+endpoint,
+			type: "GET",
+			contentType: "application/json",
+		}).done(function() {
+
+			if (pause) {
+				$btn.data('pause', false);
+				$btn.text('Pause');
+				$btn.removeClass('btn-success');
+				$btn.addClass('btn-info');
+			} else {
+				$btn.data('pause', true);
+				$btn.text('Continue');
+				$btn.removeClass('btn-info');
+				$btn.addClass('btn-success');
+			}
+		});
+
+
+	}
+}
+
 jQuery(document).ready(function(){
 
 	$.ajax ({
@@ -90,9 +121,18 @@ jQuery(document).ready(function(){
 
 
 				var $buttonsWrapper = $("<div class='btn-group'></div>");
-				var $pause = $("<button class='btn btn-info'>Pause</button>");
+				var $pauseBtn = $("<button class='btn'>Pause</button>");
+				if (task.pause) {
+					$pauseBtn.text('Continue');
+					$pauseBtn.addClass('btn-success');
+				}else {
+					$pauseBtn.addClass('btn-info');
+				}
+				$pauseBtn.data('pause', task.pause);
+				$pauseBtn.click(pauseOrContinueTask(task.id, $pauseBtn));
+
 				var $remove = $("<button class='btn btn-danger delete-task'>Delete</button>");
-				$buttonsWrapper.append($pause);
+				$buttonsWrapper.append($pauseBtn);
 				$buttonsWrapper.append($remove);
 				$settings.append($buttonsWrapper);
 

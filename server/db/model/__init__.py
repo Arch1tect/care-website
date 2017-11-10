@@ -21,6 +21,7 @@ class CareTask(Base):
 	url = Column(String(1000))
 	last_run_id = Column(Integer, default=0)
 	roi = Column(String(63))
+	pause = Column(Boolean)
 
 	def as_dict(self):
 		return {
@@ -31,7 +32,8 @@ class CareTask(Base):
 			'last_run_time': self.last_run_time,
 			'created': self.created,
 			'url': self.url,
-			'roi': self.roi
+			'roi': self.roi,
+			'pause': self.pause
 		}
 
 class TaskLog(Base):

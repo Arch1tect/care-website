@@ -17,6 +17,8 @@ for t in session.query(CareTask).all():
 	now = datetime.utcnow()
 	new_screenshot_taken = False
 	try:
+		if t.pause:
+			continue
 		time_past = (now-t.last_run_time).total_seconds()
 
 		if time_past >= t.interval:

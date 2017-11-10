@@ -42,12 +42,32 @@ def update_task_interval(task_id, interval):
 	session.commit()
 	return 'success!'
 
+@app.route("/api/task/<task_id>/pause/")
+def pause_task(task_id):
+
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task.pause = True
+	session.commit()
+	return 'success!'
+
+@app.route("/api/task/<task_id>/continue/")
+def continue_task(task_id):
+
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task.pause = False
+	session.commit()
+	return 'success!'
+
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
 	# TODO: add user id filter when we support multiple users
 	tasks = session.query(CareTask).all()
-	return jsonify([t.as_dict() for t in tasks])
+	tasks.reverse()
+	paused_task = [t for t in tasks if t.pause]
+	active_task = [t for t in tasks if not t.pause]
+
+	return jsonify([t.as_dict() for t in (active_task+paused_task)])
 
 @app.route("/api/task/<task_id>/screenshot")
 def get_screenshot_for_task(task_id):
