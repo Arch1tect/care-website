@@ -584,3 +584,16 @@ table td .dropdown-menu {
 #noty_layout__topRight {
 	top: 70px;
 }
+
+.carousel-control {
+	width: 20%;
+	/*cursor: pointer;*/
+    top: 55px;
+}
+
+.carousel-control.left {
+	cursor: w-resize;
+}
+.carousel-control.right {
+	cursor: e-resize;
+}

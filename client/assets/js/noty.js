@@ -3088,7 +3088,7 @@ $(document).ajaxStart(function() {
 });
 
 $(document).ajaxStop(function() {
-  window.loadingNoty.setTimeout(2500);
+  window.loadingNoty.setTimeout(1500);
   setTimeout(function(){ 
     window.loadingNoty.setType('success');
     window.loadingNoty.setText('Complete!');

@@ -65,24 +65,32 @@
 	</div><!-- /blue -->
 
 	<!-- enlarge image modal -->
-	<div class="modal fade" id="enlargeImageModal" role="dialog">
+	<div class="modal fade" tabindex="-1" id="enlargeImageModal" role="dialog">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content">
 			<div class="modal-header">
 			  <button type="button" class="close" data-dismiss="modal">&times;</button>
-			  <h4 class="modal-title last">Modal Header</h4>
-			  <h4 class="modal-title initial">Modal Header</h4>
+			  <h4 class="modal-title">Modal Header</h4>
 			</div>
 			<div class="modal-body">
-			  <img src="" class="screenshot initialImageLarge" style="width: 49%;">
-			  <img src="" class="screenshot lastImageLarge" style="width: 49%;">
+			  <img src="" class="screenshot" style="width: 100%;">
 			</div>
+
+			<!-- Controls -->
+			<a class="left carousel-control" role="button">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			  </a>
+			  <a class="right carousel-control" role="button">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			</a>
+
+
 		  </div>
 		</div>
 	</div>
 
 	<!-- Test screenshot modal-->
-	<div class="modal fade" id="testScreenshotModal" role="dialog">
+	<div class="modal fade" tabindex="-1" id="testScreenshotModal" role="dialog">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content">
 			<div class="modal-body">

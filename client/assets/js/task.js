@@ -1,4 +1,5 @@
-
+var screenshots = []
+var screenshotTimes = []
 function addRow(cells) {
 		
 	var $row = $("<tr></tr>");
@@ -76,12 +77,14 @@ jQuery(document).ready(function(){
 				var $imgWrapper = $("<div class='cell'></div");
 				var $initImg = $("<img></img>");
 				$initImg.attr('src', 'screenshot/'+task.id+'-0.png');
+				screenshots.push($initImg.attr('src'));
 				$imgWrapper.append($initImg);
 				cells.push($imgWrapper);
 				// last screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
 				var $lastImg = $("<img></img>");
 				$lastImg.attr('src', 'screenshot/'+task.id+'-'+task.last_run_id+'.png');
+				screenshots.push($lastImg.attr('src'));
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
 				// settings
@@ -161,11 +164,13 @@ jQuery(document).ready(function(){
 				var $created = $("<span class='friendly-time'></span>");
 				var createdTime = new Date(task.created);
 				$created.text(moment(createdTime).fromNow());
+				screenshotTimes.push($created.text());
 				$imgWrapper.after($created);
 				// last check time
 				var $lastCheck = $("<span class='friendly-time'></span>");
 				var lastCheckTime = new Date(task.last_run_time);
 				$lastCheck.text(moment(lastCheckTime).fromNow());
+				screenshotTimes.push($lastCheck.text());
 				$imgWrapper2.after($lastCheck);
 
 			});
@@ -212,13 +217,8 @@ jQuery(document).ready(function(){
 
 			$('.cell img').on('click', function() {
 
-				var initialImageCell = $(this).closest('tr').find('td')[0];
-				var lastImageCell = $(this).closest('tr').find('td')[1];
-
-				$('.modal-title.initial').text($(initialImageCell).find('span').text());
-				$('.modal-title.last').text($(lastImageCell).find('span').text());
-				$('.initialImageLarge').attr('src', $(initialImageCell).find('img').attr('src'));
-				$('.lastImageLarge').attr('src', $(lastImageCell).find('img').attr('src'));
+				$('#enlargeImageModal .modal-title').text($(this).closest('td').find('.friendly-time').text());
+				$('#enlargeImageModal img').attr('src', $(this).attr('src'));
 				$('#enlargeImageModal').modal('show');
 			});
 
@@ -237,6 +237,18 @@ jQuery(document).ready(function(){
 
 			
 			});
+
+			$('.carousel-control').click(function(){
+				var imageUrl = $('#enlargeImageModal img').attr('src');
+				var i = $.inArray(imageUrl, screenshots);
+				if ($(this).hasClass('left'))
+					i--;
+				else
+					i++;
+				$('#enlargeImageModal img').attr('src', screenshots[i]);
+				$('#enlargeImageModal .modal-title').text(screenshotTimes[i]);
+			});
+			
 
 		}
 	).fail(
