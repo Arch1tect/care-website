@@ -7,8 +7,9 @@ CREATE TABLE `task` (
   `url` varchar(1000) CHARACTER SET latin1 NOT NULL DEFAULT '',
   `last_run_id` int(10) unsigned DEFAULT '0',
   `roi` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `pause` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `log` (

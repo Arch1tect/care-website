@@ -12,6 +12,21 @@ function addRow(cells) {
 	return $row;
 }
 
+function testScreenshot(taskId) {
+	return function() {
+		$.ajax ({
+			url: "api/task/"+taskId+'/screenshot',
+			type: "GET",
+			contentType: "application/json",
+		}).done(function(screenshotName) {
+
+			$('#testScreenshotModal img').attr('src', "screenshot/" + screenshotName);
+			$('#testScreenshotModal').modal('show');
+
+		});
+	}
+}
+
 function pauseOrContinueTask(taskId, $btn) {
 	return function() {
 
@@ -30,11 +45,11 @@ function pauseOrContinueTask(taskId, $btn) {
 				$btn.data('pause', false);
 				$btn.text('Pause');
 				$btn.removeClass('btn-success');
-				$btn.addClass('btn-info');
+				$btn.addClass('btn-warning');
 			} else {
 				$btn.data('pause', true);
 				$btn.text('Continue');
-				$btn.removeClass('btn-info');
+				$btn.removeClass('btn-warning');
 				$btn.addClass('btn-success');
 			}
 		});
@@ -121,17 +136,20 @@ jQuery(document).ready(function(){
 
 
 				var $buttonsWrapper = $("<div class='btn-group'></div>");
+				var $runBtn = $("<button class='btn btn-info'>Test</button>");
+				$runBtn.click(testScreenshot(task.id));
 				var $pauseBtn = $("<button class='btn'>Pause</button>");
 				if (task.pause) {
 					$pauseBtn.text('Continue');
 					$pauseBtn.addClass('btn-success');
 				}else {
-					$pauseBtn.addClass('btn-info');
+					$pauseBtn.addClass('btn-warning');
 				}
 				$pauseBtn.data('pause', task.pause);
 				$pauseBtn.click(pauseOrContinueTask(task.id, $pauseBtn));
 
 				var $remove = $("<button class='btn btn-danger delete-task'>Delete</button>");
+				$buttonsWrapper.append($runBtn);
 				$buttonsWrapper.append($pauseBtn);
 				$buttonsWrapper.append($remove);
 				$settings.append($buttonsWrapper);

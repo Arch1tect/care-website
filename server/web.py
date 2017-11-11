@@ -71,13 +71,15 @@ def get_all_tasks_for_user(user_id):
 
 @app.route("/api/task/<task_id>/screenshot")
 def get_screenshot_for_task(task_id):
-	'''Get screenshot of existing task, not used now'''
+	'''Get screenshot of existing task, not checking changes though'''
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
-	new_screenshot_name = '{}-{}.png'.format(task.id, task.last_run_id + 1)
-	new_screenshot_path = '../screenshot/{}'.format(new_screenshot_name)
-	if take_screenshot(task.url, new_screenshot_path):
-		return send_file(new_screenshot_path, mimetype='image/png')
-	return 'Failed to take screenshot.'
+	screenshot_name = '{}.png'.format(time.time())
+	#  Should put these in a different folder
+	screenshot_path = '../screenshot/{}'.format(screenshot_name)
+	if take_screenshot(task.url, screenshot_path):
+		return screenshot_name
+
+	return 'Failed to take screenshot.', 500
 
 @app.route("/api/task/<task_id>", methods=['DELETE'])
 def delete_task(task_id):
