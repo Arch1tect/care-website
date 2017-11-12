@@ -56,7 +56,7 @@ function pauseOrContinueTask(taskId, $btn) {
 				$btn.data('pause', true);
 				$btn.text('Continue');
 				$row.addClass('paused-task');
-				$status.text('Pause');
+				$status.text('Paused');
 				$row.removeClass('active-task');
 				$btn.removeClass('btn-warning');
 				$btn.addClass('btn-success');
