@@ -76,7 +76,7 @@ def get_screenshot_for_task(task_id):
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
 	screenshot_path = '../screenshot/{}'.format(screenshot_name)
-	if take_screenshot(task.url, screenshot_path):
+	if take_screenshot(task.url, screenshot_path, task.wait):
 		return screenshot_name
 
 	return 'Failed to take screenshot.', 500
@@ -112,7 +112,7 @@ def take_screenshot_for_url():
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
 	screenshot_path = '../screenshot/{}'.format(screenshot_name)
-	if take_screenshot(url, screenshot_path):
+	if take_screenshot(url, screenshot_path, 0):
 		return screenshot_name
 
 	return 'Failed to take screenshot.', 500

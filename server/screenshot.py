@@ -15,7 +15,7 @@ chrome_options.add_argument("--no-sandbox")
 # chrome_options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  
 
 
-def take_screenshot(url, screenshot_path):
+def take_screenshot(url, screenshot_path, wait=None):
 	# TODO: no need to save if found no change
 	# https://stb-tester.com/blog/2016/09/20/add-visual-verification-to-your-selenium-tests-with-stb-tester
 	driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -34,7 +34,8 @@ def take_screenshot(url, screenshot_path):
 			height = 3000
 		# logger.info('[Task {}] Document size {},{}'.format(task.id, width, height))
 		driver.set_window_size(width, height)
-		time.sleep(1)
+		if (wait):
+			driver.implicitly_wait(wait)
 		# logger.info('[Task {}] Taking screenshot'.format(task.id))
 
 		driver.save_screenshot(screenshot_path)
@@ -51,4 +52,6 @@ def take_screenshot(url, screenshot_path):
 
 url = sys.argv[1]
 screenshot_path = '/mnt/care-website/screenshot/' + sys.argv[2]
-take_screenshot(url, screenshot_path)
+wait = sys.argv[3]
+
+take_screenshot(url, screenshot_path, wait)

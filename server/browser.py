@@ -10,12 +10,12 @@ volume_bindings = {
 				 }
 
 
-def take_screenshot(url, screenshot_path):
+def take_screenshot(url, screenshot_path, wait):
 	'''Run docker image to take a screenshot'''
 	print 'taking screenshot...'
 	program = 'python'
 	script = '/mnt/care-website/server/screenshot.py'
-	arguments = '{} {}'.format(url, screenshot_path)
+	arguments = '{} {} {}'.format(url, screenshot_path, wait)
 	cmd = "{} {} {}".format(program, script, arguments)
 	docker_logs = client.containers.run("care:latest", cmd, volumes=volume_bindings)
 

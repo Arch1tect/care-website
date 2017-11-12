@@ -33,7 +33,7 @@ for t in session.query(CareTask).all():
 				t.last_run_id = t.last_run_id + 1
 				t.last_run_time = now
 				check_log.run_id = t.last_run_id
-				new_screenshot_taken = take_screenshot(t.url, new_screenshot_path)
+				new_screenshot_taken = take_screenshot(t.url, new_screenshot_path, t.wait)
 				# if a new screenshot is taken, we take it as a success
 				check_log.success = new_screenshot_taken
 

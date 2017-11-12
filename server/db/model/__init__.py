@@ -21,6 +21,7 @@ class CareTask(Base):
 	url = Column(String(1000))
 	last_run_id = Column(Integer, default=0)
 	roi = Column(String(63))
+	wait = Column(Integer)
 	pause = Column(Boolean)
 
 	def as_dict(self):
@@ -33,6 +34,7 @@ class CareTask(Base):
 			'created': self.created,
 			'url': self.url,
 			'roi': self.roi,
+			'wait': self.wait,
 			'pause': self.pause
 		}
 
