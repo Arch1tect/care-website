@@ -1,8 +1,14 @@
-var pageSize = 5;
+var pageSize = 10;
 var pageNum = 1;
 var totalPages = 1;
 var taskLogs = [];
 var taskId = null;
+
+var screenshots = []
+var screenshotTimes = []
+
+var changeImgs = []
+var changeTimes = []
 
 function addRow(cells) {
 		
@@ -31,7 +37,10 @@ function loadHisotry() {
 	$(window).scrollTop(0);
 	$('.task-table tbody tr').remove();
 	var i = (pageNum-1)*pageSize;
-
+	screenshots = [];
+	screenshotTimes = [];
+	changeImgs = [];
+	changeTimes = [];
 	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
 		var taskLog = taskLogs[i];
 		var cells = []
@@ -48,12 +57,13 @@ function loadHisotry() {
 		cells.push($timeDiv);
 
 		// changed
-
 		var $changeDiv = $("<div class='cell'></div>");
 		if (taskLog.changed) {
-
-			var $changedImg = $("<img></img>");
+			var $changedImg = $("<img class='change'></img>");
 			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
+			changeImgs.push(changedImgUrl);
+			changeTimes.push(formattedTime);
+
 			$changedImg.attr('src', changedImgUrl);
 			$changedImg.click(showImageInModal(formattedTime, changedImgUrl));
 			$changeDiv.append($changedImg);
@@ -64,11 +74,12 @@ function loadHisotry() {
 		}
 		cells.push($changeDiv);
 
-
 		// screenshot btn
 		var $btn = $("<button class='btn btn-primary'></button");
 		$btn.text('View');
 		var fullScreeshotUrl = 'screenshot/'+taskId+'-'+taskLog.run_id+'.png';
+		screenshots.push(fullScreeshotUrl);
+		screenshotTimes.push(formattedTime);
 		$btn.click(showImageInModal(formattedTime, fullScreeshotUrl));
 		cells.push($btn);
 
@@ -99,7 +110,23 @@ jQuery(document).ready(function(){
 						loadHisotry();
 					}
 				});
+				$('.carousel-control').click(function() {
+					var imageUrl = $('#enlargeImageModal img').attr('src');
+					var imgArr = screenshots;
+					var timeArr = screenshotTimes;
+					if ($.inArray(imageUrl, changeImgs)>-1) {
+						imgArr = changeImgs;
+						timeArr = changeTimes;
+					}
 
+					var i = $.inArray(imageUrl, imgArr);
+					if ($(this).hasClass('left'))
+						i--;
+					else
+						i++;
+					$('#enlargeImageModal img').attr('src', imgArr[i]);
+					$('#enlargeImageModal .modal-title').text(timeArr[i]);
+				});
 			} else {
 
 				// TODO: show a message, job hasn't been ran

@@ -550,8 +550,22 @@ table td .dropdown-menu {
 .modal img.screenshot {
 	display: inline-block;
 }
+.task-status {
+    color: white;
+	padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5%;
+}
 
-
+.active-task .task-status{
+	background: #5db75c;;
+}
+.paused-task .task-status{
+	background: #f1ac4f;
+}
+.btn-group {
+    display: flex;
+}
 .dropdown-toggle {
 	cursor: pointer;
 }

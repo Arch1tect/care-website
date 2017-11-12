@@ -42,14 +42,22 @@ function pauseOrContinueTask(taskId, $btn) {
 			contentType: "application/json",
 		}).done(function() {
 
+			var $row = $btn.closest('tr');
+			var $status = $row.find('.task-status');
 			if (pause) {
 				$btn.data('pause', false);
 				$btn.text('Pause');
 				$btn.removeClass('btn-success');
+				$row.addClass('active-task');
+				$status.text('Active');
+				$row.removeClass('paused-task');
 				$btn.addClass('btn-warning');
 			} else {
 				$btn.data('pause', true);
 				$btn.text('Continue');
+				$row.addClass('paused-task');
+				$status.text('Pause');
+				$row.removeClass('active-task');
 				$btn.removeClass('btn-warning');
 				$btn.addClass('btn-success');
 			}
@@ -72,6 +80,9 @@ jQuery(document).ready(function(){
 
 			$.each(data, function(i, task){
 				var cells = []
+
+				var $status = $("<div class='task-status'>Active</div>");
+				cells.push($status);
 
 				// initial image
 				var $imgWrapper = $("<div class='cell'></div");
@@ -160,6 +171,12 @@ jQuery(document).ready(function(){
 				cells.push($settings);
 				var $row = addRow(cells);
 				$row.data('id', task.id);
+				if (task.pause){
+					$row.addClass('paused-task');
+					$status.text('Paused');
+				}else{
+					$row.addClass('active-task');
+				}
 				// created time
 				var $created = $("<span class='friendly-time'></span>");
 				var createdTime = new Date(task.created);
