@@ -9,8 +9,7 @@ volume_bindings = {
 									}
 				 }
 
-
-def take_screenshot(url, screenshot_path, wait):
+def take_screenshot(url, screenshot_path, wait=None):
 	'''Run docker image to take a screenshot'''
 	print 'taking screenshot...'
 	program = 'python'

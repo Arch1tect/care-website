@@ -112,7 +112,7 @@ def take_screenshot_for_url():
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
 	screenshot_path = '../screenshot/{}'.format(screenshot_name)
-	if take_screenshot(url, screenshot_path, 0):
+	if take_screenshot(url, screenshot_path):
 		return screenshot_name
 
 	return 'Failed to take screenshot.', 500
