@@ -48,7 +48,7 @@ class TaskLog(Base):
 	timestamp = Column(TIMESTAMP)
 	changed = Column(Boolean)
 	success = Column(Boolean)
-
+	notified = Column(Boolean)
 	def as_dict(self):
 		return {
 			'id': self.id,
@@ -56,7 +56,8 @@ class TaskLog(Base):
 			'run_id': self.run_id,
 			'timestamp': self.timestamp,
 			'changed': self.changed,
-			'success': self.success
+			'success': self.success,
+			'notified': self.notified
 		}
 
 

@@ -19,5 +19,6 @@ CREATE TABLE `log` (
   `success` tinyint(1) DEFAULT NULL,
   `task_id` int(11) NOT NULL,
   `run_id` int(11) NOT NULL,
+  `notified` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7265 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9716 DEFAULT CHARSET=utf8;
