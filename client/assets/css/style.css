@@ -604,7 +604,11 @@ table td .dropdown-menu {
 	/*cursor: pointer;*/
     top: 55px;
 }
-
+span.notified {
+	margin-left: 30px;
+    line-height: 20px;
+    position: absolute;
+}
 .carousel-control.left {
 	cursor: w-resize;
 }

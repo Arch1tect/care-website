@@ -73,6 +73,12 @@ function loadHisotry() {
 			$changeDiv.text(changed);
 		}
 		cells.push($changeDiv);
+		if (taskLog.notified) {
+			var $notifiedSpan = $("<span title='notification sent'></span>");
+			$notifiedSpan.addClass('notified fa fa-paper-plane-o');
+			$changeDiv.append($notifiedSpan);
+		}
+
 
 		// screenshot btn
 		var $btn = $("<button class='btn btn-primary'></button");
