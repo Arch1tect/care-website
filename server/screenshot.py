@@ -23,9 +23,11 @@ def take_screenshot(url, screenshot_path, wait=None):
 	try:
 		# logger.info('[Task {}] Loading {}'.format(task.id, task.url))
 		# driver.get(task.url)
-		driver.get(url)
 		if (wait):
 			driver.implicitly_wait(wait)
+
+		driver.get(url)
+
 		width = driver.execute_script("return document.body.scrollWidth")
 		height = driver.execute_script("return document.body.scrollHeight")
 		if width == 0:
