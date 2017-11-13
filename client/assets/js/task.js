@@ -342,8 +342,12 @@ jQuery(document).ready(function(){
 				var i = $.inArray(imageUrl, screenshots);
 				if ($(this).hasClass('left'))
 					i--;
-				else
+				else{
 					i++;
+					// when initial and last images are the same
+					if (screenshots[i]==imageUrl)
+						i++;
+				}
 				$('#enlargeImageModal img').attr('src', screenshots[i]);
 				$('#enlargeImageModal img').data('roi', rois[i]);
 				$('#enlargeImageModal .modal-title').text(screenshotTimes[i]);
