@@ -1,5 +1,7 @@
 var screenshots = []
+var rois = []
 var screenshotTimes = []
+var roiToggle = false;
 function addRow(cells) {
 		
 	var $row = $("<tr></tr>");
@@ -11,6 +13,43 @@ function addRow(cells) {
 	$('.task-table tbody').append($row);
 
 	return $row;
+}
+
+function removeROI() {
+	if (window.jcrop_api) {
+		console.log('remove jcrop');
+		window.jcrop_api.destroy();
+		$('.jcrop-holder').remove();
+		window.selectedBox = null;
+		$(".screenshot").removeAttr( 'style' );
+	}}
+
+function addROI($img) {
+
+	removeROI();
+	var roiStr = $img.data('roi');
+	if (roiStr) {
+		var timeout = 700;
+		if ($('#enlargeImageModal').is(':visible'))
+			timeout = 0;
+		setTimeout(function(){
+			var roi = roiStr.split(' ').map(Number);
+			var ratio = $img.width()/$img[0].naturalWidth;
+			$.each(roi, function(index, value) {
+			    roi[index] = value * ratio;
+			});
+			console.log(roi);
+			$img.Jcrop({
+				onChange:   showCoords,
+				onSelect:   showCoords,
+				onRelease:  clearCoords,
+				setSelect: roi
+			},function(){
+				console.log('start jcrop')
+				window.jcrop_api = this;
+			});
+		}, timeout);
+	}
 }
 
 function testScreenshot(taskId) {
@@ -67,6 +106,26 @@ function pauseOrContinueTask(taskId, $btn) {
 	}
 }
 
+
+// Simple event handler, called from onChange and onSelect
+// event handlers, as per the Jcrop invocation above
+function showCoords(c)
+{
+	var x1 = parseInt(c.x);
+	var y1 = parseInt(c.y);
+	var x2 = parseInt(c.x2);
+	var y2 = parseInt(c.y2);
+	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
+	console.log('width: '+c.w+' height: '+c.h);
+	if(c.w>10&&c.h>10)
+		window.selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+};
+
+function clearCoords()
+{
+	$('#coords input').val('');
+};
+
 jQuery(document).ready(function(){
 
 	$.ajax ({
@@ -89,7 +148,9 @@ jQuery(document).ready(function(){
 				var $initImg = $("<img></img>");
 				$initImg.attr('src', 'screenshot/'+task.id+'-0.png');
 				screenshots.push($initImg.attr('src'));
+				rois.push(task.roi);
 				$imgWrapper.append($initImg);
+				$initImg.data('roi', task.roi);
 				cells.push($imgWrapper);
 				// last screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
@@ -97,7 +158,10 @@ jQuery(document).ready(function(){
 				$lastImg.attr('src', 'screenshot/'+task.id+'-'+task.last_run_id+'.png');
 				screenshots.push($lastImg.attr('src'));
 				$imgWrapper2.append($lastImg);
+				$lastImg.data('roi', task.roi);
+				rois.push(task.roi);
 				cells.push($imgWrapper2);
+
 				// settings
 				var $settings = $("<div class='task-setting'></div>");
 				var $urlWrapper = $("<div></div>");
@@ -231,12 +295,30 @@ jQuery(document).ready(function(){
 
 			});
 
+			$("#someSwitchOptionSuccess").change( function(){
+				if( $(this).is(':checked') ) {
+					roiToggle = true;
+					addROI($("#enlargeImageModal img"));
+				} else {
+					roiToggle = false;
+					removeROI();
+				}
+			});
+
+			$('.screenshot').on("load", function(){
+				console.log('loaded');
+				if (roiToggle) {
+					addROI($(this));
+				}
+
+			});
 
 			$('.cell img').on('click', function() {
-
 				$('#enlargeImageModal .modal-title').text($(this).closest('td').find('.friendly-time').text());
 				$('#enlargeImageModal img').attr('src', $(this).attr('src'));
+				$('#enlargeImageModal img').data('roi', $(this).data('roi'));
 				$('#enlargeImageModal').modal('show');
+
 			});
 
 			$('.interval li').click(function(){
@@ -263,6 +345,7 @@ jQuery(document).ready(function(){
 				else
 					i++;
 				$('#enlargeImageModal img').attr('src', screenshots[i]);
+				$('#enlargeImageModal img').data('roi', rois[i]);
 				$('#enlargeImageModal .modal-title').text(screenshotTimes[i]);
 			});
 			

@@ -35,8 +35,8 @@ function clearCoords()
 			if ($('.screenshot').attr("src") == loadingImg)
 				return;
 
-			var naturalWidth = $('.screenshot')[0].naturalWidth
-			var naturalHeight = $('.screenshot')[0].naturalHeight
+			var naturalWidth = $('.screenshot')[0].naturalWidth;
+			var naturalHeight = $('.screenshot')[0].naturalHeight;
 
 			$('.screenshot').Jcrop({
 				trueSize: [naturalWidth, naturalHeight],
