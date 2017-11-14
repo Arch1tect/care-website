@@ -76,14 +76,15 @@
 					<span>ROI</span>
 					<span class="material-switch">
                         <input id="someSwitchOptionSuccess" name="someSwitchOption001" type="checkbox"/>
-                        <label for="someSwitchOptionSuccess" class="label-success"></label>
+                        <label for="someSwitchOptionSuccess" class="label-primary"></label>
                     </span>
 				</span>
 				<h4 class="modal-title">Modal Header</h4>
 
 			</div>
 			<div class="modal-body">
-			  <img src="" class="screenshot">
+				<div id='roi-box'></div>
+				<img src="" class="screenshot">
 			</div>
 
 			<!-- Controls -->
@@ -93,8 +94,10 @@
 			  <a class="right carousel-control" role="button">
 			    <span class="glyphicon glyphicon-chevron-right"></span>
 			</a>
-
-
+	        <div class="modal-footer">
+	        	<button id="update-roi-btn" type="button" class="btn btn-primary">Update ROI</button>
+          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
 		  </div>
 		</div>
 	</div>

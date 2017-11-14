@@ -34,6 +34,17 @@ def get_task(task_id):
 	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
 	return jsonify([t.as_dict() for t in task_logs])
 
+
+@app.route("/api/task/<task_id>/roi", methods=['POST'])
+def update_task_roi(task_id):
+
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	data = request.get_json()
+	task.roi = data['roi']
+	session.commit()
+	return 'success!'
+
+# TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/interval/<interval>")
 def update_task_interval(task_id, interval):
 
@@ -42,6 +53,7 @@ def update_task_interval(task_id, interval):
 	session.commit()
 	return 'success!'
 
+# TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/pause/")
 def pause_task(task_id):
 
@@ -50,6 +62,7 @@ def pause_task(task_id):
 	session.commit()
 	return 'success!'
 
+# TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/continue/")
 def continue_task(task_id):
 

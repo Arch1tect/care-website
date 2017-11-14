@@ -2,6 +2,10 @@ var screenshots = []
 var rois = []
 var screenshotTimes = []
 var roiToggle = false;
+var screenshotDisplayRatio = 1;
+var selectedBox = null;
+
+
 function addRow(cells) {
 		
 	var $row = $("<tr></tr>");
@@ -20,36 +24,74 @@ function removeROI() {
 		console.log('remove jcrop');
 		window.jcrop_api.destroy();
 		$('.jcrop-holder').remove();
-		window.selectedBox = null;
+		selectedBox = null;
+		screenshotDisplayRatio = 1;
 		$(".screenshot").removeAttr( 'style' );
 	}}
 
+function getROI($img) {	
+	var roiStr = $img.data('roi');
+	if (roiStr)
+		return roi = roiStr.split(' ').map(Number);
+	return [];
+}
+
+function showExistingROI($img) {
+	// image/modal must have already loaded fully
+	var $roiBox = $('#roi-box');
+
+	screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
+	var roi = getROI($img);
+	if (!roi.length){
+		$roiBox.hide();
+		return;
+	}
+
+	$.each(roi, function(index, value) {
+	    roi[index] = value * screenshotDisplayRatio;
+	});
+	$roiBox.width(roi[2]-roi[0]);
+	$roiBox.height(roi[3]-roi[1]);
+	$roiBox.css({top: roi[1], left: roi[0]});
+	$roiBox.show();
+
+}
+
+function editROI($img) {
+	// image/modal must have already loaded fully
+	screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
+	var roi = getROI($img);
+	if (roi) {
+		$.each(roi, function(index, value) {
+		    roi[index] = value * screenshotDisplayRatio;
+		});
+	}
+
+	$img.Jcrop({
+		onChange:   showCoords,
+		onSelect:   showCoords,
+		keySupport: false,
+		setSelect:  roi
+	},function(){
+		console.log('start jcrop')
+		window.jcrop_api = this;
+	});
+
+}
+
 function addROI($img) {
 
-	removeROI();
-	var roiStr = $img.data('roi');
-	if (roiStr) {
-		var timeout = 700;
-		if ($('#enlargeImageModal').is(':visible'))
-			timeout = 0;
-		setTimeout(function(){
-			var roi = roiStr.split(' ').map(Number);
-			var ratio = $img.width()/$img[0].naturalWidth;
-			$.each(roi, function(index, value) {
-			    roi[index] = value * ratio;
-			});
-			console.log(roi);
-			$img.Jcrop({
-				onChange:   showCoords,
-				onSelect:   showCoords,
-				onRelease:  clearCoords,
-				setSelect: roi
-			},function(){
-				console.log('start jcrop')
-				window.jcrop_api = this;
-			});
-		}, timeout);
+	if (! $('#enlargeImageModal').is(':visible')) {
+		setTimeout(function() {
+			addROI($img);
+		}, 100);
+	} else {
+		showExistingROI($img);
+		if (roiToggle) {
+			editROI($img);
+		}
 	}
+	
 }
 
 function testScreenshot(taskId) {
@@ -111,20 +153,17 @@ function pauseOrContinueTask(taskId, $btn) {
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
 {
-	var x1 = parseInt(c.x);
-	var y1 = parseInt(c.y);
-	var x2 = parseInt(c.x2);
-	var y2 = parseInt(c.y2);
+	var x1 = parseInt(c.x*screenshotDisplayRatio);
+	var y1 = parseInt(c.y*screenshotDisplayRatio);
+	var x2 = parseInt(c.x2*screenshotDisplayRatio);
+	var y2 = parseInt(c.y2*screenshotDisplayRatio);
 	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
 	console.log('width: '+c.w+' height: '+c.h);
-	if(c.w>10&&c.h>10)
-		window.selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+	if(c.w>10&&c.h>10) {
+		selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+	}
 };
 
-function clearCoords()
-{
-	$('#coords input').val('');
-};
 
 jQuery(document).ready(function(){
 
@@ -286,31 +325,39 @@ jQuery(document).ready(function(){
 								}
 							);
 						};
-
-
 				    }
 				}).find('.modal-sm').css({
 				    'top': '30%'
 				});
-
 			});
 
 			$("#someSwitchOptionSuccess").change( function(){
 				if( $(this).is(':checked') ) {
 					roiToggle = true;
+					$('#update-roi-btn').show();
 					addROI($("#enlargeImageModal img"));
 				} else {
 					roiToggle = false;
+					$('#update-roi-btn').hide();
 					removeROI();
 				}
 			});
 
 			$('.screenshot').on("load", function(){
 				console.log('loaded');
-				if (roiToggle) {
-					addROI($(this));
-				}
+				removeROI();
+				$('#roi-box').hide();
+				addROI($(this));
+			});
 
+			$('#update-roi-btn').on('click', function() {
+				// TODO: need to clean up code first, 
+				// use a variable to store task data, and maybe save in $(img).data
+				// $.ajax ({
+				// 	url: "api/task/"+???,
+				// 	type: "POST",
+				// 	contentType: "application/json",
+				// })
 			});
 
 			$('.cell img').on('click', function() {
@@ -318,10 +365,9 @@ jQuery(document).ready(function(){
 				$('#enlargeImageModal img').attr('src', $(this).attr('src'));
 				$('#enlargeImageModal img').data('roi', $(this).data('roi'));
 				$('#enlargeImageModal').modal('show');
-
 			});
 
-			$('.interval li').click(function(){
+			$('.interval li').on('click', function() {
 				interval = $(this).data('interval');
 				var that = this;
 				$.ajax ({
@@ -333,8 +379,6 @@ jQuery(document).ready(function(){
 						$(that).closest('td').find('span.interval').text($(that).text());
 					}
 				);
-
-			
 			});
 
 			$('.carousel-control').click(function(){
