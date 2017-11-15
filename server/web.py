@@ -30,9 +30,14 @@ def githubUpdated():
 
 @app.route("/api/task/<task_id>")
 def get_task(task_id):
-	'''return a task row from db'''
+	'''return a task and all its task logs'''
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
 	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
-	return jsonify([t.as_dict() for t in task_logs])
+	res = {
+		'task': task.as_dict(),
+		'log': [t.as_dict() for t in task_logs]
+	}
+	return jsonify(res)
 
 
 @app.route("/api/task/<task_id>/roi", methods=['POST'])
