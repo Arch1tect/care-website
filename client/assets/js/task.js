@@ -1,10 +1,7 @@
-var screenshots = []
-var rois = []
-var screenshotTimes = []
 var roiToggle = false;
 var screenshotDisplayRatio = 1;
 var selectedBox = null;
-
+var tasks = null;
 
 function addRow(cells) {
 		
@@ -30,7 +27,7 @@ function removeROI() {
 	}}
 
 function getROI($img) {	
-	var roiStr = $img.data('roi');
+	var roiStr = $img.data('task').roi;
 	if (roiStr)
 		return roi = roiStr.split(' ').map(Number);
 	return [];
@@ -48,7 +45,7 @@ function showExistingROI($img) {
 	}
 
 	$.each(roi, function(index, value) {
-	    roi[index] = value * screenshotDisplayRatio;
+		roi[index] = value * screenshotDisplayRatio;
 	});
 	$roiBox.width(roi[2]-roi[0]);
 	$roiBox.height(roi[3]-roi[1]);
@@ -63,7 +60,7 @@ function editROI($img) {
 	var roi = getROI($img);
 	if (roi) {
 		$.each(roi, function(index, value) {
-		    roi[index] = value * screenshotDisplayRatio;
+			roi[index] = value * screenshotDisplayRatio;
 		});
 	}
 
@@ -153,10 +150,10 @@ function pauseOrContinueTask(taskId, $btn) {
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
 {
-	var x1 = parseInt(c.x*screenshotDisplayRatio);
-	var y1 = parseInt(c.y*screenshotDisplayRatio);
-	var x2 = parseInt(c.x2*screenshotDisplayRatio);
-	var y2 = parseInt(c.y2*screenshotDisplayRatio);
+	var x1 = parseInt(c.x/screenshotDisplayRatio);
+	var y1 = parseInt(c.y/screenshotDisplayRatio);
+	var x2 = parseInt(c.x2/screenshotDisplayRatio);
+	var y2 = parseInt(c.y2/screenshotDisplayRatio);
 	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
 	console.log('width: '+c.w+' height: '+c.h);
 	if(c.w>10&&c.h>10) {
@@ -164,6 +161,28 @@ function showCoords(c)
 	}
 };
 
+function initialScreenshotSrc(task) {
+	return 'screenshot/'+task.id+'-0.png';
+}
+function lastScreenshotSrc(task) {
+	return 'screenshot/'+task.id+'-'+task.last_run_id+'.png';
+}
+
+
+function renderEnlargeImage(task, initialScreenshot) {
+	var $img = $('#enlargeImageModal img');
+	var $title = $('#enlargeImageModal .modal-title');
+	$img.data('task', task);
+	if (initialScreenshot) {
+		$img.attr('src', initialScreenshotSrc(task));
+		$title.text(task.createdTimeFormatted);
+		$img.addClass('initial-screenshot');
+	} else {
+		$img.attr('src', lastScreenshotSrc(task));
+		$title.text(task.lastCheckTimeFormatted);
+		$img.removeClass('initial-screenshot');
+	}
+}
 
 jQuery(document).ready(function(){
 
@@ -175,8 +194,14 @@ jQuery(document).ready(function(){
 	}).done(
 		function(data) {
 			console.log(data);
-
+			tasks = data;
+			var lastTask = null;
 			$.each(data, function(i, task){
+				task.lastTask = lastTask;
+				if (lastTask)
+					lastTask.nextTask = task;
+				lastTask = task;
+
 				var cells = []
 
 				var $status = $("<div class='task-status'>Active</div>");
@@ -184,21 +209,18 @@ jQuery(document).ready(function(){
 
 				// initial image
 				var $imgWrapper = $("<div class='cell'></div");
-				var $initImg = $("<img></img>");
-				$initImg.attr('src', 'screenshot/'+task.id+'-0.png');
-				screenshots.push($initImg.attr('src'));
-				rois.push(task.roi);
+				var $initImg = $("<img class='initial-screenshot'></img>");
+				$initImg.attr('src', initialScreenshotSrc(task));
+				$initImg.data('task', task);
+
 				$imgWrapper.append($initImg);
-				$initImg.data('roi', task.roi);
 				cells.push($imgWrapper);
 				// last screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
 				var $lastImg = $("<img></img>");
-				$lastImg.attr('src', 'screenshot/'+task.id+'-'+task.last_run_id+'.png');
-				screenshots.push($lastImg.attr('src'));
+				$lastImg.data('task', task);
+				$lastImg.attr('src', lastScreenshotSrc(task));
 				$imgWrapper2.append($lastImg);
-				$lastImg.data('roi', task.roi);
-				rois.push(task.roi);
 				cells.push($imgWrapper2);
 
 				// settings
@@ -284,13 +306,13 @@ jQuery(document).ready(function(){
 				var $created = $("<span class='friendly-time'></span>");
 				var createdTime = new Date(task.created);
 				$created.text(moment(createdTime).fromNow());
-				screenshotTimes.push($created.text());
+				task.createdTimeFormatted = $created.text();
 				$imgWrapper.after($created);
 				// last check time
 				var $lastCheck = $("<span class='friendly-time'></span>");
 				var lastCheckTime = new Date(task.last_run_time);
 				$lastCheck.text(moment(lastCheckTime).fromNow());
-				screenshotTimes.push($lastCheck.text());
+				task.lastCheckTimeFormatted = $lastCheck.text();
 				$imgWrapper2.after($lastCheck);
 
 			});
@@ -301,20 +323,20 @@ jQuery(document).ready(function(){
 				bootbox.confirm({
 					size: "small",
 					backdrop: true,
-				    message: "Are you sure you want to delete this task? This cannot be undone.",
-				    buttons: {
-				        confirm: {
-				            label: 'Yes',
-				            className: 'btn-danger'
-				        },
-				        cancel: {
-				            label: 'No',
-				            className: 'btn-default'
-				        }
-				    },
-				    callback: function (confirm) {
+					message: "Are you sure you want to delete this task? This cannot be undone.",
+					buttons: {
+						confirm: {
+							label: 'Yes',
+							className: 'btn-danger'
+						},
+						cancel: {
+							label: 'No',
+							className: 'btn-default'
+						}
+					},
+					callback: function (confirm) {
 
-				    	if (confirm) {
+						if (confirm) {
 							$.ajax ({
 								url: "api/task/"+$(that).closest('tr').data('id'),
 								type: "DELETE",
@@ -325,9 +347,9 @@ jQuery(document).ready(function(){
 								}
 							);
 						};
-				    }
+					}
 				}).find('.modal-sm').css({
-				    'top': '30%'
+					'top': '30%'
 				});
 			});
 
@@ -344,26 +366,36 @@ jQuery(document).ready(function(){
 			});
 
 			$('.screenshot').on("load", function(){
-				console.log('loaded');
 				removeROI();
 				$('#roi-box').hide();
 				addROI($(this));
 			});
 
 			$('#update-roi-btn').on('click', function() {
-				// TODO: need to clean up code first, 
-				// use a variable to store task data, and maybe save in $(img).data
-				// $.ajax ({
-				// 	url: "api/task/"+???,
-				// 	type: "POST",
-				// 	contentType: "application/json",
-				// })
+
+				var $img = $('#enlargeImageModal img');
+				var task = $img.data('task');
+				var payload = {
+					'roi': selectedBox
+				}
+				$.ajax ({
+					url: "api/task/"+task.id+"/roi",
+					type: "POST",
+					contentType: "application/json",
+					data: JSON.stringify(payload),
+
+				}).done(
+					function(data) {
+						task.roi = selectedBox;
+					}
+				);
 			});
 
 			$('.cell img').on('click', function() {
-				$('#enlargeImageModal .modal-title').text($(this).closest('td').find('.friendly-time').text());
-				$('#enlargeImageModal img').attr('src', $(this).attr('src'));
-				$('#enlargeImageModal img').data('roi', $(this).data('roi'));
+				var $img = $(this);
+				var task = $img.data('task');
+				var isInitialScreenshot = $img.hasClass('initial-screenshot');
+				renderEnlargeImage(task, isInitialScreenshot);
 				$('#enlargeImageModal').modal('show');
 			});
 
@@ -382,19 +414,26 @@ jQuery(document).ready(function(){
 			});
 
 			$('.carousel-control').click(function(){
-				var imageUrl = $('#enlargeImageModal img').attr('src');
-				var i = $.inArray(imageUrl, screenshots);
-				if ($(this).hasClass('left'))
-					i--;
-				else{
-					i++;
-					// when initial and last images are the same
-					if (screenshots[i]==imageUrl)
-						i++;
+				var $img = $('#enlargeImageModal img');
+				var task = $img.data('task');
+				var renderInitialScreenshot = true;
+				if ($(this).hasClass('left')){
+					if ($img.hasClass('initial-screenshot')) {
+						task = task.lastTask;
+						renderInitialScreenshot = false;
+					}else {
+						renderInitialScreenshot = true;
+					}
+				} else {
+					if ($img.hasClass('initial-screenshot')) {
+						renderInitialScreenshot = false;
+					}else {
+						task = task.nextTask;
+						renderInitialScreenshot = true;
+					}
 				}
-				$('#enlargeImageModal img').attr('src', screenshots[i]);
-				$('#enlargeImageModal img').data('roi', rois[i]);
-				$('#enlargeImageModal .modal-title').text(screenshotTimes[i]);
+				if (task)
+					renderEnlargeImage(task, renderInitialScreenshot);
 			});
 			
 
@@ -404,8 +443,6 @@ jQuery(document).ready(function(){
 
 		}
 	);
-
-
 
 
 });
