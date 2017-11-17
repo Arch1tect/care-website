@@ -16,15 +16,16 @@ function addRow(cells) {
 	return $row;
 }
 
-function removeROI() {
+function removeEditableROI() {
 	if (window.jcrop_api) {
 		console.log('remove jcrop');
 		window.jcrop_api.destroy();
 		$('.jcrop-holder').remove();
 		selectedBox = null;
 		screenshotDisplayRatio = 1;
-		$(".screenshot").removeAttr( 'style' );
-	}}
+		$(".screenshot").removeAttr('style');
+	}
+}
 
 function getROI($img) {	
 	var roiStr = $img.data('task').roi;
@@ -353,20 +354,22 @@ jQuery(document).ready(function(){
 				});
 			});
 
-			$("#someSwitchOptionSuccess").change( function(){
+			$("#editROI").change( function(){
+				$img = $("#enlargeImageModal img");
 				if( $(this).is(':checked') ) {
 					roiToggle = true;
 					$('#update-roi-btn').show();
-					addROI($("#enlargeImageModal img"));
+					addROI($img);
 				} else {
 					roiToggle = false;
 					$('#update-roi-btn').hide();
-					removeROI();
+					removeEditableROI();
+					showExistingROI($img); //may need to update, so call again here
 				}
 			});
 
 			$('.screenshot').on("load", function(){
-				removeROI();
+				removeEditableROI();
 				$('#roi-box').hide();
 				addROI($(this));
 			});
@@ -387,6 +390,7 @@ jQuery(document).ready(function(){
 				}).done(
 					function(data) {
 						task.roi = selectedBox;
+						$("#editROI").prop('checked', false).change();
 					}
 				);
 			});
