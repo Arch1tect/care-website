@@ -116,7 +116,13 @@ function addROI($img) {
 }
 
 function testScreenshot(taskId) {
+
 	return function() {
+		var loadingImg = 'assets/img/loading-spinner.gif';
+
+		$('#testScreenshotModal').modal('show');
+		$('#testScreenshotModal img').attr('src', loadingImg);
+
 		$.ajax ({
 			url: "api/task/"+taskId+'/screenshot',
 			type: "GET",
@@ -124,7 +130,6 @@ function testScreenshot(taskId) {
 		}).done(function(screenshotName) {
 
 			$('#testScreenshotModal img').attr('src', "screenshot/" + screenshotName);
-			$('#testScreenshotModal').modal('show');
 
 		});
 	}
