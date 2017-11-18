@@ -16,6 +16,29 @@ function addRow(cells) {
 	return $row;
 }
 
+function changeImg(goPrev) {
+	var $img = $('#enlargeImageModal img');
+	var task = $img.data('task');
+	var renderInitialScreenshot = true;
+	if (goPrev){
+		if ($img.hasClass('initial-screenshot')) {
+			task = task.lastTask;
+			renderInitialScreenshot = false;
+		}else {
+			renderInitialScreenshot = true;
+		}
+	} else {
+		if ($img.hasClass('initial-screenshot')) {
+			renderInitialScreenshot = false;
+		}else {
+			task = task.nextTask;
+			renderInitialScreenshot = true;
+		}
+	}
+	if (task)
+		renderEnlargeImage(task, renderInitialScreenshot);
+}
+
 function removeEditableROI() {
 	if (window.jcrop_api) {
 		console.log('remove jcrop');
@@ -418,28 +441,17 @@ jQuery(document).ready(function(){
 			});
 
 			$('.carousel-control').click(function(){
-				var $img = $('#enlargeImageModal img');
-				var task = $img.data('task');
-				var renderInitialScreenshot = true;
-				if ($(this).hasClass('left')){
-					if ($img.hasClass('initial-screenshot')) {
-						task = task.lastTask;
-						renderInitialScreenshot = false;
-					}else {
-						renderInitialScreenshot = true;
-					}
-				} else {
-					if ($img.hasClass('initial-screenshot')) {
-						renderInitialScreenshot = false;
-					}else {
-						task = task.nextTask;
-						renderInitialScreenshot = true;
-					}
-				}
-				if (task)
-					renderEnlargeImage(task, renderInitialScreenshot);
+				changeImg($(this).hasClass('left'));
 			});
-			
+
+			$(".modal").keydown(function(e) {
+			  if(e.keyCode == 37) { // left
+				changeImg(true);
+			  }
+			  else if(e.keyCode == 39) { // right
+			  	changeImg(false);
+			  }
+			});
 
 		}
 	).fail(

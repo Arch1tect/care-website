@@ -4,11 +4,11 @@ var totalPages = 1;
 var taskLogs = [];
 var taskId = null;
 
-var screenshots = []
-var screenshotTimes = []
+// var screenshots = []
+// var screenshotTimes = []
 
-var changeImgs = []
-var changeTimes = []
+// var changeImgs = []
+// var changeTimes = []
 
 function addRow(cells) {
 		
@@ -23,26 +23,78 @@ function addRow(cells) {
 
 }
 
-function showImageInModal(time, url) {
+function showImageInModal(taskLog, change) {
 
 	return function() {
-		$('.modal-title').text(time);
-		$('.imageLarge').attr('src', url);
+		$('.modal-title').text(taskLog.timeFormatted);
+		var url = taskLog.changeUrl;
+		if (!change) {
+			url = taskLog.screenshotUrl;
+		}
+		var $img = $('img.imageLarge');
+		$img.attr('src', url);
+		$img.data('taskLog', taskLog);
+		if (change) {
+			$img.addClass('change');
+		}else {
+			$img.removeClass('change');
+		}
+
 		$('#enlargeImageModal').modal('show');
 	}
 
+}
+
+function taskLogHasImg(taskLog, change) {
+	if (change)
+		return taskLog.changeUrl;
+
+	return taskLog.screenshotUrl;
+}
+
+function changeImg(goPrev) {
+
+	var $img = $('img.imageLarge');
+	var taskLog = $img.data('taskLog');
+	var change = $img.hasClass('change');
+
+	if (goPrev) {
+		taskLog = taskLog.last;
+		while (taskLog && !taskLogHasImg(taskLog, change))
+			taskLog = taskLog.last;
+
+	}
+	else {
+		taskLog = taskLog.next;
+		while (taskLog && !taskLogHasImg(taskLog, change))
+			taskLog = taskLog.next;
+	}
+
+
+	if (taskLog) {
+
+		if (change) {
+			$img.attr('src', taskLog.changeUrl);
+		}
+		else
+			$img.attr('src', taskLog.screenshotUrl);
+
+		$('.modal-title').text(taskLog.timeFormatted);
+		$img.data('taskLog', taskLog);
+	}
 }
 
 function loadHisotry() {
 	$(window).scrollTop(0);
 	$('.task-table tbody tr').remove();
 	var i = (pageNum-1)*pageSize;
-	screenshots = [];
-	screenshotTimes = [];
-	changeImgs = [];
-	changeTimes = [];
+	var last = null
 	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
 		var taskLog = taskLogs[i];
+		taskLog.last = last;
+		if (last)
+			last.next = taskLog;
+		last = taskLog;
 		var cells = []
 		// ID
 		var $idDiv = $("<div></div>");
@@ -55,23 +107,26 @@ function loadHisotry() {
 		var formattedTime = moment(createdTime).format('YY/MM/DD HH:mm');
 		$timeDiv.text(formattedTime);
 		cells.push($timeDiv);
+		taskLog.timeFormatted = formattedTime;
 
 		// changed
 		var $changeDiv = $("<div class='cell'></div>");
+		var changedImgUrl = '';
+
 		if (taskLog.changed) {
 			var $changedImg = $("<img class='change'></img>");
 			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
-			changeImgs.push(changedImgUrl);
-			changeTimes.push(formattedTime);
-
 			$changedImg.attr('src', changedImgUrl);
-			$changedImg.click(showImageInModal(formattedTime, changedImgUrl));
+			$changedImg.click(showImageInModal(taskLog, true));
 			$changeDiv.append($changedImg);
+			taskLog.changeUrl = changedImgUrl;
+
 		}else {
 			// taskLog.changed can be null
 			var changed = taskLog.changed === false ? "No" : "N/A";
 			$changeDiv.text(changed);
 		}
+
 		cells.push($changeDiv);
 		if (taskLog.notified) {
 			var $notifiedSpan = $("<span title='notification sent'></span>");
@@ -79,14 +134,12 @@ function loadHisotry() {
 			$changeDiv.append($notifiedSpan);
 		}
 
-
 		// screenshot btn
 		var $btn = $("<button class='btn btn-primary'></button");
 		$btn.text('View');
 		var fullScreeshotUrl = 'screenshot/'+taskId+'-'+taskLog.run_id+'.png';
-		screenshots.push(fullScreeshotUrl);
-		screenshotTimes.push(formattedTime);
-		$btn.click(showImageInModal(formattedTime, fullScreeshotUrl));
+		taskLog.screenshotUrl = fullScreeshotUrl;
+		$btn.click(showImageInModal(taskLog, false));
 		cells.push($btn);
 
 		addRow(cells);
@@ -97,6 +150,14 @@ function loadHisotry() {
 
 jQuery(document).ready(function(){
 	taskId = window.location.search.substring(4)
+	$(".modal").keydown(function(e) {
+		if(e.keyCode == 37) { // left
+			changeImg(true);
+		}
+		else if(e.keyCode == 39) { // right
+			changeImg(false);
+		}
+	});
 	$.ajax ({
 		url: "api/task/"+taskId,
 		type: "GET",
@@ -117,27 +178,15 @@ jQuery(document).ready(function(){
 					}
 				});
 				$('.carousel-control').click(function() {
-					var imageUrl = $('#enlargeImageModal img').attr('src');
-					var imgArr = screenshots;
-					var timeArr = screenshotTimes;
-					if ($.inArray(imageUrl, changeImgs)>-1) {
-						imgArr = changeImgs;
-						timeArr = changeTimes;
-					}
-
-					var i = $.inArray(imageUrl, imgArr);
-					if ($(this).hasClass('left'))
-						i--;
-					else
-						i++;
-					$('#enlargeImageModal img').attr('src', imgArr[i]);
-					$('#enlargeImageModal .modal-title').text(timeArr[i]);
+					changeImg($(this).hasClass('left'));
 				});
 			} else {
 
 				// TODO: show a message, job hasn't been ran
 
 			}
+
+
 		}
 	).fail(
 		function() {
