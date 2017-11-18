@@ -2,13 +2,9 @@ var pageSize = 10;
 var pageNum = 1;
 var totalPages = 1;
 var taskLogs = [];
+var task = null;
 var taskId = null;
-
-// var screenshots = []
-// var screenshotTimes = []
-
-// var changeImgs = []
-// var changeTimes = []
+var roiStr = null;
 
 function addRow(cells) {
 		
@@ -20,6 +16,39 @@ function addRow(cells) {
 	});
 	$('.task-table tbody').append($row);
 
+
+}
+
+function addROI($img) {
+
+	if (! $('#enlargeImageModal').is(':visible')) {
+		setTimeout(function() {
+			addROI($img);
+		}, 100);
+	} else {
+		showExistingROI($img);
+	}
+	
+}
+function showExistingROI($img) {
+	// image/modal must have already loaded fully
+	var $roiBox = $('#roi-box');
+
+	var screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
+
+	if (!roiStr){
+		$roiBox.hide();
+		return;
+	}
+	var roi = roiStr.split(' ').map(Number);
+
+	$.each(roi, function(index, value) {
+		roi[index] = value * screenshotDisplayRatio;
+	});
+	$roiBox.width(roi[2]-roi[0]);
+	$roiBox.height(roi[3]-roi[1]);
+	$roiBox.css({top: roi[1], left: roi[0]});
+	$roiBox.show();
 
 }
 
@@ -36,8 +65,11 @@ function showImageInModal(taskLog, change) {
 		$img.data('taskLog', taskLog);
 		if (change) {
 			$img.addClass('change');
+			$('#roi-box').hide();
 		}else {
 			$img.removeClass('change');
+			addROI($img);
+
 		}
 
 		$('#enlargeImageModal').modal('show');
@@ -165,7 +197,10 @@ jQuery(document).ready(function(){
 	}).done(
 		function(data) {
 			console.log(data);
+			task = data.task;
+			roiStr = task.roi;
 			taskLogs = data.log.reverse();
+
 			if (taskLogs.length > 0) {
 				totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
 				$('.history-pagination').twbsPagination({
