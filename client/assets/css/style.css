@@ -560,6 +560,7 @@ span.interval {
 }
 .task-table td img{
 	width: 100%;
+	max-width: 200px; /*for taskLog.js img*/
 	cursor: pointer;
 }
 .task-table td img.change {
