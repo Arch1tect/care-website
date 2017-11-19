@@ -113,6 +113,8 @@ function changeImg(goPrev) {
 
 		$('.modal-title').text(taskLog.timeFormatted);
 		$img.data('taskLog', taskLog);
+		$img.hide();
+		$('#roi-box').hide();
 	}
 }
 
@@ -190,6 +192,14 @@ jQuery(document).ready(function(){
 			changeImg(false);
 		}
 	});
+
+	$('.screenshot').on("load", function(){
+		$('img.imageLarge').fadeIn('fast', function(){
+			showExistingROI($(this));
+		});
+	});
+
+
 	$.ajax ({
 		url: "api/task/"+taskId,
 		type: "GET",

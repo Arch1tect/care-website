@@ -683,6 +683,7 @@ span.notified {
 #enlargeImageModal .modal-body {
 	/*remove default padding because it bugs roi box */
 	padding: 0px;
+	min-height: 350px; /*without this carousel position looks bad when image not there*/
 }
 
 #enlargeImageModal .modal-footer {
@@ -699,10 +700,10 @@ span.notified {
 }
 
 .carousel-control {
-    color: black;
+    color: white;
 }
 .carousel-control:hover {
-    color: black;
+    color: lightgray;
 }
 
 .table-cell {

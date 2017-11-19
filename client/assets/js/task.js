@@ -77,7 +77,11 @@ function editROI($img) {
 	});
 
 }
-
+function removeROI() {
+	removeEditableROI();
+	var $roiBox = $('#roi-box');
+	$roiBox.hide();
+}
 function updateROI($img) {
 	// called on modal image change
 	if (! $('#enlargeImageModal').is(':visible')) {
@@ -87,9 +91,7 @@ function updateROI($img) {
 	} else {
 		var node = $img.data('imgNode');
 		checkRoiBtn();
-		removeEditableROI();
-		var $roiBox = $('#roi-box');
-		$roiBox.hide();
+		removeROI();
 		if (!node.change) {
 			showExistingROI($img);
 			if (roiToggle) {
@@ -192,6 +194,8 @@ function updateEnlargeModal(node) {
 	$title = $('#enlargeImageModal .modal-title');
 	$title.text(node.time);
 	$img = $('#enlargeImageModal img');
+	$img.hide();
+	removeROI();
 	$img.attr('src', node.url);
 	$img.data('imgNode', node);
 }
@@ -438,7 +442,11 @@ jQuery(document).ready(function(){
 			});
 
 			$('.screenshot').on("load", function(){
-				updateROI($(this));
+				console.log('loaded');
+				$('#enlargeImageModal img').fadeIn('fast', function() {
+					updateROI($(this));
+				});
+
 			});
 
 			$('#update-roi-btn').on('click', function() {
