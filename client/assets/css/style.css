@@ -553,14 +553,19 @@ span.interval {
 	max-width: 800px;
 }
 .cell {
-	max-height: 150px;
+	height: 125px;
+	width: 200px;
 	overflow-y: hidden;
 	margin: 10px;
 }
 .task-table td img{
-	max-width: 250px;
+	width: 100%;
 	cursor: pointer;
 }
+.task-table td img.change {
+	border: 1px solid red;
+}
+
 .task-table td span.friendly-time{
 	color: #777777;
 	font-size: smaller;
@@ -697,4 +702,9 @@ span.notified {
 }
 .carousel-control:hover {
     color: black;
+}
+
+.table-cell {
+	display: table-cell;
+	vertical-align: middle;
 }

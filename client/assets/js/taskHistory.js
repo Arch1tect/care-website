@@ -142,7 +142,7 @@ function loadHisotry() {
 		taskLog.timeFormatted = formattedTime;
 
 		// changed
-		var $changeDiv = $("<div class='cell'></div>");
+		var $changeDiv = $("<div></div>");
 		var changedImgUrl = '';
 
 		if (taskLog.changed) {

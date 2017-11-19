@@ -85,7 +85,14 @@ def get_all_tasks_for_user(user_id):
 	paused_task = [t for t in tasks if t.pause]
 	active_task = [t for t in tasks if not t.pause]
 
-	return jsonify([t.as_dict() for t in (active_task+paused_task)])
+	tasks = active_task + paused_task
+	tasks = [t.as_dict() for t in tasks]
+	for t in tasks:
+		log_triggered = session.query(TaskLog).order_by(TaskLog.id.desc()).filter(TaskLog.notified == True, TaskLog.task_id==t['id']).first()
+		if log_triggered:
+			t['log_triggered'] = log_triggered.as_dict()
+
+	return jsonify(tasks)
 
 @app.route("/api/task/<task_id>/screenshot")
 def get_screenshot_for_task(task_id):

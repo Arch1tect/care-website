@@ -3,42 +3,6 @@ var screenshotDisplayRatio = 1;
 var selectedBox = null;
 var tasks = null;
 
-function addRow(cells) {
-		
-	var $row = $("<tr></tr>");
-	$.each(cells, function(i, cell){
-		var $td = $("<td></td");
-		$td.append(cell);
-		$row.append($td);
-	});
-	$('.task-table tbody').append($row);
-
-	return $row;
-}
-
-function changeImg(goPrev) {
-	var $img = $('#enlargeImageModal img');
-	var task = $img.data('task');
-	var renderInitialScreenshot = true;
-	if (goPrev){
-		if ($img.hasClass('initial-screenshot')) {
-			task = task.lastTask;
-			renderInitialScreenshot = false;
-		}else {
-			renderInitialScreenshot = true;
-		}
-	} else {
-		if ($img.hasClass('initial-screenshot')) {
-			renderInitialScreenshot = false;
-		}else {
-			task = task.nextTask;
-			renderInitialScreenshot = true;
-		}
-	}
-	if (task)
-		renderEnlargeImage(task, renderInitialScreenshot);
-}
-
 function removeEditableROI() {
 	if (window.jcrop_api) {
 		console.log('remove jcrop');
@@ -50,8 +14,23 @@ function removeEditableROI() {
 	}
 }
 
+function checkRoiBtn() {
+	// called on image in modal has changed
+	// if image is a changeScreenshot hide update ROI btns
+	var $img = $('#enlargeImageModal img');
+	var node = $img.data('imgNode');
+	if (node.change) {
+		$('#update-roi-btn').hide();
+		$('.roi-control').hide();
+	} else {
+		$('.roi-control').show();
+		if (roiToggle)
+			$('#update-roi-btn').show();
+
+	}
+}
 function getROI($img) {	
-	var roiStr = $img.data('task').roi;
+	var roiStr = $img.data('imgNode').task.roi;
 	if (roiStr)
 		return roi = roiStr.split(' ').map(Number);
 	return [];
@@ -64,7 +43,6 @@ function showExistingROI($img) {
 	screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
 	var roi = getROI($img);
 	if (!roi.length){
-		$roiBox.hide();
 		return;
 	}
 
@@ -79,6 +57,7 @@ function showExistingROI($img) {
 }
 
 function editROI($img) {
+
 	// image/modal must have already loaded fully
 	screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
 	var roi = getROI($img);
@@ -87,7 +66,6 @@ function editROI($img) {
 			roi[index] = value * screenshotDisplayRatio;
 		});
 	}
-
 	$img.Jcrop({
 		onChange:   showCoords,
 		onSelect:   showCoords,
@@ -100,19 +78,44 @@ function editROI($img) {
 
 }
 
-function addROI($img) {
-
+function updateROI($img) {
+	// called on modal image change
 	if (! $('#enlargeImageModal').is(':visible')) {
 		setTimeout(function() {
-			addROI($img);
+			updateROI($img);
 		}, 100);
 	} else {
-		showExistingROI($img);
-		if (roiToggle) {
-			editROI($img);
+		var node = $img.data('imgNode');
+		checkRoiBtn();
+		removeEditableROI();
+		var $roiBox = $('#roi-box');
+		$roiBox.hide();
+		if (!node.change) {
+			showExistingROI($img);
+			if (roiToggle) {
+				editROI($img);
+			}
 		}
+
 	}
 	
+}
+
+// Simple event handler, called from onChange and onSelect
+// event handlers, as per the Jcrop invocation above
+function showCoords(c)
+{
+	var x1 = parseInt(c.x/screenshotDisplayRatio);
+	var y1 = parseInt(c.y/screenshotDisplayRatio);
+	var x2 = parseInt(c.x2/screenshotDisplayRatio);
+	var y2 = parseInt(c.y2/screenshotDisplayRatio);
+	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
+	console.log('width: '+c.w+' height: '+c.h);
+	if(c.w>10&&c.h>10) {
+		selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
+	}else {
+		selectedBox = null;
+	}
 }
 
 function testScreenshot(taskId) {
@@ -174,43 +177,59 @@ function pauseOrContinueTask(taskId, $btn) {
 	}
 }
 
-
-// Simple event handler, called from onChange and onSelect
-// event handlers, as per the Jcrop invocation above
-function showCoords(c)
-{
-	var x1 = parseInt(c.x/screenshotDisplayRatio);
-	var y1 = parseInt(c.y/screenshotDisplayRatio);
-	var x2 = parseInt(c.x2/screenshotDisplayRatio);
-	var y2 = parseInt(c.y2/screenshotDisplayRatio);
-	console.log('('+x1+' '+y1+'), ' + '('+x2+' '+y2+')');
-	console.log('width: '+c.w+' height: '+c.h);
-	if(c.w>10&&c.h>10) {
-		selectedBox = x1 + ' ' + y1 + ' ' + x2 + ' ' + y2;
-	}
-};
-
 function initialScreenshotSrc(task) {
 	return 'screenshot/'+task.id+'-0.png';
 }
 function lastScreenshotSrc(task) {
 	return 'screenshot/'+task.id+'-'+task.last_run_id+'.png';
 }
+function lastTriggeredChangeSrc(task) {
+	var taskLog = task.log_triggered;
+	var logId = taskLog.run_id -1;
+	return 'screenshot/change/'+task.id+'-'+logId+'.png';
+}
+function updateEnlargeModal(node) {
+	$title = $('#enlargeImageModal .modal-title');
+	$title.text(node.time);
+	$img = $('#enlargeImageModal img');
+	$img.attr('src', node.url);
+	$img.data('imgNode', node);
+}
+function addRow(cells) {
+		
+	var $row = $("<tr></tr>");
+	$.each(cells, function(i, cell){
+		var $td = $("<td></td");
+		$td.append(cell);
+		$row.append($td);
+	});
+	$('.task-table tbody').append($row);
 
+	return $row;
+}
 
-function renderEnlargeImage(task, initialScreenshot) {
+function changeImg(goPrev) {
 	var $img = $('#enlargeImageModal img');
-	var $title = $('#enlargeImageModal .modal-title');
-	$img.data('task', task);
-	if (initialScreenshot) {
-		$img.attr('src', initialScreenshotSrc(task));
-		$title.text(task.createdTimeFormatted);
-		$img.addClass('initial-screenshot');
-	} else {
-		$img.attr('src', lastScreenshotSrc(task));
-		$title.text(task.lastCheckTimeFormatted);
-		$img.removeClass('initial-screenshot');
-	}
+	var node = $img.data('imgNode');
+	if (goPrev)
+		node = node.last;
+	else
+		node = node.next;
+
+	if (node)
+		updateEnlargeModal(node);
+}
+
+function constructLinkedListNode($img, task, lastNode, time, url) {
+	var node = {};
+	node.task = task;
+	node.time = time;
+	node.url = url;
+	if (lastNode)
+		lastNode.next = node;
+	node.last = lastNode;
+	$img.data('imgNode', node);
+	return node;
 }
 
 jQuery(document).ready(function(){
@@ -224,12 +243,8 @@ jQuery(document).ready(function(){
 		function(data) {
 			console.log(data);
 			tasks = data;
-			var lastTask = null;
+			var lastImgNode = null;
 			$.each(data, function(i, task){
-				task.lastTask = lastTask;
-				if (lastTask)
-					lastTask.nextTask = task;
-				lastTask = task;
 
 				var cells = []
 
@@ -240,17 +255,50 @@ jQuery(document).ready(function(){
 				var $imgWrapper = $("<div class='cell'></div");
 				var $initImg = $("<img class='initial-screenshot'></img>");
 				$initImg.attr('src', initialScreenshotSrc(task));
-				$initImg.data('task', task);
-
+				// $initImg.data('task', task);
 				$imgWrapper.append($initImg);
 				cells.push($imgWrapper);
+				// created time
+				var $created = $("<span class='friendly-time'></span>");
+				var createdTime = moment(new Date(task.created)).fromNow();
+				$created.text(createdTime);
+				lastImgNode = constructLinkedListNode($initImg, task, lastImgNode, createdTime, initialScreenshotSrc(task));
+
+
 				// last screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
 				var $lastImg = $("<img></img>");
-				$lastImg.data('task', task);
+				// $lastImg.data('task', task);
 				$lastImg.attr('src', lastScreenshotSrc(task));
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
+				// last check time
+				var $lastCheck = $("<span class='friendly-time'></span>");
+				var lastCheckTime = moment(new Date(task.last_run_time)).fromNow();
+				$lastCheck.text(lastCheckTime);
+				lastImgNode = constructLinkedListNode($lastImg, task, lastImgNode, lastCheckTime, lastScreenshotSrc(task));
+
+				// triggered change
+				var $imgWrapper3 = $("<div class='cell'></div");
+
+				if (task['log_triggered']) {
+					var $triggerImg = $("<img class='change'></img>");
+					$triggerImg.attr('src', lastTriggeredChangeSrc(task));
+					var $verticalMiddleHelper = "<span style='height: 100%;vertical-align: middle;display: inline-block;'></span>";
+					$imgWrapper3.append($verticalMiddleHelper);
+					$imgWrapper3.append($triggerImg);
+					var $triggeredTimeWrapper = $("<span class='friendly-time'></span>");
+					var triggeredTime = moment(new Date(task['log_triggered'].timestamp)).fromNow();
+					$triggeredTimeWrapper.text(triggeredTime);
+					task.triggeredTimeFormatted = $triggeredTimeWrapper.text();
+					lastImgNode = constructLinkedListNode($triggerImg, task, lastImgNode, triggeredTime, lastTriggeredChangeSrc(task));
+					lastImgNode.change = true;
+				} else {
+					$imgWrapper3.text('N/A');
+					$imgWrapper3.addClass('table-cell');
+				}
+
+				cells.push($imgWrapper3);
 
 				// settings
 				var $settings = $("<div class='task-setting'></div>");
@@ -331,19 +379,13 @@ jQuery(document).ready(function(){
 				}else{
 					$row.addClass('active-task');
 				}
-				// created time
-				var $created = $("<span class='friendly-time'></span>");
-				var createdTime = new Date(task.created);
-				$created.text(moment(createdTime).fromNow());
-				task.createdTimeFormatted = $created.text();
-				$imgWrapper.after($created);
-				// last check time
-				var $lastCheck = $("<span class='friendly-time'></span>");
-				var lastCheckTime = new Date(task.last_run_time);
-				$lastCheck.text(moment(lastCheckTime).fromNow());
-				task.lastCheckTimeFormatted = $lastCheck.text();
-				$imgWrapper2.after($lastCheck);
 
+				$imgWrapper.after($created);
+				$imgWrapper2.after($lastCheck);
+				// triggered time
+				if (task['log_triggered']) {
+					$imgWrapper3.after($triggeredTimeWrapper);
+				}
 			});
 
 
@@ -387,25 +429,22 @@ jQuery(document).ready(function(){
 				if( $(this).is(':checked') ) {
 					roiToggle = true;
 					$('#update-roi-btn').show();
-					addROI($img);
+					updateROI($img);
 				} else {
 					roiToggle = false;
 					$('#update-roi-btn').hide();
-					removeEditableROI();
-					showExistingROI($img); //may need to update, so call again here
+					updateROI($img); //may need to update, so call again here
 				}
 			});
 
 			$('.screenshot').on("load", function(){
-				removeEditableROI();
-				$('#roi-box').hide();
-				addROI($(this));
+				updateROI($(this));
 			});
 
 			$('#update-roi-btn').on('click', function() {
 
 				var $img = $('#enlargeImageModal img');
-				var task = $img.data('task');
+				var task = $img.data('imgNode').task;
 				var payload = {
 					'roi': selectedBox
 				}
@@ -425,9 +464,8 @@ jQuery(document).ready(function(){
 
 			$('.cell img').on('click', function() {
 				var $img = $(this);
-				var task = $img.data('task');
-				var isInitialScreenshot = $img.hasClass('initial-screenshot');
-				renderEnlargeImage(task, isInitialScreenshot);
+				var node = $img.data('imgNode');
+				updateEnlargeModal(node);
 				$('#enlargeImageModal').modal('show');
 			});
 
