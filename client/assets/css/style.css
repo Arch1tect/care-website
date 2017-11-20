@@ -710,3 +710,7 @@ span.notified {
 	display: table-cell;
 	vertical-align: middle;
 }
+.steps {
+	color: white;
+	margin-bottom: 5px;
+}
