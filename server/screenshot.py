@@ -1,4 +1,6 @@
-# This should be run inside docker, don't import this file
+# This should only run inside docker, 
+# run by python directly,
+# not as a module, never need to import this file
 import sys
 import logging
 import time
