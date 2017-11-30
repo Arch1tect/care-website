@@ -101,6 +101,8 @@ def run_task(t, check_log):
 						check_log.change = True
 					else:
 						check_log.change = False
+				else:
+					check_log.success = False
 			else:
 				check_log.change = False
 
