@@ -187,7 +187,7 @@ function lastScreenshotSrc(task) {
 }
 function lastTriggeredChangeSrc(task) {
 	var taskLog = task.log_triggered;
-	var logId = taskLog.run_id -1;
+	var logId = taskLog.run_id;
 	return 'screenshot/change/'+task.id+'-'+logId+'.png';
 }
 function updateEnlargeModal(node) {
