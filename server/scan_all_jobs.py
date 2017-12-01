@@ -98,13 +98,13 @@ def run_task(t, check_log):
 						logger.info('[Task {}] Verifed change'.format(t.id))
 						send_email_to_user(t, diff_img_path, diff_img_name)
 						check_log.notified = True
-						check_log.change = True
+						check_log.changed = True
 					else:
-						check_log.change = False
+						check_log.changed = False
 				else:
 					check_log.success = False
 			else:
-				check_log.change = False
+				check_log.changed = False
 
 		os.rename(tmp_screenshot_path1, new_screenshot_path)
 
