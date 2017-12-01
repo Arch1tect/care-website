@@ -557,6 +557,8 @@ span.interval {
 	width: 200px;
 	overflow-y: hidden;
 	margin: 10px;
+    border: 1px solid #02b3fe;
+    border-radius: 5px;
 }
 .task-table td img{
 	width: 100%;
@@ -564,7 +566,7 @@ span.interval {
 	cursor: pointer;
 }
 .task-table td img.change {
-	border: 1px solid red;
+	/*border: 1px solid red;*/
 }
 
 .task-table td span.friendly-time{

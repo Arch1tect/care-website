@@ -261,12 +261,12 @@ jQuery(document).ready(function(){
 				$initImg.attr('src', initialScreenshotSrc(task));
 				// $initImg.data('task', task);
 				$imgWrapper.append($initImg);
-				cells.push($imgWrapper);
+				// cells.push($imgWrapper);
 				// created time
 				var $created = $("<span class='friendly-time'></span>");
 				var createdTime = moment(new Date(task.created)).fromNow();
 				$created.text(createdTime);
-				lastImgNode = constructLinkedListNode($initImg, task, lastImgNode, createdTime, initialScreenshotSrc(task));
+				// lastImgNode = constructLinkedListNode($initImg, task, lastImgNode, createdTime, initialScreenshotSrc(task));
 
 
 				// last screenshot
@@ -283,9 +283,10 @@ jQuery(document).ready(function(){
 				lastImgNode = constructLinkedListNode($lastImg, task, lastImgNode, lastCheckTime, lastScreenshotSrc(task));
 
 				// triggered change
-				var $imgWrapper3 = $("<div class='cell'></div");
+				var $imgWrapper3 = $("<div></div>");
 
 				if (task['log_triggered']) {
+					$imgWrapper3.addClass('cell');
 					var $triggerImg = $("<img class='change'></img>");
 					$triggerImg.attr('src', lastTriggeredChangeSrc(task));
 					var $verticalMiddleHelper = "<span style='height: 100%;vertical-align: middle;display: inline-block;'></span>";
@@ -299,7 +300,7 @@ jQuery(document).ready(function(){
 					lastImgNode.change = true;
 				} else {
 					$imgWrapper3.text('N/A');
-					$imgWrapper3.addClass('table-cell');
+					// $imgWrapper3.addClass('table-cell');
 				}
 
 				cells.push($imgWrapper3);
