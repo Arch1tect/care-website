@@ -655,8 +655,8 @@ table td .dropdown-menu {
 }
 span.notified {
 	margin-left: 30px;
-    line-height: 20px;
-    position: absolute;
+/*    line-height: 20px;
+    position: absolute;*/
 }
 .carousel-control.left {
 	cursor: w-resize;
