@@ -93,7 +93,7 @@ def run_task(t, check_log):
 			if changed:
 
 				if stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
-					if compare_img(t, tmp_screenshot_path1, old_screenshot_path, diff_img_path):
+					if compare_img(t, old_screenshot_path, tmp_screenshot_path1, diff_img_path):
 
 						logger.info('[Task {}] Verifed change'.format(t.id))
 						send_email_to_user(t, diff_img_path, diff_img_name)
