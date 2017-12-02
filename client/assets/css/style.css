@@ -716,3 +716,6 @@ span.notified {
 	color: white;
 	margin-bottom: 5px;
 }
+.task-name {
+	font-weight: bold;
+}

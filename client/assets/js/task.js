@@ -252,8 +252,14 @@ jQuery(document).ready(function(){
 
 				var cells = []
 
+				var $nameWrapper = $("<div></div");
+				var $taskName = $("<div class='task-name'></div");
+				$taskName.text(task.name);
 				var $status = $("<div class='task-status'>Active</div>");
-				cells.push($status);
+				$nameWrapper.append($status);
+				$nameWrapper.append($taskName);
+
+				cells.push($nameWrapper);
 
 				// initial image
 				var $imgWrapper = $("<div class='cell'></div");
