@@ -679,8 +679,11 @@ span.notified {
 .roi-control span {
 	margin-right: 10px;
 }
+#enlargeImageModal .screenshot {
+	max-width: 100%;
+}
 #enlargeImageModal .screenshot.change {
-	margin: 15px;
+	/*margin: 15px;*/
 }
 #enlargeImageModal .screenshot.full {
 	width: 100%;
@@ -696,7 +699,7 @@ span.notified {
 #enlargeImageModal .modal-body {
 	/*remove default padding because it bugs roi box */
 	padding: 0px;
-	min-height: 50px; /*without this carousel position looks bad when image not there*/
+	/*min-height: 50px; without this carousel position looks bad when image not there*/
 }
 
 #enlargeImageModal .modal-footer {

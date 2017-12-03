@@ -215,7 +215,7 @@ jQuery(document).ready(function(){
 			taskLogs = data.log.reverse();
 
 			if (taskLogs.length > 0) {
-				totalPages = Math.max(1, (taskLogs.length+1)/pageSize);
+				totalPages = Math.max(1, Math.ceil((taskLogs.length+1)/pageSize));
 				$('.history-pagination').twbsPagination({
 					totalPages: totalPages,
 					visiblePages: 7,
