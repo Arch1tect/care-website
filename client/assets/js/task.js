@@ -283,7 +283,7 @@ jQuery(document).ready(function(){
 
 
 				// latest screenshot
-				var $imgWrapper2 = $("<div class='cell'></div");
+				var $imgWrapper2 = $("<div class='cell latest'></div");
 				var $lastImg = $("<img></img>");
 				// $lastImg.data('task', task);
 				$lastImg.attr('src', lastScreenshotSrc(task));

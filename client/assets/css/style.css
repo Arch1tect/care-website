@@ -552,12 +552,15 @@ span.interval {
 	width: 80%;
 	max-width: 800px;
 }
-.cell {
+.task-table .cell {
 	height: 125px;
 	width: 200px;
 	overflow-y: hidden;
 	margin: 10px;
-    border: 1px solid #02b3fe;
+
+}
+.cell.latest {
+	border: 1px solid #02b3fe;
     border-radius: 5px;
 }
 .task-table td img{
@@ -723,4 +726,8 @@ span.notified {
 .edit-task-name {
 	cursor: pointer;
 	margin-left: 5px;
+}
+.task-log-change-img img{
+	max-width: 150px;
+    max-height: 120px;
 }

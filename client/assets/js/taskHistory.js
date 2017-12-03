@@ -144,11 +144,11 @@ function loadHisotry() {
 		taskLog.timeFormatted = formattedTime;
 
 		// changed
-		var $changeDiv = $("<div></div>");
+		var $changeDiv = $("<div class='task-log-change-img'></div>");
 		var changedImgUrl = '';
 
 		if (taskLog.changed) {
-			var $changedImg = $("<img class='cell change'></img>");
+			var $changedImg = $("<img class='change'></img>");
 			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
 			$changedImg.attr('src', changedImgUrl);
 			$changedImg.click(showImageInModal(taskLog, true));
@@ -195,7 +195,8 @@ jQuery(document).ready(function(){
 
 	$('.screenshot').on("load", function(){
 		$('img.imageLarge').fadeIn('fast', function(){
-			showExistingROI($(this));
+			if (!$(this).hasClass('change'))
+				showExistingROI($(this));
 		});
 	});
 
