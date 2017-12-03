@@ -186,7 +186,7 @@ function lastScreenshotSrc(task) {
 	return 'screenshot/'+task.id+'-'+task.last_run_id+'.png';
 }
 function lastTriggeredChangeSrc(task) {
-	var taskLog = task.log_triggered;
+	var taskLog = task.log_changed;
 	var logId = taskLog.run_id;
 	return 'screenshot/change/'+task.id+'-'+logId+'.png';
 }
@@ -291,7 +291,7 @@ jQuery(document).ready(function(){
 				// triggered change
 				var $imgWrapper3 = $("<div></div>");
 
-				if (task['log_triggered']) {
+				if (task['log_changed']) {
 					$imgWrapper3.addClass('cell');
 					var $triggerImg = $("<img class='change'></img>");
 					$triggerImg.attr('src', lastTriggeredChangeSrc(task));
@@ -299,7 +299,7 @@ jQuery(document).ready(function(){
 					$imgWrapper3.append($verticalMiddleHelper);
 					$imgWrapper3.append($triggerImg);
 					var $triggeredTimeWrapper = $("<span class='friendly-time'></span>");
-					var triggeredTime = moment(new Date(task['log_triggered'].timestamp)).fromNow();
+					var triggeredTime = moment(new Date(task['log_changed'].timestamp)).fromNow();
 					$triggeredTimeWrapper.text(triggeredTime);
 					task.triggeredTimeFormatted = $triggeredTimeWrapper.text();
 					lastImgNode = constructLinkedListNode($triggerImg, task, lastImgNode, triggeredTime, lastTriggeredChangeSrc(task));
@@ -394,7 +394,7 @@ jQuery(document).ready(function(){
 				$imgWrapper.after($created);
 				$imgWrapper2.after($lastCheck);
 				// triggered time
-				if (task['log_triggered']) {
+				if (task['log_changed']) {
 					$imgWrapper3.after($triggeredTimeWrapper);
 				}
 			});

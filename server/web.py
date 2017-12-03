@@ -1,6 +1,7 @@
 import time
 import os
 import logging
+import datetime
 
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
@@ -23,7 +24,7 @@ session = database.session
 logger = logging.getLogger(__name__)
 
 @app.route("/api/git")
-def githubUpdated():
+def github_updated():
 	g = git.cmd.Git(os.getcwd())
 	g.pull()
 	return "succeed!"
@@ -81,18 +82,33 @@ def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
 	# TODO: add user id filter when we support multiple users
 	tasks = session.query(CareTask).all()
-	tasks.reverse()
-	paused_task = [t for t in tasks if t.pause]
-	active_task = [t for t in tasks if not t.pause]
+	# tasks.reverse()
+	# paused_task = [t for t in tasks if t.pause]
+	# active_task = [t for t in tasks if not t.pause]
 
-	tasks = active_task + paused_task
+	# tasks = active_task + paused_task
 	tasks = [t.as_dict() for t in tasks]
 	for t in tasks:
-		log_triggered = session.query(TaskLog).order_by(TaskLog.id.desc()).filter(TaskLog.notified == True, TaskLog.task_id==t['id']).first()
-		if log_triggered:
-			t['log_triggered'] = log_triggered.as_dict()
+		log_changed = session.query(TaskLog).order_by(TaskLog.id.desc()).filter(TaskLog.changed == True, TaskLog.task_id==t['id']).first()
+		if log_changed:
+			t['log_changed'] = log_changed.as_dict()
+
+	tasks.sort(key=sort_by_latest_change)
+	tasks.reverse()
 
 	return jsonify(tasks)
+
+
+def sort_by_latest_change(task):
+	if task['pause']:
+		return datetime.datetime(1970,1,1)
+	if 'log_changed' in task:
+		# foo = int(str(task['log_changed']['timestamp']))
+		# print foo
+		return task['log_changed']['timestamp']
+
+	return datetime.datetime(1970,1,2)
+
 
 @app.route("/api/task/<task_id>/screenshot")
 def get_screenshot_for_task(task_id):
