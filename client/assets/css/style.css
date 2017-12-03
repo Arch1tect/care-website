@@ -561,8 +561,8 @@ span.interval {
     border-radius: 5px;
 }
 .task-table td img{
-	width: 100%;
-	max-width: 200px; /*for taskLog.js img*/
+	/*width: 100%;*/
+	max-width: 100%; /*for taskLog.js img*/
 	cursor: pointer;
 }
 .task-table td img.change {
@@ -719,4 +719,8 @@ span.notified {
 }
 .task-name {
 	font-weight: bold;
+}
+.edit-task-name {
+	cursor: pointer;
+	margin-left: 5px;
 }

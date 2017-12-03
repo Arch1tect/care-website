@@ -60,7 +60,7 @@ def update_task_interval(task_id, interval):
 	return 'success!'
 
 # TODO: api below should be POST not GET
-@app.route("/api/task/<task_id>/pause/")
+@app.route("/api/task/<task_id>/pause")
 def pause_task(task_id):
 
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -69,11 +69,19 @@ def pause_task(task_id):
 	return 'success!'
 
 # TODO: api below should be POST not GET
-@app.route("/api/task/<task_id>/continue/")
+@app.route("/api/task/<task_id>/continue")
 def continue_task(task_id):
 
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.pause = False
+	session.commit()
+	return 'success!'
+
+@app.route("/api/task/<task_id>/name", methods=['PUT'])
+def change_task_name(task_id):
+	data = request.get_json()
+	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task.name = data['name']
 	session.commit()
 	return 'success!'
 

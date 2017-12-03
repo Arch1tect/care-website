@@ -148,7 +148,7 @@ function loadHisotry() {
 		var changedImgUrl = '';
 
 		if (taskLog.changed) {
-			var $changedImg = $("<img class='change'></img>");
+			var $changedImg = $("<img class='cell change'></img>");
 			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
 			$changedImg.attr('src', changedImgUrl);
 			$changedImg.click(showImageInModal(taskLog, true));

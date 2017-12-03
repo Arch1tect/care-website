@@ -251,13 +251,20 @@ jQuery(document).ready(function(){
 			$.each(data, function(i, task){
 
 				var cells = []
-
+				// task name and status
 				var $nameWrapper = $("<div></div");
-				var $taskName = $("<div class='task-name'></div");
-				$taskName.text(task.name);
+				var $taskName = $("<span class='task-name'></span");
+				var taskName = 'No name';
+				if (task.name)
+					taskName = task.name;
+				$taskName.text(taskName);
 				var $status = $("<div class='task-status'>Active</div>");
+				var $editNameIcon = $('<i class="fa fa-pencil edit-task-name" aria-hidden="true"></i>');
+				$editNameIcon.data('task', task);
+				$editNameIcon.data('span', $taskName);
 				$nameWrapper.append($status);
 				$nameWrapper.append($taskName);
+				$nameWrapper.append($editNameIcon);
 
 				cells.push($nameWrapper);
 
@@ -275,20 +282,20 @@ jQuery(document).ready(function(){
 				// lastImgNode = constructLinkedListNode($initImg, task, lastImgNode, createdTime, initialScreenshotSrc(task));
 
 
-				// last screenshot
+				// latest screenshot
 				var $imgWrapper2 = $("<div class='cell'></div");
 				var $lastImg = $("<img></img>");
 				// $lastImg.data('task', task);
 				$lastImg.attr('src', lastScreenshotSrc(task));
 				$imgWrapper2.append($lastImg);
 				cells.push($imgWrapper2);
-				// last check time
+				// latest check time
 				var $lastCheck = $("<span class='friendly-time'></span>");
 				var lastCheckTime = moment(new Date(task.last_run_time)).fromNow();
 				$lastCheck.text(lastCheckTime);
 				lastImgNode = constructLinkedListNode($lastImg, task, lastImgNode, lastCheckTime, lastScreenshotSrc(task));
 
-				// triggered change
+				// latest change
 				var $imgWrapper3 = $("<div></div>");
 
 				if (task['log_changed']) {
@@ -399,11 +406,54 @@ jQuery(document).ready(function(){
 				}
 			});
 
+			$('.edit-task-name').on('click', function() {
+				var task = $(this).data('task');
+				var $that = $(this);
+				bootbox.prompt({
+					size: "small",
+					backdrop: true,
+					title: "Change Task Name",
+					placeholder: 'Enter a task name',
+					value: task.name,
+					buttons: {
+						confirm: {
+							label: 'Save',
+							className: 'btn-primary'
+						},
+						cancel: {
+							label: 'Cancel',
+							className: 'btn-default'
+						}
+					},
+					callback: function (newName) {
+						if (newName) {
+							var payload = {
+								'name': newName
+							}
+							$.ajax ({
+								url: "api/task/"+task.id+"/name",
+								type: "PUT",
+								data: JSON.stringify(payload),
+								contentType: "application/json",
+							}).done(
+								function() {
+									task.name = newName;
+									$that.data('span').text(task.name);
+								}
+							);
+						}
+
+					}
+				}).find('.modal-sm').css({
+					'top': '30%'
+				});
+			});
 
 			$('.delete-task').on('click', function() {
 				var that = this;
 				bootbox.confirm({
 					size: "small",
+					title: "Delete Task",
 					backdrop: true,
 					message: "Are you sure you want to delete this task? This cannot be undone.",
 					buttons: {
