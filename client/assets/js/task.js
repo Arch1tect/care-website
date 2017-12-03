@@ -194,6 +194,15 @@ function updateEnlargeModal(node) {
 	$title = $('#enlargeImageModal .modal-title');
 	$title.text(node.time);
 	$img = $('#enlargeImageModal img');
+	if (node.isLatestImg) {
+		$img.addClass('latest');
+		$img.removeClass('change');
+	}
+	else {
+		$img.addClass('change');
+		$img.removeClass('latest');
+	}
+
 	$img.hide();
 	removeROI();
 	$img.attr('src', node.url);
@@ -224,10 +233,11 @@ function changeImg(goPrev) {
 		updateEnlargeModal(node);
 }
 
-function constructLinkedListNode($img, task, lastNode, time, url) {
+function constructLinkedListNode($img, task, lastNode, time, url, isLatestImg) {
 	var node = {};
 	node.task = task;
 	node.time = time;
+	node.isLatestImg = isLatestImg;
 	node.url = url;
 	if (lastNode)
 		lastNode.next = node;
@@ -293,7 +303,7 @@ jQuery(document).ready(function(){
 				var $lastCheck = $("<span class='friendly-time'></span>");
 				var lastCheckTime = moment(new Date(task.last_run_time)).fromNow();
 				$lastCheck.text(lastCheckTime);
-				lastImgNode = constructLinkedListNode($lastImg, task, lastImgNode, lastCheckTime, lastScreenshotSrc(task));
+				lastImgNode = constructLinkedListNode($lastImg, task, lastImgNode, lastCheckTime, lastScreenshotSrc(task), true);
 
 				// latest change
 				var $imgWrapper3 = $("<div></div>");
@@ -309,7 +319,7 @@ jQuery(document).ready(function(){
 					var triggeredTime = moment(new Date(task['log_changed'].timestamp)).fromNow();
 					$triggeredTimeWrapper.text(triggeredTime);
 					task.triggeredTimeFormatted = $triggeredTimeWrapper.text();
-					lastImgNode = constructLinkedListNode($triggerImg, task, lastImgNode, triggeredTime, lastTriggeredChangeSrc(task));
+					lastImgNode = constructLinkedListNode($triggerImg, task, lastImgNode, triggeredTime, lastTriggeredChangeSrc(task), false);
 					lastImgNode.change = true;
 				} else {
 					$imgWrapper3.text('N/A');

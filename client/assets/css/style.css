@@ -679,17 +679,24 @@ span.notified {
 .roi-control span {
 	margin-right: 10px;
 }
-#enlargeImageModal .screenshot {
-	width: 100%;
+#enlargeImageModal .screenshot.change {
+	margin: 15px;
 }
-
+#enlargeImageModal .screenshot.full {
+	width: 100%;
+	margin:0px;
+}
+#enlargeImageModal .screenshot.latest {
+	width: 100%;
+	margin:0px;
+}
 #testScreenshotModal .screenshot {
 	width: 100%;
 }
 #enlargeImageModal .modal-body {
 	/*remove default padding because it bugs roi box */
 	padding: 0px;
-	min-height: 350px; /*without this carousel position looks bad when image not there*/
+	min-height: 50px; /*without this carousel position looks bad when image not there*/
 }
 
 #enlargeImageModal .modal-footer {

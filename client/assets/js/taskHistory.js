@@ -65,8 +65,10 @@ function showImageInModal(taskLog, change) {
 		$img.data('taskLog', taskLog);
 		if (change) {
 			$img.addClass('change');
+			$img.removeClass('full');
 			$('#roi-box').hide();
 		}else {
+			$img.addClass('full');
 			$img.removeClass('change');
 			addROI($img);
 
