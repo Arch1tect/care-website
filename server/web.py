@@ -152,6 +152,11 @@ def create_new_task():
 	task = CareTask(name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
 	session.add(task)
 	session.commit()
+
+	check_log = TaskLog(task_id=task.id, run_id=0, timestamp=datetime.datetime.utcnow(), success=True)
+	session.add(check_log)
+	session.commit()
+
 	initial_screenshot = data.get('screenshot')
 	if initial_screenshot:
 		os.rename('../screenshot/{}'.format(initial_screenshot),
