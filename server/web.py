@@ -101,21 +101,25 @@ def get_all_tasks_for_user(user_id):
 		if log_changed:
 			t['log_changed'] = log_changed.as_dict()
 
-	tasks.sort(key=sort_by_latest_change)
+	tasks.sort(key=sort_users_tasks)
 	tasks.reverse()
 
 	return jsonify(tasks)
 
 
-def sort_by_latest_change(task):
+def sort_users_tasks(task):
+	'''
+	Paused tasks should be shown last
+	Task with recent last change show first
+	Task just created show first
+	'''
+
 	if task['pause']:
 		return datetime.datetime(1970,1,1)
 	if 'log_changed' in task:
-		# foo = int(str(task['log_changed']['timestamp']))
-		# print foo
 		return task['log_changed']['timestamp']
 
-	return datetime.datetime(1970,1,2)
+	return task['created']
 
 
 @app.route("/api/task/<task_id>/screenshot")
