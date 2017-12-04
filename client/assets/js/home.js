@@ -66,7 +66,7 @@ function clearCoords()
 				contentType: "application/json",
 			}).done(
 				function() {
-					showAlert('success', 'Success!');
+					showAlert('success', 'Success! You can manage your tasks <a href="/task.html">here</a>.');
 				}
 			).fail(
 				function() {
@@ -83,10 +83,10 @@ function clearCoords()
 			$('.care-alert').text('no message');
 		}
 
-		var showAlert = function(type, text) {
+		var showAlert = function(type, html) {
 			$('.care-alert').show();
 			$('.care-alert').addClass('alert-' + type);
-			$('.care-alert').text(text);
+			$('.care-alert').html(html);
 		}
 
 		var takeScreenshot = function() {
