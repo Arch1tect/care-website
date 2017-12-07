@@ -62,7 +62,7 @@ def update_task_interval(task_id, interval):
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/pause")
 def pause_task(task_id):
-
+	logger.info('Pausing task {}'.format(task_id))
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.pause = True
 	session.commit()
@@ -71,7 +71,7 @@ def pause_task(task_id):
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/continue")
 def continue_task(task_id):
-
+	logger.info('Resuming task {}'.format(task_id))
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.pause = False
 	session.commit()
@@ -88,6 +88,8 @@ def change_task_name(task_id):
 @app.route("/api/tasks/user/<user_id>")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
+	logger.info('Getting all tasks for user {}'.format(user_id))
+
 	# TODO: add user id filter when we support multiple users
 	tasks = session.query(CareTask).all()
 	# tasks.reverse()
