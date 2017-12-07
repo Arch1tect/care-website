@@ -183,4 +183,5 @@ def correct_url(url):
 	return url
 
 # TODO debug=True only for dev environment
-app.run(debug=True, host='0.0.0.0', port=9000)
+if __name__ == "__main__":
+	app.run(debug=True, host='0.0.0.0', port=9000)
