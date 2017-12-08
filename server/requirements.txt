@@ -8,3 +8,4 @@ imutils==0.4.3
 scikit-image==0.13.0
 opencv-python==3.3.0.10
 gitpython==2.1.0
+flask-limiter==1.0.1

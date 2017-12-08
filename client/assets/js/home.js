@@ -25,7 +25,7 @@ function clearCoords()
 
 
 (function($) {
-
+	var takingScreemshot = false;
 	var loadingImg = 'assets/img/loading-spinner.gif';
 	var screenshotName = null;
 	jQuery(document).ready(function(){
@@ -91,6 +91,10 @@ function clearCoords()
 
 		var takeScreenshot = function() {
 			hideAlert();
+
+			if (takingScreemshot)
+				return;
+
 			if (window.jcrop_api) {
 				console.log('remove jcrop');
 				window.jcrop_api.destroy();
@@ -106,22 +110,25 @@ function clearCoords()
 			var payload = {
 				'url': url,
 			}
+			takingScreemshot = true;
+			$('button.take-screenshot').prop("disabled",true);
+
 			$.ajax ({
 				url: "api/screenshot/url",
 				type: "POST",
 				data: JSON.stringify(payload),
 				contentType: "application/json",
-			}).done(
-				function(imgName) {
-					screenshotName = imgName;
-					$('.screenshot').attr("src", "screenshot/" + screenshotName);
-				}
-			).fail(
-				function() {
-					$('.screenshot').hide();
-					showAlert('danger', 'Failed.');
-				}
-			)
+			}).done(function(imgName) {
+				takingScreemshot = false;
+				$('button.take-screenshot').prop("disabled", false);
+				screenshotName = imgName;
+				$('.screenshot').attr("src", "screenshot/" + screenshotName);
+			}).fail(function(error) {
+				takingScreemshot = false;
+				$('button.take-screenshot').prop("disabled", false);
+				$('.screenshot').hide();
+				showAlert('danger', 'Failed - ' + error.statusText);
+			});
 		}
 
 		var interval = 300

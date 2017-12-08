@@ -127,15 +127,18 @@ function testScreenshot(taskId) {
 
 		$('#testScreenshotModal').modal('show');
 		$('#testScreenshotModal img').attr('src', loadingImg);
+		var noty = createNoty('Taking screenshot...');
 
 		$.ajax ({
 			url: "api/task/"+taskId+'/screenshot',
 			type: "GET",
 			contentType: "application/json",
 		}).done(function(screenshotName) {
-
 			$('#testScreenshotModal img').attr('src', "screenshot/" + screenshotName);
-
+			closeNoty(noty,'success', 'Success!');
+		}).fail(function(error) {
+			closeNoty(noty, 'error', error.statusText);
+			$('#testScreenshotModal').modal('hide');
 		});
 	}
 }
@@ -145,18 +148,21 @@ function pauseOrContinueTask(taskId, $btn) {
 
 		var pause = $btn.data('pause');
 		var endpoint = 'pause';
-		if (pause)
+		var msg = 'Pausing task...';
+		if (pause) {
 			endpoint = 'continue';
-
+			msg = 'Resuming task...';
+		}
+		var noty = createNoty(msg);
 		$.ajax ({
 			url: "api/task/"+taskId+'/'+endpoint,
 			type: "GET",
 			contentType: "application/json",
 		}).done(function() {
-
 			var $row = $btn.closest('tr');
 			var $status = $row.find('.task-status');
 			if (pause) {
+				closeNoty(noty, 'success', 'Resumed.');
 				$btn.data('pause', false);
 				$btn.text('Pause');
 				$btn.removeClass('btn-success');
@@ -165,14 +171,17 @@ function pauseOrContinueTask(taskId, $btn) {
 				$row.removeClass('paused-task');
 				$btn.addClass('btn-warning');
 			} else {
+				closeNoty(noty, 'success', 'Paused.');
 				$btn.data('pause', true);
-				$btn.text('Continue');
+				$btn.text('Resume');
 				$row.addClass('paused-task');
 				$status.text('Paused');
 				$row.removeClass('active-task');
 				$btn.removeClass('btn-warning');
 				$btn.addClass('btn-success');
 			}
+		}).fail(function(error) {
+			closeNoty(noty, 'error', error.statusText);
 		});
 
 
@@ -247,7 +256,7 @@ function constructLinkedListNode($img, task, lastNode, time, url, isLatestImg) {
 }
 
 jQuery(document).ready(function(){
-
+	var noty = createNoty('Loading all tasks...');
 	$.ajax ({
 		url: "api/tasks/user/123",
 		// url: "http://54.215.208.165/api/tasks/user/123",
@@ -255,6 +264,7 @@ jQuery(document).ready(function(){
 		contentType: "application/json",
 	}).done(
 		function(data) {
+			closeNoty(noty, 'success', 'Done!');
 			console.log(data);
 			tasks = data;
 			var lastImgNode = null;
@@ -384,7 +394,7 @@ jQuery(document).ready(function(){
 				$runBtn.click(testScreenshot(task.id));
 				var $pauseBtn = $("<button class='btn'>Pause</button>");
 				if (task.pause) {
-					$pauseBtn.text('Continue');
+					$pauseBtn.text('Resume');
 					$pauseBtn.addClass('btn-success');
 				}else {
 					$pauseBtn.addClass('btn-warning');
@@ -440,17 +450,19 @@ jQuery(document).ready(function(){
 							var payload = {
 								'name': newName
 							}
+							var noty = createNoty('Updating task name...');
 							$.ajax ({
 								url: "api/task/"+task.id+"/name",
 								type: "PUT",
 								data: JSON.stringify(payload),
 								contentType: "application/json",
-							}).done(
-								function() {
-									task.name = newName;
-									$that.data('span').text(task.name);
-								}
-							);
+							}).done(function() {
+								closeNoty(noty, 'success', 'Task name updated!');
+								task.name = newName;
+								$that.data('span').text(task.name);
+							}).fail(function(error) {
+								closeNoty(noty, 'error', error.statusText);
+							});
 						}
 
 					}
@@ -479,15 +491,17 @@ jQuery(document).ready(function(){
 					callback: function (confirm) {
 
 						if (confirm) {
+							var noty = createNoty('Deleting task...');
 							$.ajax ({
 								url: "api/task/"+$(that).closest('tr').data('id'),
 								type: "DELETE",
 								contentType: "application/json",
-							}).done(
-								function() {
-									location.reload();
-								}
-							);
+							}).done(function() {
+								closeNoty(noty, 'success', 'Task deleted!');
+								location.reload();
+							}).fail(function(error) {
+								closeNoty(noty, 'error', error.statusText);
+							});
 						};
 					}
 				}).find('.modal-sm').css({
@@ -523,18 +537,20 @@ jQuery(document).ready(function(){
 				var payload = {
 					'roi': selectedBox
 				}
+				var noty = createNoty('Updating check interval...');
 				$.ajax ({
 					url: "api/task/"+task.id+"/roi",
 					type: "POST",
 					contentType: "application/json",
 					data: JSON.stringify(payload),
 
-				}).done(
-					function(data) {
-						task.roi = selectedBox;
-						$("#editROI").prop('checked', false).change();
-					}
-				);
+				}).done(function(data) {
+					closeNoty(noty, 'success', 'ROI updated!');
+					task.roi = selectedBox;
+					$("#editROI").prop('checked', false).change();
+				}).fail(function(error) {
+					closeNoty(noty, 'error', error.statusText);
+				});
 			});
 
 			$('.cell img').on('click', function() {
@@ -547,15 +563,17 @@ jQuery(document).ready(function(){
 			$('.interval li').on('click', function() {
 				interval = $(this).data('interval');
 				var that = this;
+				var noty = createNoty('Updating check interval...');
 				$.ajax ({
 					url: "api/task/"+$(this).closest('tr').data('id')+'/interval/'+interval,
 					type: "GET",
 					contentType: "application/json",
-				}).done(
-					function(data) {
-						$(that).closest('td').find('span.interval').text($(that).text());
-					}
-				);
+				}).done(function(data) {
+					closeNoty(noty, 'success', 'Check interval updated!');
+					$(that).closest('td').find('span.interval').text($(that).text());
+				}).fail(function(error) {
+					closeNoty(noty, 'error', error.statusText);
+				});
 			});
 
 			$('.carousel-control').click(function(){
@@ -572,11 +590,9 @@ jQuery(document).ready(function(){
 			});
 
 		}
-	).fail(
-		function() {
-
-		}
-	);
+	).fail(function(error) {
+		closeNoty(noty, 'error', error.statusText);
+	});
 
 
 });

@@ -5,6 +5,8 @@ import datetime
 
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import git
 
 import setup
@@ -23,6 +25,11 @@ session = database.session
 
 logger = logging.getLogger(__name__)
 
+limiter = Limiter(
+	app,
+	key_func=get_remote_address
+)
+
 @app.route("/api/git")
 def github_updated():
 	g = git.cmd.Git(os.getcwd())
@@ -30,6 +37,7 @@ def github_updated():
 	return "succeed!"
 
 @app.route("/api/task/<task_id>")
+@limiter.limit("10/minute")
 def get_task(task_id):
 	'''return a task and all its task logs'''
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -42,6 +50,7 @@ def get_task(task_id):
 
 
 @app.route("/api/task/<task_id>/roi", methods=['POST'])
+@limiter.limit("10/minute")
 def update_task_roi(task_id):
 
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -52,6 +61,7 @@ def update_task_roi(task_id):
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/interval/<interval>")
+@limiter.limit("10/minute")
 def update_task_interval(task_id, interval):
 
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -61,6 +71,7 @@ def update_task_interval(task_id, interval):
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/pause")
+@limiter.limit("10/minute")
 def pause_task(task_id):
 	logger.info('Pausing task {}'.format(task_id))
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -70,6 +81,7 @@ def pause_task(task_id):
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/continue")
+@limiter.limit("10/minute")
 def continue_task(task_id):
 	logger.info('Resuming task {}'.format(task_id))
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -78,6 +90,7 @@ def continue_task(task_id):
 	return 'success!'
 
 @app.route("/api/task/<task_id>/name", methods=['PUT'])
+@limiter.limit("10/minute")
 def change_task_name(task_id):
 	data = request.get_json()
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -86,6 +99,7 @@ def change_task_name(task_id):
 	return 'success!'
 
 @app.route("/api/tasks/user/<user_id>")
+@limiter.limit("10/minute")
 def get_all_tasks_for_user(user_id):
 	'''return all tasks for a user'''
 	logger.info('Getting all tasks for user {}'.format(user_id))
@@ -125,6 +139,7 @@ def sort_users_tasks(task):
 
 
 @app.route("/api/task/<task_id>/screenshot")
+@limiter.limit("1/minute")
 def get_screenshot_for_task(task_id):
 	'''Get screenshot of existing task, not checking changes though'''
 	task = session.query(CareTask).filter(CareTask.id==task_id).one()
@@ -137,6 +152,7 @@ def get_screenshot_for_task(task_id):
 	return 'Failed to take screenshot.', 500
 
 @app.route("/api/task/<task_id>", methods=['DELETE'])
+@limiter.limit("10/minute")
 def delete_task(task_id):
 	'''Delete a task in DB'''
 	# TODO: also delete logs and images
@@ -145,6 +161,7 @@ def delete_task(task_id):
 	return 'success!'
 
 @app.route("/api/task", methods=['POST'])
+@limiter.limit("10/minute")
 def create_new_task():
 	'''Create new task, also properly rename initial screenshot if exist'''
 	# TODO: avoid duplicate
@@ -166,7 +183,9 @@ def create_new_task():
 	return 'success!'
 
 @app.route("/api/screenshot/url", methods=['POST'])
+@limiter.limit("5/minute")
 def take_screenshot_for_url():
+	'''Take screenshot before creating new task'''
 	data = request.get_json()
 	url = correct_url(data['url'])
 	screenshot_name = '{}.png'.format(time.time())
