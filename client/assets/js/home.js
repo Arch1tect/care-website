@@ -54,6 +54,7 @@ function clearCoords()
 			hideAlert();
 			var payload = {
 				// 'name': 'yo',
+				'email': $('.user-email').val(),
 				'screenshot': screenshotName,
 				'interval': interval,
 				'url': $('.care-url').val(),
@@ -103,12 +104,11 @@ function clearCoords()
 				$('.screenshot').removeAttr( 'style' );
 			}
 			$('.screenshot').show();
-			var url = $('.care-url').val()
+			var url = $('.care-url').val();
 			console.debug(url);
 			$('.screenshot').attr("src", loadingImg);	
-			
 			var payload = {
-				'url': url,
+				'url': url
 			}
 			takingScreemshot = true;
 			$('button.take-screenshot').prop("disabled",true);

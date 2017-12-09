@@ -11,7 +11,7 @@ import git
 
 import setup
 from cfg.credentials import db_user, db_password
-from db.model import CareTask, TaskLog
+from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
 
 app = Flask(__name__)
@@ -164,11 +164,21 @@ def delete_task(task_id):
 @limiter.limit("10/minute")
 def create_new_task():
 	'''Create new task, also properly rename initial screenshot if exist'''
-	# TODO: avoid duplicate
+	# TODO: user id should be in the path, if logged in
 	data = request.get_json()
-	url = correct_url(data['url'])
 	logger.info('Creating new task with data {}'.format(data))
-	task = CareTask(name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
+	url = correct_url(data['url'])
+	email = data['email']
+	if not email:
+		raise Exception('Email is empty when creating task!')
+	user = session.query(CareUser).filter(CareUser.email==email).first()
+	if not user:
+		user = CareUser(email=email, password='123', join_date=datetime.datetime.utcnow())
+		session.add(user)
+		session.commit()
+		# TODO: Send welcome/confirmation email
+
+	task = CareTask(user_id=user.id, name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
 	session.add(task)
 	session.commit()
 

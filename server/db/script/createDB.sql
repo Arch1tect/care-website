@@ -8,9 +8,10 @@ CREATE TABLE `task` (
   `last_run_id` int(10) unsigned DEFAULT '0',
   `roi` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
   `pause` tinyint(1) DEFAULT NULL,
+  `wait` tinyint(10) unsigned DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -22,3 +23,12 @@ CREATE TABLE `log` (
   `notified` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9716 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `user` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `email` text CHARACTER SET latin1 NOT NULL,
+  `join_date` timestamp NULL DEFAULT NULL,
+  `password` text CHARACTER SET latin1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

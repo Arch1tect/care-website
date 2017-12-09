@@ -9,11 +9,29 @@ from sqlalchemy import create_engine
  
 Base = declarative_base()
 
-class CareTask(Base):
-	__tablename__ = 'task'
-	# Here we define columns for the table person
+class CareUser(Base):
+	__tablename__ = 'user'
+	# Here we define columns for the table user
 	# Notice that each column is also a normal Python instance attribute.
 	id = Column(Integer, primary_key=True)
+	email = Column(String(100))
+	join_date = Column(TIMESTAMP)
+	password = Column(String(20))
+
+	def as_dict(self):
+		return {
+			'id': self.id,
+			'email': self.email,
+			'join_date': self.join_date,
+			'password': self.password
+		}
+
+class CareTask(Base):
+	__tablename__ = 'task'
+	# Here we define columns for the table task
+	# Notice that each column is also a normal Python instance attribute.
+	id = Column(Integer, primary_key=True)
+	user_id = Column(Integer)
 	name = Column(String(255))
 	interval = Column(Integer)
 	last_run_time = Column(TIMESTAMP, default=datetime.datetime.utcnow)
@@ -27,6 +45,7 @@ class CareTask(Base):
 	def as_dict(self):
 		return {
 			'id': self.id,
+			'user_id': self.user_id,
 			'name': self.name,
 			'interval': self.interval,
 			'last_run_id': self.last_run_id,
