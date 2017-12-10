@@ -256,9 +256,10 @@ function constructLinkedListNode($img, task, lastNode, time, url, isLatestImg) {
 }
 
 jQuery(document).ready(function(){
+
 	var noty = createNoty('Loading all tasks...');
 	$.ajax ({
-		url: "api/tasks/user/123",
+		url: "api/tasks/user",
 		// url: "http://54.215.208.165/api/tasks/user/123",
 		type: "GET",
 		contentType: "application/json",
@@ -289,16 +290,16 @@ jQuery(document).ready(function(){
 				cells.push($nameWrapper);
 
 				// initial image
-				var $imgWrapper = $("<div class='cell'></div");
-				var $initImg = $("<img class='initial-screenshot'></img>");
-				$initImg.attr('src', initialScreenshotSrc(task));
-				// $initImg.data('task', task);
-				$imgWrapper.append($initImg);
+				// var $imgWrapper = $("<div class='cell'></div");
+				// var $initImg = $("<img class='initial-screenshot'></img>");
+				// $initImg.attr('src', initialScreenshotSrc(task));
+
+				// $imgWrapper.append($initImg);
 				// cells.push($imgWrapper);
 				// created time
-				var $created = $("<span class='friendly-time'></span>");
-				var createdTime = moment(new Date(task.created)).fromNow();
-				$created.text(createdTime);
+				// var $created = $("<span class='friendly-time'></span>");
+				// var createdTime = moment(new Date(task.created)).fromNow();
+				// $created.text(createdTime);
 				// lastImgNode = constructLinkedListNode($initImg, task, lastImgNode, createdTime, initialScreenshotSrc(task));
 
 
@@ -418,7 +419,7 @@ jQuery(document).ready(function(){
 					$row.addClass('active-task');
 				}
 
-				$imgWrapper.after($created);
+				// $imgWrapper.after($created);
 				$imgWrapper2.after($lastCheck);
 				// triggered time
 				if (task['log_changed']) {
@@ -585,7 +586,7 @@ jQuery(document).ready(function(){
 				changeImg(true);
 			  }
 			  else if(e.keyCode == 39) { // right
-			  	changeImg(false);
+				changeImg(false);
 			  }
 			});
 
@@ -593,6 +594,4 @@ jQuery(document).ready(function(){
 	).fail(function(error) {
 		closeNoty(noty, 'error', error.statusText);
 	});
-
-
 });

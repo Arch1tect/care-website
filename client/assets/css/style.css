@@ -747,3 +747,11 @@ span.notified {
     width: 80%;
     max-width: 500px;
 }
+.manage-link {
+	display: none !important;
+}
+.login-form input{
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 3px;
+}

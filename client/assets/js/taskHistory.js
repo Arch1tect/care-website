@@ -202,7 +202,7 @@ jQuery(document).ready(function(){
 		});
 	});
 
-
+	var noty = createNoty('Loading task history...');
 	$.ajax ({
 		url: "api/task/"+taskId,
 		type: "GET",
@@ -210,6 +210,7 @@ jQuery(document).ready(function(){
 	}).done(
 		function(data) {
 			console.log(data);
+			closeNoty(noty,'success', 'Loaded!');
 			task = data.task;
 			roiStr = task.roi;
 			taskLogs = data.log.reverse();
@@ -230,7 +231,7 @@ jQuery(document).ready(function(){
 				});
 			} else {
 
-				// TODO: show a message, job hasn't been ran
+				// TODO: shouldn't happen
 
 			}
 
@@ -238,7 +239,7 @@ jQuery(document).ready(function(){
 		}
 	).fail(
 		function() {
-
+			closeNoty(noty, 'error', error.statusText);
 		}
 	);
 

@@ -3,7 +3,7 @@ import os
 import logging
 import datetime
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -13,15 +13,17 @@ import setup
 from cfg.credentials import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
+from plugin import check_login_session
 
 app = Flask(__name__)
-
+# secret key for signing cookie
+app.secret_key = 'hey hey yo yo'
 db_url = 'chat-anywhere-mysql.cjwz9xnh80ai.us-west-1.rds.amazonaws.com/care'
 connection_str = 'mysql://{}:{}@{}'.format(db_user, db_password, db_url)
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_str
 
 database = SQLAlchemy(app)
-session = database.session
+db_session = database.session
 
 logger = logging.getLogger(__name__)
 
@@ -32,16 +34,41 @@ limiter = Limiter(
 
 @app.route("/api/git")
 def github_updated():
-	g = git.cmd.Git(os.getcwd())
-	g.pull()
-	return "succeed!"
+	gg = git.cmd.Git(os.getcwd())
+	gg.pull()
+	return "Succeed!"
+
+
+@app.route("/api/login", methods=['POST'])
+@limiter.limit("5/minute")
+def login():
+	data = request.get_json()
+	email = data['email']
+	password = data['password']
+	user = db_session.query(CareUser).filter(CareUser.email==email).first()
+	if not user or not user.password==password:
+		abort(401, 'Wrong email or password!')
+	session['user'] = user.as_dict()
+	return "Logged in!"
+
+@app.route("/api/session")
+@check_login_session
+def is_session_active():
+	return "Session active!"
+
+@app.route("/api/logout")
+@check_login_session
+def logout():
+	session.pop('user', None)
+	return "Logged out!"
 
 @app.route("/api/task/<task_id>")
 @limiter.limit("10/minute")
+@check_login_session
 def get_task(task_id):
 	'''return a task and all its task logs'''
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
-	task_logs = session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
+	task_logs = db_session.query(TaskLog).filter(TaskLog.task_id==task_id).all()
 	res = {
 		'task': task.as_dict(),
 		'log': [t.as_dict() for t in task_logs]
@@ -51,61 +78,71 @@ def get_task(task_id):
 
 @app.route("/api/task/<task_id>/roi", methods=['POST'])
 @limiter.limit("10/minute")
+@check_login_session
 def update_task_roi(task_id):
-
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	'''update roi of a task'''
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	data = request.get_json()
 	task.roi = data['roi']
-	session.commit()
+	db_session.commit()
 	return 'success!'
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/interval/<interval>")
 @limiter.limit("10/minute")
+@check_login_session
 def update_task_interval(task_id, interval):
-
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	'''update check interval of a task'''
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.interval = interval
-	session.commit()
+	db_session.commit()
 	return 'success!'
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/pause")
 @limiter.limit("10/minute")
+@check_login_session
 def pause_task(task_id):
+	'''pause a task'''
 	logger.info('Pausing task {}'.format(task_id))
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.pause = True
-	session.commit()
+	db_session.commit()
 	return 'success!'
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/continue")
 @limiter.limit("10/minute")
-def continue_task(task_id):
+@check_login_session
+def resume_task(task_id):
+	'''resume a task'''
 	logger.info('Resuming task {}'.format(task_id))
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.pause = False
-	session.commit()
+	db_session.commit()
 	return 'success!'
 
 @app.route("/api/task/<task_id>/name", methods=['PUT'])
 @limiter.limit("10/minute")
+@check_login_session
 def change_task_name(task_id):
 	data = request.get_json()
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	task.name = data['name']
-	session.commit()
+	db_session.commit()
 	return 'success!'
 
-@app.route("/api/tasks/user/<user_id>")
+@app.route("/api/tasks/user")
 @limiter.limit("10/minute")
-def get_all_tasks_for_user(user_id):
+@check_login_session
+def get_all_tasks_for_user():
 	'''return all tasks for a user'''
+	user = session['user']
+	user_id = user['id']
 	logger.info('Getting all tasks for user {}'.format(user_id))
 
 	# TODO: add user id filter when we support multiple users
-	tasks = session.query(CareTask).all()
+	tasks = db_session.query(CareTask).filter(CareTask.user_id==user_id).all()
 	# tasks.reverse()
 	# paused_task = [t for t in tasks if t.pause]
 	# active_task = [t for t in tasks if not t.pause]
@@ -113,7 +150,7 @@ def get_all_tasks_for_user(user_id):
 	# tasks = active_task + paused_task
 	tasks = [t.as_dict() for t in tasks]
 	for t in tasks:
-		log_changed = session.query(TaskLog).order_by(TaskLog.id.desc()).filter(TaskLog.changed == True, TaskLog.task_id==t['id']).first()
+		log_changed = db_session.query(TaskLog).order_by(TaskLog.id.desc()).filter(TaskLog.changed == True, TaskLog.task_id==t['id']).first()
 		if log_changed:
 			t['log_changed'] = log_changed.as_dict()
 
@@ -140,9 +177,10 @@ def sort_users_tasks(task):
 
 @app.route("/api/task/<task_id>/screenshot")
 @limiter.limit("1/minute")
+@check_login_session
 def get_screenshot_for_task(task_id):
 	'''Get screenshot of existing task, not checking changes though'''
-	task = session.query(CareTask).filter(CareTask.id==task_id).one()
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
 	screenshot_path = '../screenshot/{}'.format(screenshot_name)
@@ -153,11 +191,12 @@ def get_screenshot_for_task(task_id):
 
 @app.route("/api/task/<task_id>", methods=['DELETE'])
 @limiter.limit("10/minute")
+@check_login_session
 def delete_task(task_id):
 	'''Delete a task in DB'''
 	# TODO: also delete logs and images
-	session.query(CareTask).filter(CareTask.id==task_id).delete()
-	session.commit()
+	db_session.query(CareTask).filter(CareTask.id==task_id).delete()
+	db_session.commit()
 	return 'success!'
 
 @app.route("/api/task", methods=['POST'])
@@ -171,20 +210,20 @@ def create_new_task():
 	email = data['email']
 	if not email:
 		raise Exception('Email is empty when creating task!')
-	user = session.query(CareUser).filter(CareUser.email==email).first()
+	user = db_session.query(CareUser).filter(CareUser.email==email).first()
 	if not user:
 		user = CareUser(email=email, password='123', join_date=datetime.datetime.utcnow())
-		session.add(user)
-		session.commit()
+		db_session.add(user)
+		db_session.commit()
 		# TODO: Send welcome/confirmation email
 
 	task = CareTask(user_id=user.id, name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
-	session.add(task)
-	session.commit()
+	db_session.add(task)
+	db_session.commit()
 
 	check_log = TaskLog(task_id=task.id, run_id=0, timestamp=datetime.datetime.utcnow(), success=True)
-	session.add(check_log)
-	session.commit()
+	db_session.add(check_log)
+	db_session.commit()
 
 	initial_screenshot = data.get('screenshot')
 	if initial_screenshot:
