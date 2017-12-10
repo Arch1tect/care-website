@@ -54,7 +54,9 @@ def login():
 @app.route("/api/session")
 @check_login_session
 def is_session_active():
-	return "Session active!"
+	user = session['user']
+	email = user['email']
+	return email
 
 @app.route("/api/logout")
 @check_login_session
@@ -110,7 +112,8 @@ def pause_task(task_id):
 	db_session.commit()
 	return 'success!'
 
-# TODO: api below should be POST not GET
+# TODO: api below should be POST not GET, check if task
+# belong to this user!
 @app.route("/api/task/<task_id>/continue")
 @limiter.limit("10/minute")
 @check_login_session
@@ -208,14 +211,20 @@ def create_new_task():
 	logger.info('Creating new task with data {}'.format(data))
 	url = correct_url(data['url'])
 	email = data['email']
+	is_new_user = True
 	if not email:
 		raise Exception('Email is empty when creating task!')
 	user = db_session.query(CareUser).filter(CareUser.email==email).first()
 	if not user:
+		logger.info('Creating new user with email {}'.format(email))
+
 		user = CareUser(email=email, password='123', join_date=datetime.datetime.utcnow())
 		db_session.add(user)
 		db_session.commit()
 		# TODO: Send welcome/confirmation email
+	else:
+		# Assuming user doesn't enter other people's email
+		is_new_user = False
 
 	task = CareTask(user_id=user.id, name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
 	db_session.add(task)
@@ -229,7 +238,10 @@ def create_new_task():
 	if initial_screenshot:
 		os.rename('../screenshot/{}'.format(initial_screenshot),
 				  '../screenshot/{}-0.png'.format(task.id))
-	return 'success!'
+	res = {
+		'is_new_user': is_new_user
+	}
+	return jsonify(res)
 
 @app.route("/api/screenshot/url", methods=['POST'])
 @limiter.limit("5/minute")

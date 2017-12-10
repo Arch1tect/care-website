@@ -1,9 +1,12 @@
 
-function sessionActive() {
+function sessionActive(email) {
 	$('.manage-link').removeClass('manage-link');
 	$(".login-link").text('LOGOUT');
 	$(".login-link").addClass('logout-link');
 	$(".login-link").removeClass('login-link');
+
+	$(".user-email").val(email);
+
 	$(".logout-link").on('click', function(){
 
 		$.ajax ({
@@ -24,9 +27,9 @@ jQuery(document).ready(function(){
 		url: "api/session",
 		type: "GET",
 		contentType: "application/json",
-	}).done(function(result) {
+	}).done(function(email) {
 		// logged in
-		sessionActive();
+		sessionActive(email);
 	}).fail(function(error) {
 		// not logged in
 		$(".login-link").on('click', function(){

@@ -65,9 +65,13 @@ function clearCoords()
 				type: "POST",
 				data: JSON.stringify(payload),
 				contentType: "application/json",
+				dataType: 'json',
 			}).done(
-				function() {
-					showAlert('success', 'Success! You can manage your tasks <a href="/task.html">here</a>.');
+				function(data) {
+					var msg = 'Success! You can manage your tasks <a href="/task.html">here</a>.';
+					if (data['is_new_user'])
+						msg = 'Success! Please check your inbox and confirm you own this email.';
+					showAlert('success', msg);
 				}
 			).fail(
 				function() {

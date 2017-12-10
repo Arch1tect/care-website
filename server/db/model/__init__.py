@@ -17,13 +17,15 @@ class CareUser(Base):
 	email = Column(String(100))
 	join_date = Column(TIMESTAMP)
 	password = Column(String(20))
+	confirmed = Column(Boolean)
 
 	def as_dict(self):
 		return {
 			'id': self.id,
 			'email': self.email,
 			'join_date': self.join_date,
-			'password': self.password
+			'password': self.password,
+			'confirmed': self.confirmed
 		}
 
 class CareTask(Base):
