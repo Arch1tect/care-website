@@ -27,6 +27,8 @@ jQuery(document).ready(function(){
 	}).done(function(result) {
 		// logged in
 		sessionActive();
+		window.location.href = '/task.html';
+
 	}).fail(function(error) {
 		// not logged in
 		$(".login-link").on('click', function(){
