@@ -37,7 +37,7 @@ jQuery(document).ready(function(){
 			window.loginBox = bootbox.confirm({
 				title: "Login",
 				size: "small",
-				message: "<div class='login-form'><input class='email' placeholder='Email' name='email' type='text' /><br/><input type='password' class='password' placeholder='Password'/></div>",
+				message: "<div class='login-form'><input class='email' placeholder='Email' name='email' type='text' /><br/><input type='password' class='password' name='password' placeholder='Password'/></div>",
 				buttons: {
 					cancel: {
 						label: 'Cancel'
