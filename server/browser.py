@@ -13,7 +13,7 @@ def take_screenshot(url, screenshot_path, wait=None):
 	'''Run docker image to take a screenshot'''
 	if not wait:
 		wait = 2
-	print 'taking screenshot...will wait', 2, 'sec'
+	print 'taking screenshot...will wait', wait, 'sec'
 	program = 'python'
 	script = '/mnt/care-website/server/screenshot.py'
 	arguments = '{} {} {}'.format(url, screenshot_path, wait)

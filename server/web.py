@@ -13,7 +13,9 @@ import setup
 from cfg.credentials import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
+from mailgun import notify_change, send_welcome_email
 from plugin import check_login_session
+from crypto import hash_email
 
 app = Flask(__name__)
 # secret key for signing cookie
@@ -38,6 +40,20 @@ def github_updated():
 	gg.pull()
 	return "Succeed!"
 
+@app.route("/api/confirm_email")
+@limiter.limit("5/minute")
+def confirm_email():
+	logger.info('Confirming email: {}'.format(request.query_string))
+
+	email = request.args.get('email')
+	secret = request.args.get('secret')
+	if email and secret and secret == hash_email(email):
+		user = db_session.query(CareUser).filter(CareUser.email==email).first()
+		user.confrimed = True
+		db_session.commit()
+
+		return 'Success!'
+	return 'Failed'
 
 @app.route("/api/login", methods=['POST'])
 @limiter.limit("5/minute")
@@ -52,6 +68,7 @@ def login():
 	return "Logged in!"
 
 @app.route("/api/session")
+@limiter.limit("5/minute")
 @check_login_session
 def is_session_active():
 	user = session['user']
@@ -221,12 +238,17 @@ def create_new_task():
 		user = CareUser(email=email, password='123', join_date=datetime.datetime.utcnow())
 		db_session.add(user)
 		db_session.commit()
-		# TODO: Send welcome/confirmation email
+
+		# Send welcome/confirmation email
+		send_welcome_email('swtdavid@gmail.com', '123')
 	else:
 		# Assuming user doesn't enter other people's email
 		is_new_user = False
+	
+	# Pause this task if user hasn't confrimed email
+	pause = not user.confirmed
 
-	task = CareTask(user_id=user.id, name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'))
+	task = CareTask(user_id=user.id, name=data.get('name'), url=url, interval=data['interval'], roi=data.get('roi'), pause=pause)
 	db_session.add(task)
 	db_session.commit()
 
