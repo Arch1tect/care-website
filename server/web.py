@@ -286,4 +286,13 @@ def correct_url(url):
 
 # TODO debug=True only for dev environment
 if __name__ == "__main__":
+	logger.info('Running as main')
 	app.run(debug=True, host='0.0.0.0', port=9000)
+else:
+	logger.info('Not running as main, probably using wsgi')
+	import uwsgi
+	@app.route("/api/reload")
+	def uwsgi_reload():
+		# TODO: add basic auth to this endpoint
+		uwsgi.reload()
+		return "Reloaded!"
