@@ -3,7 +3,7 @@ from crypto import hash_email
 
 def send_simple_message(subject, to, msg=None, html=None, files=None):
 	return requests.post(
-		"https://api.mailgun.net/v3/sandboxd1b6c36cfcee4a788c1d9794208e7583.mailgun.org/messages",
+		"https://api.mailgun.net/v3/webwatchman.com/messages",
 		auth=("api", "key-c5e95173a1f60ab411eff18031723799"),
 		files=files,
 		data={"from": "Web Watchman <watchman@donotreply.com>",
