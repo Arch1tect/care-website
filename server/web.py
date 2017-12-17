@@ -18,6 +18,7 @@ from plugin import check_login_session
 from crypto import hash_email, generate_password
 
 app = Flask(__name__)
+app.debug = True
 # secret key for signing cookie
 app.secret_key = 'hey hey yo yo'
 db_url = 'chat-anywhere-mysql.cjwz9xnh80ai.us-west-1.rds.amazonaws.com/care'
