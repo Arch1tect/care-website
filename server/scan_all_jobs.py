@@ -17,7 +17,7 @@ def send_email_to_user(t, diff_img_path, diff_img_name):
 	task_name = t.name
 	if not task_name:
 		task_name = t.url
-	email_subject = '{} changed'.format(task_name)
+	email_subject = u'{} changed'.format(task_name)
 	notify_change(email_subject, t.url, diff_img_path, diff_img_name)
 
 def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
