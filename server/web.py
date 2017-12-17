@@ -15,7 +15,7 @@ from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
 from mailgun import notify_change, send_welcome_email
 from plugin import check_login_session
-from crypto import hash_email
+from crypto import hash_email, generate_password
 
 app = Flask(__name__)
 # secret key for signing cookie
@@ -49,11 +49,11 @@ def confirm_email():
 	secret = request.args.get('secret')
 	if email and secret and secret == hash_email(email):
 		user = db_session.query(CareUser).filter(CareUser.email==email).first()
-		user.confrimed = True
+		user.confirmed = True
 		db_session.commit()
 
 		return 'Success!'
-	return 'Failed'
+	return 'Failed', 400
 
 @app.route("/api/login", methods=['POST'])
 @limiter.limit("5/minute")
@@ -233,14 +233,13 @@ def create_new_task():
 		raise Exception('Email is empty when creating task!')
 	user = db_session.query(CareUser).filter(CareUser.email==email).first()
 	if not user:
-		logger.info('Creating new user with email {}'.format(email))
-
-		user = CareUser(email=email, password='123', join_date=datetime.datetime.utcnow())
+		random_password = generate_password()
+		logger.info('Creating new user with email {}, password {}'.format(email, random_password))
+		user = CareUser(email=email, password=random_password, join_date=datetime.datetime.utcnow())
 		db_session.add(user)
 		db_session.commit()
-
 		# Send welcome/confirmation email
-		send_welcome_email('swtdavid@gmail.com', '123')
+		send_welcome_email(email, random_password)
 	else:
 		# Assuming user doesn't enter other people's email
 		is_new_user = False

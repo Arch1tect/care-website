@@ -2,7 +2,7 @@ import requests
 from crypto import hash_email
 
 def send_simple_message(subject, to, msg=None, html=None, files=None):
-	return requests.post(
+	res =  requests.post(
 		"https://api.mailgun.net/v3/webwatchman.com/messages",
 		auth=("api", "key-c5e95173a1f60ab411eff18031723799"),
 		files=files,
@@ -12,17 +12,20 @@ def send_simple_message(subject, to, msg=None, html=None, files=None):
 			  "html": html,
 			  "text": msg})
 
+	print res.text
+	return res
 def send_welcome_email(email, tmp_password):
 	subject = "Welcome! Please confirm your email address"
-	html = "<br/>Welcome! Your account has been created at Watchmen! "
-	html += "<br/>Please click the following link to confirm your email."
-	html += "<br/>" + hash_email(email)
+	confirm_email_link = "webwatchman.com/api/confirm_email?email={}&secret={}".format(email, hash_email(email))
+	html = "<br/>Welcome! Your account has been created with Web Watchman! "
+	html += "<br/><br/>Please click <a href='{}'>here</a> to confirm your email.".format(confirm_email_link)
+	html += "<br/>"
 	html += "<br/>Your temporary password is: <b>" + tmp_password +"</b>"
-	html += "<br/>If you did not register at Watchmen, please ignore this email."
+	html += "<br/><br/>If you did not register with Web Watchman, please ignore this email."
 	html += "<br/>"
 	html += "<br/>"
 	html += "<br/>Thank you!"
-	html += "<br/>"
+	html += "<br/><a href='webwatchman.com'>Web Watchman</a>"
 	html += "<br/>"
 	res = send_simple_message(subject, email, html=html)
 	return res
