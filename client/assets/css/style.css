@@ -207,7 +207,7 @@ a:focus {
 
 #headerwrap {
 	background-color: #00b3fe;
-	min-height: 550px;
+	/*min-height: 550px;*/
 	padding-top: 100px;
 	padding-bottom: 0px;
 	/*text-align: center;*/
@@ -754,4 +754,7 @@ span.notified {
     width: 100%;
     margin-bottom: 10px;
     padding: 3px;
+}
+.content-wrapper {
+	min-height: calc(100vh - 356px);
 }
