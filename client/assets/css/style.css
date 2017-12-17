@@ -552,6 +552,7 @@ span.interval {
 	margin: auto;
 	width: 80%;
 	max-width: 800px;
+	margin-bottom: 101px;
 }
 .task-table .cell {
 	height: 125px;
