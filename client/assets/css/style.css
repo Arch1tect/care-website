@@ -759,6 +759,11 @@ span.notified {
 	overflow-x: auto;
 	min-height: calc(100vh - 356px);
 }
+.index-content-wrapper {
+	overflow-x: auto;
+	min-height: calc(100vh - 80px);
+
+}
 input.form-control {
     min-width: 100px;
 }
