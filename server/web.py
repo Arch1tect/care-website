@@ -14,11 +14,11 @@ from cfg.credentials import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
 from mailgun import notify_change, send_welcome_email
-from plugin import check_login_session
+from plugin import check_login_session, api_exception_handler
 from crypto import hash_email, generate_password
 
 app = Flask(__name__)
-app.debug = True
+
 # secret key for signing cookie
 app.secret_key = 'hey hey yo yo'
 db_url = 'chat-anywhere-mysql.cjwz9xnh80ai.us-west-1.rds.amazonaws.com/care'
@@ -36,12 +36,14 @@ limiter = Limiter(
 )
 
 @app.route("/api/git")
+@api_exception_handler
 def github_updated():
 	gg = git.cmd.Git(os.getcwd())
 	gg.pull()
 	return "Succeed!"
 
 @app.route("/api/confirm_email")
+@api_exception_handler
 @limiter.limit("5/minute")
 def confirm_email():
 	logger.info('Confirming email: {}'.format(request.query_string))
@@ -57,6 +59,7 @@ def confirm_email():
 	return 'Failed', 400
 
 @app.route("/api/login", methods=['POST'])
+@api_exception_handler
 @limiter.limit("5/minute")
 def login():
 	data = request.get_json()
@@ -69,6 +72,7 @@ def login():
 	return "Logged in!"
 
 @app.route("/api/session")
+@api_exception_handler
 @limiter.limit("5/minute")
 @check_login_session
 def is_session_active():
@@ -77,12 +81,14 @@ def is_session_active():
 	return email
 
 @app.route("/api/logout")
+@api_exception_handler
 @check_login_session
 def logout():
 	session.pop('user', None)
 	return "Logged out!"
 
 @app.route("/api/task/<task_id>")
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def get_task(task_id):
@@ -97,6 +103,7 @@ def get_task(task_id):
 
 
 @app.route("/api/task/<task_id>/roi", methods=['POST'])
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def update_task_roi(task_id):
@@ -109,6 +116,7 @@ def update_task_roi(task_id):
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/interval/<interval>")
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def update_task_interval(task_id, interval):
@@ -120,6 +128,7 @@ def update_task_interval(task_id, interval):
 
 # TODO: api below should be POST not GET
 @app.route("/api/task/<task_id>/pause")
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def pause_task(task_id):
@@ -133,6 +142,7 @@ def pause_task(task_id):
 # TODO: api below should be POST not GET, check if task
 # belong to this user!
 @app.route("/api/task/<task_id>/continue")
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def resume_task(task_id):
@@ -144,6 +154,7 @@ def resume_task(task_id):
 	return 'success!'
 
 @app.route("/api/task/<task_id>/name", methods=['PUT'])
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def change_task_name(task_id):
@@ -154,6 +165,7 @@ def change_task_name(task_id):
 	return 'success!'
 
 @app.route("/api/tasks/user")
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def get_all_tasks_for_user():
@@ -197,6 +209,7 @@ def sort_users_tasks(task):
 
 
 @app.route("/api/task/<task_id>/screenshot")
+@api_exception_handler
 @limiter.limit("1/minute")
 @check_login_session
 def get_screenshot_for_task(task_id):
@@ -211,6 +224,7 @@ def get_screenshot_for_task(task_id):
 	return 'Failed to take screenshot.', 500
 
 @app.route("/api/task/<task_id>", methods=['DELETE'])
+@api_exception_handler
 @limiter.limit("10/minute")
 @check_login_session
 def delete_task(task_id):
@@ -221,6 +235,7 @@ def delete_task(task_id):
 	return 'success!'
 
 @app.route("/api/task", methods=['POST'])
+@api_exception_handler
 @limiter.limit("10/minute")
 def create_new_task():
 	'''Create new task, also properly rename initial screenshot if exist'''
@@ -266,6 +281,7 @@ def create_new_task():
 	return jsonify(res)
 
 @app.route("/api/screenshot/url", methods=['POST'])
+@api_exception_handler
 @limiter.limit("5/minute")
 def take_screenshot_for_url():
 	'''Take screenshot before creating new task'''
