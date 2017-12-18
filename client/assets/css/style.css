@@ -742,11 +742,6 @@ span.notified {
 	max-width: 150px;
     max-height: 120px;
 }
-.about-us {
-	margin: auto;
-    width: 80%;
-    max-width: 500px;
-}
 .manage-link {
 	display: none !important;
 }
@@ -770,4 +765,10 @@ input.form-control {
 .contact-form {
 	max-width: 500px;
 	margin: auto;
+	width: 80%;
+}
+.about-us {
+	margin: auto;
+    width: 80%;
+    max-width: 500px;
 }
