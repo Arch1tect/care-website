@@ -34,9 +34,9 @@ def send_welcome_email(email, tmp_password):
 	res = send_simple_message(subject, email, html=html)
 	return res
 
-def notify_change(subject, url, img_path, img_name):
+def notify_change(email, subject, url, img_path, img_name):
 # http://mailgun-documentation.readthedocs.io/en/latest/user_manual.html#sending-via-api
 	html = "<html>Content at <a href='{0}'>{1}</a> has changed: <img src='cid:{2}' style='max-width:400px;'><br/><br/><br/>Manage your tasks <a href='webwatchman.com/task.html'>here</a>.</html>".format(url, url, img_name)
 	files = [("inline", open(img_path))]
 
-	return send_simple_message(subject, 'swtdavid@gmail.com', html=html, files=files)
+	return send_simple_message(subject, email, html=html, files=files)

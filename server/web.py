@@ -13,7 +13,7 @@ import setup
 from cfg.credentials import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
-from mailgun import notify_change, send_welcome_email
+from mailgun import send_welcome_email
 from plugin import check_login_session, api_exception_handler
 from crypto import hash_email, generate_password
 

@@ -3,7 +3,7 @@ import os
 import logging
 from datetime import datetime
 
-from db.model import CareTask, TaskLog
+from db.model import CareTask, TaskLog, CareUser
 from db_session import session
 from browser import take_screenshot
 from image_diff import compare_img
@@ -18,7 +18,8 @@ def send_email_to_user(t, diff_img_path, diff_img_name):
 	if not task_name:
 		task_name = t.url
 	email_subject = u'{} changed'.format(task_name)
-	notify_change(email_subject, t.url, diff_img_path, diff_img_name)
+	user = session.query(CareUser).filter(CareUser.id==t.user_id).first()
+	notify_change(user.email, email_subject, t.url, diff_img_path, diff_img_name)
 
 def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 	''' 
