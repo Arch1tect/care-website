@@ -22,7 +22,37 @@ function sessionActive(email) {
 	});
 }
 
+function login() {
+	var payload = {
+		'email': $('input.email').val(),
+		'password': $('input.password').val()
+	}
+	var noty = createNoty('Logging you in...');
+	$.ajax ({
+		url: "api/login",
+		type: "POST",
+		data: JSON.stringify(payload),
+		contentType: "application/json",
+	}).done(function(result) {
+		closeNoty(noty,'success', 'Success!');
+		window.loginBox.modal('hide');
+		sessionActive();
+		window.location.href = '/task.html';
+
+	}).fail(function(error) {
+		closeNoty(noty, 'error', error.statusText);
+	});
+}
+
+$(document).on('keyup', '.login-form input', function(e){
+	var code = e.which
+	if (code == 13) {
+		login();
+	}
+});
+
 jQuery(document).ready(function(){
+
 	$.ajax ({
 		url: "api/session",
 		type: "GET",
@@ -51,25 +81,7 @@ jQuery(document).ready(function(){
 				},
 				callback: function (result) {
 					if (result) {
-						var payload = {
-							'email': $('input.email').val(),
-							'password': $('input.password').val()
-						}
-						var noty = createNoty('Logging you in...');
-						$.ajax ({
-							url: "api/login",
-							type: "POST",
-							data: JSON.stringify(payload),
-							contentType: "application/json",
-						}).done(function(result) {
-							closeNoty(noty,'success', 'Success!');
-							window.loginBox.modal('hide');
-							sessionActive();
-							window.location.href = '/task.html';
-
-						}).fail(function(error) {
-							closeNoty(noty, 'error', error.statusText);
-						});
+						login();
 						return false;//don't close until login success.
 					}
 				}
