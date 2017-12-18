@@ -262,7 +262,7 @@ jQuery(document).ready(function(){
 			setupPages(taskLogs);
 		}
 	).fail(
-		function() {
+		function(error) {
 			closeNoty(noty, 'error', error.statusText);
 		}
 	);
