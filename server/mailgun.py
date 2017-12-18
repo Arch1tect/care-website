@@ -1,5 +1,9 @@
 import requests
+import logging
+
 from crypto import hash_email
+
+logger = logging.getLogger(__name__)
 
 def send_simple_message(subject, to, msg=None, html=None, files=None):
 	res =  requests.post(
@@ -11,9 +15,9 @@ def send_simple_message(subject, to, msg=None, html=None, files=None):
 			  "subject": subject,
 			  "html": html,
 			  "text": msg})
-
-	print res.text
+	logger.info("Sent email to {}, res {}".format(to, res.text))
 	return res
+
 def send_welcome_email(email, tmp_password):
 	subject = "Welcome! Please confirm your email address"
 	confirm_email_link = "webwatchman.com/api/confirm_email?email={}&secret={}".format(email, hash_email(email))

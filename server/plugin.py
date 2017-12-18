@@ -14,7 +14,8 @@ def check_login_session(foo):
 	@wraps(foo)
 	def wrapper(*args, **kwargs):
 		if 'user' in session:
-			print session['user']
+			user = session['user']
+			logger.info("{} is hitting API {}".format(user, foo.__name__))
 			return foo(*args, **kwargs)
 		else:
 			abort(401, "Not logged in!")

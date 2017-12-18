@@ -48,7 +48,6 @@ def take_screenshot(url, screenshot_path, wait):
 		res = True
 	except Exception as e:
 		logger.exception(e)
-		print str(e)
 		# logger.error('[Task {}] screenshot failed.'.format(task.id))
 
 	driver.quit()
