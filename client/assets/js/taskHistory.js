@@ -183,9 +183,6 @@ function loadHisotry(logs) {
 	}
 }
 
-function toggleFilterLogs() {
-
-}
 
 function setupPages(logs) {
 	$('.history-pagination').empty();
@@ -210,6 +207,7 @@ function setupPages(logs) {
 		// TODO: shouldn't happen since there is a log
 		// entry when task first created
 		// Possible if filter only changed logs
+		loadHisotry(logs);
 
 	}
 
