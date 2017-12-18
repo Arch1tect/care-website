@@ -182,7 +182,6 @@ a:focus {
 .mtb {
 	margin-top: 30px;
 	margin-bottom: 80px;
-	max-width: 500px;
 }
 
 .mb {
@@ -757,9 +756,13 @@ span.notified {
     padding: 3px;
 }
 .content-wrapper {
-	min-height: calc(100vh - 356px);
 	overflow-x: auto;
+	min-height: calc(100vh - 356px);
 }
 input.form-control {
     min-width: 100px;
+}
+.contact-form {
+	max-width: 500px;
+	margin: auto;
 }
