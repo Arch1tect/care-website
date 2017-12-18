@@ -192,7 +192,7 @@ function setupPages(logs) {
 	$('.history-pagination').removeData("twbs-pagination");
 	$('.history-pagination').unbind("page");
 	if (logs.length > 0) {
-		totalPages = Math.max(1, Math.ceil((logs.length+1)/pageSize));
+		totalPages = Math.max(1, Math.ceil(logs.length/pageSize));
 		$('.history-pagination').twbsPagination({
 			totalPages: totalPages,
 			visiblePages: 7,
