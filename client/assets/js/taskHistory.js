@@ -120,13 +120,13 @@ function changeImg(goPrev) {
 	}
 }
 
-function loadHisotry() {
+function loadHisotry(logs) {
 	$(window).scrollTop(0);
 	$('.task-table tbody tr').remove();
 	var i = (pageNum-1)*pageSize;
 	var last = null
-	for (; i < Math.min(taskLogs.length, pageNum*pageSize); i++) {
-		var taskLog = taskLogs[i];
+	for (; i < Math.min(logs.length, pageNum*pageSize); i++) {
+		var taskLog = logs[i];
 		taskLog.last = last;
 		if (last)
 			last.next = taskLog;
@@ -183,9 +183,54 @@ function loadHisotry() {
 	}
 }
 
+function toggleFilterLogs() {
 
+}
+
+function setupPages(logs) {
+	$('.history-pagination').empty();
+	$('.history-pagination').removeData("twbs-pagination");
+	$('.history-pagination').unbind("page");
+	if (logs.length > 0) {
+		totalPages = Math.max(1, Math.ceil((logs.length+1)/pageSize));
+		$('.history-pagination').twbsPagination({
+			totalPages: totalPages,
+			visiblePages: 7,
+			onPageClick: function (event, page) {
+				console.log('go to page ' + page);
+				pageNum = page;
+				loadHisotry(logs);
+			}
+		});
+		$('.carousel-control').click(function() {
+			changeImg($(this).hasClass('left'));
+		});
+	} else {
+
+		// TODO: shouldn't happen since there is a log
+		// entry when task first created
+		// Possible if filter only changed logs
+
+	}
+
+
+}
 jQuery(document).ready(function(){
 	taskId = window.location.search.substring(4)
+	$(".change-only-check").on("change", function()
+    {
+        var checked = $(this).prop("checked");
+        console.log(checked);
+        if (checked) {
+        	var logs = taskLogs.filter(function(tl){
+				return tl.changed;
+			});
+        	setupPages(logs);
+        }
+        else {
+        	setupPages(taskLogs);
+        }
+    });
 	$(".modal").keydown(function(e) {
 		if(e.keyCode == 37) { // left
 			changeImg(true);
@@ -214,28 +259,7 @@ jQuery(document).ready(function(){
 			task = data.task;
 			roiStr = task.roi;
 			taskLogs = data.log.reverse();
-
-			if (taskLogs.length > 0) {
-				totalPages = Math.max(1, Math.ceil((taskLogs.length+1)/pageSize));
-				$('.history-pagination').twbsPagination({
-					totalPages: totalPages,
-					visiblePages: 7,
-					onPageClick: function (event, page) {
-						console.log('go to page ' + page);
-						pageNum = page;
-						loadHisotry();
-					}
-				});
-				$('.carousel-control').click(function() {
-					changeImg($(this).hasClass('left'));
-				});
-			} else {
-
-				// TODO: shouldn't happen
-
-			}
-
-
+			setupPages(taskLogs);
 		}
 	).fail(
 		function() {

@@ -47,7 +47,7 @@
 		  <ul class="nav navbar-nav">
             <li><a href="index.html">CREATE A TASK</a></li>
             <li class='manage-link'><a href="task.html">MANAGE</a></li>
-            <li class="active"><a href="about.html">ABOUT</a></li>
+            <li><a href="about.html">ABOUT</a></li>
             <li><a href="contact.html">CONTACT</a></li>
             <li><a href="#" class="login-link">LOGIN</a></li>
 		  </ul>
@@ -92,7 +92,16 @@
 		</div>
 	</div>
 	<div class="mtb content-wrapper">
-		<center><ul class="history-pagination"></ul></center>
+
+		<center>
+			<div class="form-check">
+			  <label class="form-check-label">
+			    <input class="form-check-input change-only-check" type="checkbox" value="">
+			    &nbsp; Only show checks with change
+			  </label>
+			</div>
+			<ul class="history-pagination"></ul>
+		</center>
 		<table class="table task-table">
 			<thead>
 			  <tr>
