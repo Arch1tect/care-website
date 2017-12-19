@@ -745,6 +745,9 @@ span.notified {
 .manage-link {
 	display: none !important;
 }
+.account-link {
+	display: none !important;
+}
 .login-form input{
     width: 100%;
     margin-bottom: 10px;
@@ -771,4 +774,12 @@ input.form-control {
 	margin: auto;
     width: 80%;
     max-width: 500px;
+}
+.confirm-new-password-not-match {
+	display: none;
+	color: red;
+    margin-top: 10px;
+}
+.change-password-result {
+	display: none;
 }

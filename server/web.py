@@ -3,7 +3,7 @@ import os
 import logging
 import datetime
 
-from flask import Flask, jsonify, request, session, abort
+from flask import Flask, jsonify, request, session, abort, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -47,16 +47,34 @@ def github_updated():
 @limiter.limit("5/minute")
 def confirm_email():
 	logger.info('Confirming email: {}'.format(request.query_string))
-
-	email = request.args.get('email')
+	# if email contains +, it will be converted to space
+	# so we convert back to +
+	# this potentially allow user to register using same email
+	# need to avoid it in the future
+	email = request.args.get('email').replace(' ', '+')
 	secret = request.args.get('secret')
 	if email and secret and secret == hash_email(email):
 		user = db_session.query(CareUser).filter(CareUser.email==email).first()
 		user.confirmed = True
 		db_session.commit()
-
-		return 'Success!'
+		session['user'] = user.as_dict()
+		return redirect("/account.html")
 	return 'Failed', 400
+
+@app.route("/api/user/password", methods=['PUT'])
+@api_exception_handler
+@limiter.limit("3/minute")
+@check_login_session
+def change_user_password():
+	user_dict = session['user']
+	user = db_session.query(CareUser).filter(CareUser.id==user_dict['id']).one()
+
+	data = request.get_json()
+	if data['old_password'] != user.password:
+		return 'Old password is wrong!', 400
+	user.password = data['new_password']
+	db_session.commit()
+	return 'Password updated!'
 
 @app.route("/api/login", methods=['POST'])
 @api_exception_handler
@@ -73,7 +91,7 @@ def login():
 
 @app.route("/api/session")
 @api_exception_handler
-@limiter.limit("5/minute")
+@limiter.limit("15/minute")
 @check_login_session
 def is_session_active():
 	user = session['user']

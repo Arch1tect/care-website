@@ -11,11 +11,11 @@
   <title>Web Watchman - Web Page Change Detection and Notification</title>
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-  <link href="assets/css/noty.css" rel="stylesheet">
-  <link href="assets/css/animate.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
-
+  <link href="assets/css/noty.css" rel="stylesheet">
+  <link href="assets/css/animate.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -25,6 +25,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
     <link href="assets/css/style.css" rel="stylesheet">
   </head>
 
@@ -46,21 +47,10 @@
           <ul class="nav navbar-nav">
             <li><a href="index.html">CREATE A TASK</a></li>
             <li class='manage-link'><a href="task.html">MANAGE</a></li>
-            <li class="active"><a href="about.html">ABOUT</a></li>
+            <li><a href="about.html">ABOUT</a></li>
             <li><a href="contact.html">CONTACT</a></li>
-            <li class='account-link'><a href="account.html">ACCOUNT</a></li>
+            <li class="active account-link"><a href="account.html">ACCOUNT</a></li>
             <li><a href="#" class="login-link">LOGIN</a></li>
-            <!--
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">PAGES <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="blog.html">BLOG</a></li>
-                <li><a href="single-post.html">SINGLE POST</a></li>
-                <li><a href="portfolio.html">PORTFOLIO</a></li>
-                <li><a href="single-project.html">SINGLE PROJECT</a></li>
-              </ul>
-            </li>
-        	-->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -72,38 +62,47 @@
 	<div id="blue">
 	    <div class="container">
 			<center class="row">
-				<h3>About Web Watchman</h3>
+				<h3>Account</h3>
 			</center><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
 
-	 
+
 	<!-- *****************************************************************************************************************
-	 AGENCY ABOUT
+	 CONTACT FORMS
 	 ***************************************************************************************************************** -->
 
 	 <div class="container mtb content-wrapper">
 	 	<div class="row">
-
-	 		<div class="about-us">
-
-        <p><b>Web Watchman</b> is a web page change detection/notification tool that's free and extremely easy to use.</p>
-
-		 		<p>
-		 		Have you ever came across something exclusive and limited you wanted to buy online but missed the opportunity by minutes because you were away? Maybe you’re someone who has a need to be updated with the latest gaming news, but your other responsibilities are stopping you from camping on the page.
-		 		</p>
-		 		<p>
-		 		With Web Watchman you can monitor your favorite pages without having to access them frequently and you can keep the change history of these pages.
-		 		</p>
+	 		<div class="contact-form">
+	 			<h4>Change Password</h4>
+	 			<div class="hline"></div>
         <br/>
-        <h4>Tips</h4>
-        <p>Setting up a region of interest (ROI) for your monitoring task is very important, web pages nowadays often contain numerous dynamic elements, like dates, view counts, ads etc., while you probably don't care any of those, they can cause false alarm and you may get irrelevant notifications all the time. So make sure you only select the region you care about then you should be good to go! ;)</p>
 
+        <div class="alert change-password-result">
+          </div>
+		 			<form role="form" class="reset-password-form">
+					  <div class="form-group">
+					    <label>Old password</label>
+					    <input type="password" class="form-control" id="old-password">
+					  </div>
+					  <div class="form-group">
+					    <label>New password</label>
+					    <input type="password" class="form-control" id="new-password">
+					  </div>
+            <div class="form-group">
+              <label>Confirm new password</label>
+              <input type="password" class="form-control" id="confirm-new-password">
+              <div class="confirm-new-password-not-match">Doesn't match</div>
+            </div>
+					</form>
+          <button class="btn btn-theme change-password-btn">Submit</button>
 
-	 		</div>
+			</div>
+	 		
+
 	 	</div><! --/row -->
 	 </div><! --/container -->
-
 
 
 	<!-- *****************************************************************************************************************
@@ -111,19 +110,20 @@
 	 ***************************************************************************************************************** -->
 	 <div id="footerwrap">
 		<div class="container">
-			© Copyright 2015 - 2017 | All Rights Reserved
+			© COPYRIGHT 2015 - 2017 | All Rights Reserved
 		</div><! --/container -->
 	 </div><! --/footerwrap -->
 
+	 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <script src="assets/js/noty.js?v=0.1"></script>
   <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/noty.js?v=0.1"></script>
   <script src="assets/js/bootbox.min.js"></script>
   <script src="assets/js/share.js?v=0.1"></script>
-
+  <script src="assets/js/account.js?v=0.1"></script>
 
   </body>
 </html>
