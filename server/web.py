@@ -56,6 +56,10 @@ def confirm_email():
 	if email and secret and secret == hash_email(email):
 		user = db_session.query(CareUser).filter(CareUser.email==email).first()
 		user.confirmed = True
+
+		tasks = db_session.query(CareTask).filter(CareTask.user_id==user.id).all()
+		for t in tasks:
+			t.pause = False
 		db_session.commit()
 		session['user'] = user.as_dict()
 		return redirect("/account.html")

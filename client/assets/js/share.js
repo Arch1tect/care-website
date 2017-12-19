@@ -8,6 +8,7 @@ function sessionActive(email) {
 	$(".login-link").removeClass('login-link');
 
 	$(".user-email").val(email);
+	$(".user-email").prop('disabled', true);
 
 	$(".logout-link").on('click', function(){
 
