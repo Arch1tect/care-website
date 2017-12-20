@@ -104,7 +104,6 @@ function changeImg(goPrev) {
 			taskLog = taskLog.next;
 	}
 
-
 	if (taskLog) {
 
 		if (change) {
@@ -124,7 +123,7 @@ function loadHisotry(logs) {
 	$(window).scrollTop(0);
 	$('.task-table tbody tr').remove();
 	var i = (pageNum-1)*pageSize;
-	var last = null
+	var last = null;
 	for (; i < Math.min(logs.length, pageNum*pageSize); i++) {
 		var taskLog = logs[i];
 		taskLog.last = last;
@@ -199,9 +198,7 @@ function setupPages(logs) {
 				loadHisotry(logs);
 			}
 		});
-		$('.carousel-control').click(function() {
-			changeImg($(this).hasClass('left'));
-		});
+
 	} else {
 
 		// TODO: shouldn't happen since there is a log
@@ -214,6 +211,11 @@ function setupPages(logs) {
 
 }
 jQuery(document).ready(function(){
+
+	$('.carousel-control').click(function() {
+		changeImg($(this).hasClass('left'));
+	});
+
 	taskId = window.location.search.substring(4)
 	$(".change-only-check").on("change", function()
     {
