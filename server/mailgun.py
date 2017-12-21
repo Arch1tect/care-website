@@ -22,8 +22,8 @@ def send_welcome_email(email, tmp_password):
 	subject = "Welcome! Please confirm your email address"
 	confirm_email_link = "webwatchman.com/api/confirm_email?email={}&secret={}".format(email, hash_email(email))
 	html = "<br/>Welcome! Your account has been created with Web Watchman! "
-	html += "<br/><br/>Please click <a href='{}'>here</a> to confirm your email.".format(confirm_email_link)
-	html += "<br/>"
+	html += "<br/><br/>Please click the link below to confirm your email."
+	html += "<br/><a href='{}'>{}</a>".format(confirm_email_link, confirm_email_link)
 	html += "<br/>Your temporary password is: <b>" + tmp_password +"</b>"
 	html += "<br/><br/>If you did not register with Web Watchman, please ignore this email."
 	html += "<br/>"
