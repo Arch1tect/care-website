@@ -127,6 +127,6 @@ for t in session.query(CareTask).all():
 		session.add(check_log)
 		t.last_run_time = now
 		t.last_run_id = t.last_run_id + 1
+		session.commit()
 
-session.commit()
 session.remove()
