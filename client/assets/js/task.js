@@ -538,7 +538,7 @@ jQuery(document).ready(function(){
 				var payload = {
 					'roi': selectedBox
 				}
-				var noty = createNoty('Updating check interval...');
+				var noty = createNoty('Updating ROI...');
 				$.ajax ({
 					url: "api/task/"+task.id+"/roi",
 					type: "POST",

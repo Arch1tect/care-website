@@ -1,4 +1,24 @@
+function createNoty(text) {
+	var noty = new Noty({
+		text: text,
+		progressBar: false,
+		type: 'warning',
+		animation: {
+			// open: 'animated fadeInUp',
+			close: 'animated fadeOut'
+		},
+	}).show();
 
+	return noty;
+}
+
+function closeNoty(noty, type, text) {
+	noty.setTimeout(1500);
+	setTimeout(function(){
+		noty.setType(type);
+		noty.setText(text);
+	}, 500);
+}
 function sessionActive(email) {
 	window.email = email;
 	$('.manage-link').removeClass('manage-link');
