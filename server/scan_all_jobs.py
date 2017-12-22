@@ -33,7 +33,7 @@ def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 	verification_attempt_count = 0
 	verified_no_change_count = 1
 
-	while verification_attempt_count < 10:
+	while verification_attempt_count < 5:
 
 		verification_attempt_count = verification_attempt_count + 1
 		logger.info('[Task {}] Stabilization attempt: {}'.format(t.id, verification_attempt_count))
@@ -47,8 +47,8 @@ def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 			else:
 				verified_no_change_count = verified_no_change_count + 1
 				logger.info('[Task {}] Page not changed during stabilization, count: {}'.format(t.id, verified_no_change_count))
-				if verified_no_change_count == 3:
-					logger.info('[Task {}] Page has not changed for 3 times during stabilization.'.format(t.id))
+				if verified_no_change_count == 2:
+					logger.info('[Task {}] Page has not changed for 2 times during stabilization.'.format(t.id))
 					return True
 			tmp_screenshot_path1, tmp_screenshot_path2 = tmp_screenshot_path2, tmp_screenshot_path1
 		else:
