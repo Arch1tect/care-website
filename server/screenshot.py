@@ -8,6 +8,8 @@ import time
 from selenium import webdriver  
 from selenium.webdriver.chrome.options import Options
 
+from s3 import upload_to_s3
+
 logger = logging.getLogger(__name__)
 
 chrome_options = Options()  
@@ -18,11 +20,13 @@ chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 1
 # chrome_options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"  
 
 
-def take_screenshot(url, screenshot_path, wait):
+def take_screenshot(url, screenshot_name, wait):
 	# TODO: no need to save if found no change
 	# https://stb-tester.com/blog/2016/09/20/add-visual-verification-to-your-selenium-tests-with-stb-tester
 	driver = webdriver.Chrome(chrome_options=chrome_options)
 	res = False
+	# path inside container
+	screenshot_path = "/watchman/screenshot/" + screenshot_name
 	try:
 		# logger.info('[Task {}] Loading {}'.format(task.id, task.url))
 		# driver.get(task.url)
@@ -39,12 +43,15 @@ def take_screenshot(url, screenshot_path, wait):
 			height = 3000
 		# logger.info('[Task {}] Document size {},{}'.format(task.id, width, height))
 		driver.set_window_size(width, height)
-
 		# logger.info('[Task {}] Taking screenshot'.format(task.id))
 
 		driver.save_screenshot(screenshot_path)
-
+		f = open(screenshot_path)
+		res = upload_to_s3(f, 'screenshot/'+screenshot_name)
 		# logger.info('[Task {}] screenshot saved successfully - {}'.format(task.id, screenshot_path))
+		print "s3 upload res:"
+		print res
+
 		res = True
 	except Exception as e:
 		logger.exception(e)
@@ -54,7 +61,8 @@ def take_screenshot(url, screenshot_path, wait):
 	return res
 
 url = sys.argv[1]
-screenshot_path = '/mnt/care-website/screenshot/' + sys.argv[2]
+# screenshot_path = '/mnt/watchman/screenshot/' + sys.argv[2]
+screenshot_name = sys.argv[2]
 wait = sys.argv[3]
 
-take_screenshot(url, screenshot_path, wait)
+take_screenshot(url, screenshot_name, wait)

@@ -134,7 +134,7 @@ function testScreenshot(taskId) {
 			type: "GET",
 			contentType: "application/json",
 		}).done(function(screenshotName) {
-			$('#testScreenshotModal img').attr('src', "screenshot/" + screenshotName);
+			$('#testScreenshotModal img').attr('src', s3_screenshot_url + screenshotName);
 			closeNoty(noty,'success', 'Success!');
 		}).fail(function(error) {
 			closeNoty(noty, 'error', error.statusText);
@@ -189,15 +189,15 @@ function pauseOrContinueTask(taskId, $btn) {
 }
 
 function initialScreenshotSrc(task) {
-	return 'screenshot/'+task.id+'-0.png';
+	return s3_screenshot_url+task.id+'-0.png';
 }
 function lastScreenshotSrc(task) {
-	return 'screenshot/'+task.id+'-'+task.last_run_id+'.png';
+	return s3_screenshot_url+task.id+'-'+task.last_run_id+'.png';
 }
 function lastTriggeredChangeSrc(task) {
 	var taskLog = task.log_changed;
 	var logId = taskLog.run_id;
-	return 'screenshot/change/'+task.id+'-'+logId+'.png';
+	return s3_screenshot_url+'change/'+task.id+'-'+logId+'.png';
 }
 function updateEnlargeModal(node) {
 	$title = $('#enlargeImageModal .modal-title');

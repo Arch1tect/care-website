@@ -1,0 +1,23 @@
+FROM python:2
+
+COPY server /watchman/server
+
+# create folder for log file
+RUN mkdir -p /var/log/watchman
+
+EXPOSE  9001
+
+# upgrade the pip package to the latest version
+RUN pip install --upgrade pip
+
+RUN pip install --no-cache-dir -r /watchman/server/api-requirements.txt
+
+CMD ["python", "/watchman/server/web.py"]
+
+
+
+# build with `docker build -t watchman-api -f webAPIDockerfile ..` double dot is because we want context to be one directory higher than /server directory
+
+# run container with `docker run -p 9001:9001 watchman-api`
+
+# not using this now, because not sure how to start container from container

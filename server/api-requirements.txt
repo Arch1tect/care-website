@@ -4,8 +4,6 @@ requests==2.18.4
 flask==0.12.2
 flask-sqlalchemy==2.3.2
 docker==2.5.1
-imutils==0.4.3
-scikit-image==0.13.0
-opencv-python==3.3.0.10
 gitpython==2.1.0
 flask-limiter==1.0.1
+boto3==1.5.6

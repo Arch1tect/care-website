@@ -16,6 +16,7 @@ from browser import take_screenshot
 from mailgun import send_welcome_email
 from plugin import check_login_session, api_exception_handler
 from crypto import hash_email, generate_password
+from s3 import copy_file
 
 app = Flask(__name__)
 
@@ -229,22 +230,6 @@ def sort_users_tasks(task):
 
 	return task['created']
 
-
-@app.route("/api/task/<task_id>/screenshot")
-@api_exception_handler
-@limiter.limit("1/minute")
-@check_login_session
-def get_screenshot_for_task(task_id):
-	'''Get screenshot of existing task, not checking changes though'''
-	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
-	screenshot_name = '{}.png'.format(time.time())
-	#  Should put these in a different folder
-	screenshot_path = '../screenshot/{}'.format(screenshot_name)
-	if take_screenshot(task.url, screenshot_path, task.wait):
-		return screenshot_name
-
-	return 'Failed to take screenshot.', 500
-
 @app.route("/api/task/<task_id>", methods=['DELETE'])
 @api_exception_handler
 @limiter.limit("10/minute")
@@ -295,12 +280,27 @@ def create_new_task():
 
 	initial_screenshot = data.get('screenshot')
 	if initial_screenshot:
-		os.rename('../screenshot/{}'.format(initial_screenshot),
-				  '../screenshot/{}-0.png'.format(task.id))
+		copy_file('screenshot/'+initial_screenshot, 'screenshot/{}-0.png'.format(task.id))
+
 	res = {
 		'is_new_user': is_new_user
 	}
 	return jsonify(res)
+
+@app.route("/api/task/<task_id>/screenshot")
+@api_exception_handler
+@limiter.limit("3/minute")
+@check_login_session
+def get_screenshot_for_task(task_id):
+	'''Get screenshot of existing task, not checking changes though'''
+	task = db_session.query(CareTask).filter(CareTask.id==task_id).one()
+	screenshot_name = '{}-{}.png'.format(task.id, time.time())
+	#  Should put these in a different folder
+	screenshot_path = 'test/{}'.format(screenshot_name)
+	if take_screenshot(task.url, screenshot_path, task.wait):
+		return screenshot_path
+
+	return 'Failed to take screenshot.', 500
 
 @app.route("/api/screenshot/url", methods=['POST'])
 @api_exception_handler
@@ -311,8 +311,8 @@ def take_screenshot_for_url():
 	url = correct_url(data['url'])
 	screenshot_name = '{}.png'.format(time.time())
 	#  Should put these in a different folder
-	screenshot_path = '../screenshot/{}'.format(screenshot_name)
-	if take_screenshot(url, screenshot_path):
+	# screenshot_path = '../screenshot/{}'.format(screenshot_name)
+	if take_screenshot(url, screenshot_name):
 		return screenshot_name
 
 	return 'Failed to take screenshot.', 500
@@ -325,7 +325,7 @@ def correct_url(url):
 # TODO debug=True only for dev environment
 if __name__ == "__main__":
 	logger.info('Running as main')
-	app.run(debug=True, host='0.0.0.0', port=9000)
+	app.run(debug=True, host='0.0.0.0', port=9001)
 else:
 	logger.info('Not running as main, probably using wsgi')
 	import uwsgi

@@ -150,7 +150,7 @@ function loadHisotry(logs) {
 
 		if (taskLog.changed) {
 			var $changedImg = $("<img class='change'></img>");
-			var changedImgUrl = 'screenshot/change/'+taskId+'-'+taskLog.run_id+'.png';
+			var changedImgUrl = s3_screenshot_url+'change/'+taskId+'-'+taskLog.run_id+'.png';
 			$changedImg.attr('src', changedImgUrl);
 			$changedImg.click(showImageInModal(taskLog, true));
 			$changeDiv.append($changedImg);
@@ -172,7 +172,7 @@ function loadHisotry(logs) {
 		// screenshot btn
 		var $btn = $("<button class='btn btn-primary'></button");
 		$btn.text('View');
-		var fullScreeshotUrl = 'screenshot/'+taskId+'-'+taskLog.run_id+'.png';
+		var fullScreeshotUrl = s3_screenshot_url+taskId+'-'+taskLog.run_id+'.png';
 		taskLog.screenshotUrl = fullScreeshotUrl;
 		$btn.click(showImageInModal(taskLog, false));
 		cells.push($btn);

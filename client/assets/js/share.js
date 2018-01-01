@@ -1,3 +1,5 @@
+var s3_screenshot_url = "https://watchman-asia.s3.amazonaws.com/screenshot/";
+
 function createNoty(text) {
 	var noty = new Noty({
 		text: text,

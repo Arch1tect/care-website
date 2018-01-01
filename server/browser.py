@@ -3,9 +3,9 @@ import os
 
 client = docker.from_env()
 volume_bindings = {
-					'/public/care-website/': {
-										'bind': '/mnt/care-website',
-										'mode': 'rw'
+					'/watchman/': {
+										'bind': '/mnt/watchman',
+										'mode': 'ro'
 									}
 				 }
 
@@ -15,11 +15,13 @@ def take_screenshot(url, screenshot_path, wait=None):
 		wait = 2
 	print 'taking screenshot...will wait', wait, 'sec'
 	program = 'python'
-	script = '/mnt/care-website/server/screenshot.py'
+	script = '/mnt/watchman/server/screenshot.py'
 	arguments = '{} {} {}'.format(url, screenshot_path, wait)
 	cmd = "{} {} {}".format(program, script, arguments)
-	docker_logs = client.containers.run("care:latest", cmd, volumes=volume_bindings)
+	docker_logs = client.containers.run("browser:latest", cmd, volumes=volume_bindings)
+	# docker_logs = client.containers.run("browser:latest", cmd)
 
+	print "docker_logs"
 	print docker_logs
 
-	return os.path.isfile(screenshot_path)
+	return True

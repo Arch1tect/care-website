@@ -126,7 +126,7 @@ function clearCoords()
 				takingScreemshot = false;
 				$('button.take-screenshot').prop("disabled", false);
 				screenshotName = imgName;
-				$('.screenshot').attr("src", "screenshot/" + screenshotName);
+				$('.screenshot').attr("src", s3_screenshot_url + screenshotName);
 			}).fail(function(error) {
 				takingScreemshot = false;
 				$('button.take-screenshot').prop("disabled", false);

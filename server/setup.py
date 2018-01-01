@@ -11,7 +11,7 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 
-log_file = '/var/log/watchmen/log.txt'
+log_file = '/var/log/watchman/log.txt'
 root_logger = logging.getLogger('')
 root_logger.setLevel(logging.INFO)
 # Create formatter and add it to both handlers
