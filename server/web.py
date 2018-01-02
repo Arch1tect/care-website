@@ -16,7 +16,7 @@ from browser import take_screenshot
 from mailgun import send_welcome_email
 from plugin import check_login_session, api_exception_handler
 from crypto import hash_email, generate_password
-from s3 import copy_file
+from s3 import upload_to_s3, copy_file
 
 app = Flask(__name__)
 
@@ -298,6 +298,10 @@ def get_screenshot_for_task(task_id):
 	#  Should put these in a different folder
 	screenshot_path = 'test/{}'.format(screenshot_name)
 	if take_screenshot(task.url, screenshot_path, task.wait):
+		local_path = '/watchman/screenshot/' + screenshot_path
+		f = open(local_path)
+		res = upload_to_s3(f, 'screenshot/'+screenshot_path)
+		logger.info(res)
 		return screenshot_path
 
 	return 'Failed to take screenshot.', 500
@@ -309,10 +313,14 @@ def take_screenshot_for_url():
 	'''Take screenshot before creating new task'''
 	data = request.get_json()
 	url = correct_url(data['url'])
-	screenshot_name = '{}.png'.format(time.time())
+	screenshot_name = 'new/{}.png'.format(time.time())
 	#  Should put these in a different folder
 	# screenshot_path = '../screenshot/{}'.format(screenshot_name)
 	if take_screenshot(url, screenshot_name):
+		local_path = '/watchman/screenshot/' + screenshot_name
+		f = open(local_path)
+		res = upload_to_s3(f, 'screenshot/'+screenshot_name)
+		logger.info(res)
 		return screenshot_name
 
 	return 'Failed to take screenshot.', 500

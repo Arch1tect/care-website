@@ -5,7 +5,7 @@ client = docker.from_env()
 volume_bindings = {
 					'/watchman/': {
 										'bind': '/mnt/watchman',
-										'mode': 'ro'
+										'mode': 'rw'
 									}
 				 }
 

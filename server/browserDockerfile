@@ -2,10 +2,6 @@ FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# store screenshot locally before uploading to aws s3
-RUN mkdir -p /watchman/screenshot/test
-RUN mkdir -p /watchman/screenshot/change
-
 RUN apt-get update && apt-get install -y \
 	python-pip \
 	libmysqlclient-dev \
@@ -34,8 +30,5 @@ RUN mv chromedriver /usr/local/bin/chromedriver
 RUN pip install --upgrade pip
 
 RUN pip --no-cache-dir install selenium==3.5.0
-RUN pip --no-cache-dir install boto3==1.5.6
 
 # build with `docker build -t browser -f browserDockerfile .`
-
-# run container with `docker run -p 9001:9001 watchman-api`

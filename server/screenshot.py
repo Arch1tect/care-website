@@ -8,8 +8,6 @@ import time
 from selenium import webdriver  
 from selenium.webdriver.chrome.options import Options
 
-from s3 import upload_to_s3
-
 logger = logging.getLogger(__name__)
 
 chrome_options = Options()  
@@ -26,7 +24,7 @@ def take_screenshot(url, screenshot_name, wait):
 	driver = webdriver.Chrome(chrome_options=chrome_options)
 	res = False
 	# path inside container
-	screenshot_path = "/watchman/screenshot/" + screenshot_name
+	screenshot_path = "/mnt/watchman/screenshot/" + screenshot_name
 	try:
 		# logger.info('[Task {}] Loading {}'.format(task.id, task.url))
 		# driver.get(task.url)
@@ -46,11 +44,11 @@ def take_screenshot(url, screenshot_name, wait):
 		# logger.info('[Task {}] Taking screenshot'.format(task.id))
 
 		driver.save_screenshot(screenshot_path)
-		f = open(screenshot_path)
-		res = upload_to_s3(f, 'screenshot/'+screenshot_name)
+		# f = open(screenshot_path)
+		# res = upload_to_s3(f, 'screenshot/'+screenshot_name)
 		# logger.info('[Task {}] screenshot saved successfully - {}'.format(task.id, screenshot_path))
-		print "s3 upload res:"
-		print res
+		# print "s3 upload res:"
+		# print res
 
 		res = True
 	except Exception as e:
@@ -61,7 +59,6 @@ def take_screenshot(url, screenshot_name, wait):
 	return res
 
 url = sys.argv[1]
-# screenshot_path = '/mnt/watchman/screenshot/' + sys.argv[2]
 screenshot_name = sys.argv[2]
 wait = sys.argv[3]
 
