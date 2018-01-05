@@ -10,7 +10,7 @@ from flask_limiter.util import get_remote_address
 import git
 
 import setup
-from cfg.credentials import db_user, db_password
+from cfg.secret import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
 from mailgun import send_welcome_email

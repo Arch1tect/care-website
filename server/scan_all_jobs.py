@@ -3,12 +3,13 @@ import os
 import logging
 from datetime import datetime
 
+import setup
 from db.model import CareTask, TaskLog, CareUser
 from db_session import session
 from browser import take_screenshot
 from image_diff import compare_img
 from mailgun import notify_change
-import setup
+from s3 import upload_to_s3
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 
 		new_screenshot_taken = take_screenshot(t.url, tmp_screenshot_path2, t.wait)
 		if new_screenshot_taken:
-			changed = compare_img(t, tmp_screenshot_path1, tmp_screenshot_path2)
+			changed = compare_img(t, '../screenshot/'+tmp_screenshot_path1, '../screenshot/'+tmp_screenshot_path2)
 			if changed:
 				logger.info('[Task {}] Changed again during stabilization'.format(t.id))
 				verified_no_change_count = 1
@@ -64,22 +65,25 @@ def run_task(t, check_log):
 	# run a task, if detected change, run 3 times to verify change
 	logger.info('[Task {}] last_run_time {}'.format(t.id, t.last_run_time))
 	run_id = t.last_run_id + 1
+	
 	check_log.run_id = run_id
-	old_screenshot_path = '../screenshot/{}-{}.png'.format(t.id, t.last_run_id)
-	new_screenshot_path = '../screenshot/{}-{}.png'.format(t.id, run_id)
-	tmp_screenshot_path1 = '../screenshot/{}-{}-tmp1.png'.format(t.id, run_id)
-	tmp_screenshot_path2 = '../screenshot/{}-{}-tmp2.png'.format(t.id, run_id)
+	old_screenshot_name = '{}-{}.png'.format(t.id, t.last_run_id)
+	old_screenshot_path = '../screenshot/{}'.format(old_screenshot_name)
+	new_screenshot_name = '{}-{}.png'.format(t.id, run_id)
+	tmp_screenshot_name1 = '{}-tmp1.png'.format(new_screenshot_name)
+	tmp_screenshot_name2 = '{}-tmp2.png'.format(new_screenshot_name)
 	diff_img_name = '{}-{}.png'.format(t.id, run_id)
 	diff_img_path = '../screenshot/change/{}'.format(diff_img_name)
 
 
-	new_screenshot_taken = take_screenshot(t.url, tmp_screenshot_path1, t.wait)
+	new_screenshot_taken = take_screenshot(t.url, tmp_screenshot_name1, t.wait)
 	# if a new screenshot is taken, we take it as a success
 	check_log.success = new_screenshot_taken
 	# TODO: do we need to retry if fail to take new screenshot?
 
 	previous_screenshot_exist = True
 	if not os.path.isfile(old_screenshot_path):
+		# TODO: load from s3 if prev screenshot not on same server
 		previous_screenshot_exist = False
 		logger.info('[Task {}] No previous screenshot.'.format(t.id))
 	if not new_screenshot_taken:
@@ -89,15 +93,15 @@ def run_task(t, check_log):
 	if new_screenshot_taken:
 		# compare new screenshot with old screenshot
 		if previous_screenshot_exist:
-			changed = compare_img(t, old_screenshot_path, tmp_screenshot_path1)
+			changed = compare_img(t, old_screenshot_path, '../screenshot/'+tmp_screenshot_name1)
 
 			if changed:
-
-				if stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
-					if compare_img(t, old_screenshot_path, tmp_screenshot_path1, diff_img_path):
-
+				if stabilize_screenshot(t, tmp_screenshot_name1, tmp_screenshot_name2):
+					if compare_img(t, old_screenshot_path, '../screenshot/'+tmp_screenshot_name1, diff_img_path):
 						logger.info('[Task {}] Verifed change'.format(t.id))
 						send_email_to_user(t, diff_img_path, diff_img_name)
+						change_image = open(diff_img_path)
+						upload_to_s3(change_image, 'screenshot/change/' + diff_img_name)
 						check_log.notified = True
 						check_log.changed = True
 					else:
@@ -107,8 +111,9 @@ def run_task(t, check_log):
 			else:
 				check_log.changed = False
 
-		os.rename(tmp_screenshot_path1, new_screenshot_path)
-
+		os.rename('../screenshot/'+tmp_screenshot_name1, '../screenshot/'+new_screenshot_name)
+		f = open('../screenshot/' + new_screenshot_name)
+		res = upload_to_s3(f, 'screenshot/' + new_screenshot_name)
 
 for t in session.query(CareTask).all():
 	now = datetime.utcnow()

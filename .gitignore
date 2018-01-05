@@ -1,4 +1,5 @@
 /server/care-web/*
+/server/cfg/secret.py
 *.pyc
 /log/log.txt
 /log/*

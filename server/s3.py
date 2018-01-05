@@ -2,13 +2,16 @@ import logging
 
 import boto3
 
+from cfg.secret import aws_access_key_id, aws_secret_access_key
+
+
 logger = logging.getLogger(__name__)
 
 
 s3_client = boto3.client(
 	's3',
-	aws_access_key_id='AKIAIF2B5KP4GNYWBOJQ',
-	aws_secret_access_key='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'
+	aws_access_key_id=aws_access_key_id,
+	aws_secret_access_key=aws_secret_access_key
 )
 
 bucket = 'watchman-asia'
