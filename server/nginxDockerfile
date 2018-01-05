@@ -1,5 +1,5 @@
 FROM nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-
+#  docker build -t nginx -f nginxDockerfile .
 # run with `docker run -d --net="host" nginx`
