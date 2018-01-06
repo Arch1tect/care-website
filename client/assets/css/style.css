@@ -754,7 +754,8 @@ span.notified {
     padding: 3px;
 }
 .content-wrapper {
-	overflow-x: auto;
+	overflow-x: scroll;
+	-webkit-overflow-scrolling: touch;
 	min-height: calc(100vh - 356px);
 }
 .index-content-wrapper {
