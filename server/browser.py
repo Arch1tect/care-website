@@ -18,7 +18,7 @@ def take_screenshot(url, screenshot_path, wait=None):
 	script = '/mnt/watchman/server/screenshot.py'
 	arguments = '{} {} {}'.format(url, screenshot_path, wait)
 	cmd = "{} {} {}".format(program, script, arguments)
-	docker_logs = client.containers.run("browser:latest", cmd, volumes=volume_bindings)
+	docker_logs = client.containers.run("browser:latest", cmd, volumes=volume_bindings, shm_size='2G')
 	# docker_logs = client.containers.run("browser:latest", cmd)
 
 	print "docker_logs"

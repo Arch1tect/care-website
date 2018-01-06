@@ -39,6 +39,8 @@ def take_screenshot(url, screenshot_name, wait):
 			height = 1200
 		if height > 3000:
 			height = 3000
+		if width < 800:
+			width = 800
 		# logger.info('[Task {}] Document size {},{}'.format(task.id, width, height))
 		driver.set_window_size(width, height)
 		# logger.info('[Task {}] Taking screenshot'.format(task.id))
@@ -53,6 +55,7 @@ def take_screenshot(url, screenshot_name, wait):
 		res = True
 	except Exception as e:
 		logger.exception(e)
+		print str(e)
 		# logger.error('[Task {}] screenshot failed.'.format(task.id))
 
 	driver.quit()
