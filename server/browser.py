@@ -21,7 +21,7 @@ def take_screenshot(url, screenshot_path, wait=None):
 	docker_logs = client.containers.run("browser:latest", cmd, volumes=volume_bindings, shm_size='2G')
 	# docker_logs = client.containers.run("browser:latest", cmd)
 
-	print "docker_logs"
-	print docker_logs
+	# print "docker_logs"
+	# print docker_logs
 
 	return True
