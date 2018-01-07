@@ -13,7 +13,7 @@ import setup
 from cfg.secret import db_user, db_password
 from db.model import CareTask, TaskLog, CareUser
 from browser import take_screenshot
-from mailgun import send_welcome_email
+from mailgun import send_welcome_email, send_simple_message
 from plugin import check_login_session, api_exception_handler
 from crypto import hash_email, generate_password
 from s3 import upload_to_s3, copy_file
@@ -330,6 +330,23 @@ def correct_url(url):
 		url = 'http://' + url
 	return url
 
+@app.route("/api/feedback", methods=['POST'])
+@api_exception_handler
+@limiter.limit("3/minute")
+def feedback():
+	data = request.get_json()
+	subject = data['subject']
+	name = data['name']
+	msg = data['msg']
+	if not msg:
+		return "Message is required.", 400
+	email = data['email']
+	if not email:
+		return "Email is required.", 400
+
+	html = msg + "<br/><br/><br/>" + "Sent by " + name + "<br/>Email: " + email
+	send_simple_message(subject, 'swtdavid@gmail.com', html=html)
+	return 'success!'
 # TODO debug=True only for dev environment
 if __name__ == "__main__":
 	logger.info('Running as main')

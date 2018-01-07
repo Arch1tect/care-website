@@ -166,10 +166,7 @@ function clearCoords()
 			$('span.interval').text("Check every " + $(this).text());
 		});
 
-
-
 		window.jcrop_api = null;
-
 
 		$('#coords').on('change','input',function(e){
 		  var x1 = $('#x1').val(),
@@ -178,9 +175,6 @@ function clearCoords()
 			  y2 = $('#y2').val();
 		  window.jcrop_api.setSelect([x1,y1,x2,y2]);
 		});
-
-
-
 
 	}); 
 
