@@ -38,7 +38,7 @@ function getROI($img) {
 
 function showExistingROI($img) {
 	// image/modal must have already loaded fully
-	var $roiBox = $('#roi-box');
+	var $roiBox = $('.roi-box');
 
 	screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
 	var roi = getROI($img);
@@ -79,7 +79,7 @@ function editROI($img) {
 }
 function removeROI() {
 	removeEditableROI();
-	var $roiBox = $('#roi-box');
+	var $roiBox = $('.roi-box');
 	$roiBox.hide();
 }
 function updateROI($img) {
@@ -120,22 +120,28 @@ function showCoords(c)
 	}
 }
 
-function testScreenshot(taskId) {
+function testScreenshot(task) {
 
 	return function() {
+		removeROI();
 		var loadingImg = 'assets/img/loading-spinner.gif';
 
 		$('#testScreenshotModal').modal('show');
-		$('#testScreenshotModal img').attr('src', loadingImg);
+		var $testScreenshotImg = $('#testScreenshotModal img');
+		$testScreenshotImg.attr('src', loadingImg);
 		var noty = createNoty('Taking screenshot...');
 
 		$.ajax ({
-			url: "api/task/"+taskId+'/screenshot',
+			url: "api/task/"+task.id+'/screenshot',
 			type: "GET",
 			contentType: "application/json",
 		}).done(function(screenshotName) {
-			$('#testScreenshotModal img').attr('src', s3_screenshot_url + screenshotName);
+			$testScreenshotImg.attr('src', s3_screenshot_url + screenshotName);
+			var data = {};
+			data.task = task;
+			$testScreenshotImg.data('imgNode', data);
 			closeNoty(noty,'success', 'Success!');
+
 		}).fail(function(error) {
 			closeNoty(noty, 'error', error.statusText);
 			$('#testScreenshotModal').modal('hide');
@@ -391,7 +397,7 @@ jQuery(document).ready(function(){
 
 				var $buttonsWrapper = $("<div class='btn-group'></div>");
 				var $runBtn = $("<button class='btn btn-info'>Test</button>");
-				$runBtn.click(testScreenshot(task.id));
+				$runBtn.click(testScreenshot(task));
 				var $pauseBtn = $("<button class='btn'>Pause</button>");
 				if (task.pause) {
 					$pauseBtn.text('Resume');
@@ -529,7 +535,9 @@ jQuery(document).ready(function(){
 				});
 
 			});
-
+			$('#testScreenshotModal .screenshot').on("load", function(){
+				showExistingROI($(this));
+			});
 			$('#update-roi-btn').on('click', function() {
 
 				var $img = $('#enlargeImageModal img');
@@ -580,7 +588,7 @@ jQuery(document).ready(function(){
 				changeImg($(this).hasClass('left'));
 			});
 
-			$(".modal").keydown(function(e) {
+			$("#enlargeImageModal .modal").keydown(function(e) {
 			  if(e.keyCode == 37) { // left
 				changeImg(true);
 			  }

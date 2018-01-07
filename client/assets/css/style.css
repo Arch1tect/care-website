@@ -696,6 +696,10 @@ span.notified {
 }
 #testScreenshotModal .screenshot {
 	width: 100%;
+	margin:0px;
+}
+#testScreenshotModal .modal-body {
+	padding: 0px;
 }
 #enlargeImageModal .modal-body {
 	/*remove default padding because it bugs roi box */
@@ -707,7 +711,7 @@ span.notified {
 	/*remove default margin because it bugs roi box */
 	margin-top: 0px;
 }
-#roi-box {
+.roi-box {
     position: absolute;
     border: 3px solid red;
     display: none;

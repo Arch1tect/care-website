@@ -53,6 +53,10 @@ function clearCoords()
 
 		var addTask = function() {
 			hideAlert();
+			if (!$('.user-email').val()) {
+				showAlert('warning', 'Email is required');
+				return;
+			}
 			$('button.add-task').prop("disabled", true);
 			var payload = {
 				// 'name': 'yo',
@@ -87,6 +91,7 @@ function clearCoords()
 		var hideAlert = function() {
 			$('.care-alert').removeClass('alert-success');
 			$('.care-alert').removeClass('alert-danger');
+			$('.care-alert').removeClass('alert-warning');
 			$('.care-alert').removeClass('alert-info');
 			$('.care-alert').hide();
 			$('.care-alert').text('no message');
