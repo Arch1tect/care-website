@@ -29,6 +29,7 @@ function clearCoords()
 	var loadingImg = 'assets/img/loading-spinner.gif';
 	var screenshotName = null;
 	jQuery(document).ready(function(){
+		$('button.add-task').prop("disabled", true);
 
 		$('.screenshot').on("load",function(){
 
@@ -52,6 +53,7 @@ function clearCoords()
 
 		var addTask = function() {
 			hideAlert();
+			$('button.add-task').prop("disabled", true);
 			var payload = {
 				// 'name': 'yo',
 				'email': $('.user-email').val(),
@@ -74,8 +76,10 @@ function clearCoords()
 					showAlert('success', msg);
 				}
 			).fail(
-				function() {
+				function(error) {
+					$('button.add-task').prop("disabled", false);
 					showAlert('danger', 'Failed.');
+					console.log(error);
 				}
 			);
 		}
@@ -125,6 +129,7 @@ function clearCoords()
 			}).done(function(imgName) {
 				takingScreemshot = false;
 				$('button.take-screenshot').prop("disabled", false);
+				$('button.add-task').prop("disabled", false);
 				screenshotName = imgName;
 				$('.screenshot').attr("src", s3_screenshot_url + screenshotName);
 			}).fail(function(error) {
