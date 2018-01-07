@@ -2,6 +2,7 @@ var roiToggle = false;
 var screenshotDisplayRatio = 1;
 var selectedBox = null;
 var tasks = null;
+var loadingImg = 'assets/img/loading-spinner.gif';
 
 function removeEditableROI() {
 	if (window.jcrop_api) {
@@ -124,7 +125,6 @@ function testScreenshot(task) {
 
 	return function() {
 		removeROI();
-		var loadingImg = 'assets/img/loading-spinner.gif';
 
 		$('#testScreenshotModal').modal('show');
 		var $testScreenshotImg = $('#testScreenshotModal img');
@@ -536,6 +536,8 @@ jQuery(document).ready(function(){
 
 			});
 			$('#testScreenshotModal .screenshot').on("load", function(){
+				if ($(this).attr("src") == loadingImg)
+					return;
 				showExistingROI($(this));
 			});
 			$('#update-roi-btn').on('click', function() {

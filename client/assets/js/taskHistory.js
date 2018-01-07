@@ -32,7 +32,7 @@ function addROI($img) {
 }
 function showExistingROI($img) {
 	// image/modal must have already loaded fully
-	var $roiBox = $('#roi-box');
+	var $roiBox = $('.roi-box');
 
 	var screenshotDisplayRatio = $img.width()/$img[0].naturalWidth;
 
@@ -66,7 +66,7 @@ function showImageInModal(taskLog, change) {
 		if (change) {
 			$img.addClass('change');
 			$img.removeClass('full');
-			$('#roi-box').hide();
+			$('.roi-box').hide();
 		}else {
 			$img.addClass('full');
 			$img.removeClass('change');
@@ -115,7 +115,7 @@ function changeImg(goPrev) {
 		$('.modal-title').text(taskLog.timeFormatted);
 		$img.data('taskLog', taskLog);
 		$img.hide();
-		$('#roi-box').hide();
+		$('.roi-box').hide();
 	}
 }
 
