@@ -35,6 +35,9 @@ sudo yum --nogpgcheck localinstall https://intoli.com/blog/installing-google-chr
 # Docker error : no space left on device
 
 Try command below
+`docker system prune`
+`docker volume prune`
+Shouldn't need below one
 `docker rm $(docker ps -a -q)`
 
 
