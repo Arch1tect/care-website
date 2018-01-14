@@ -368,7 +368,6 @@ jQuery(document).ready(function(){
 					<span class='interval'>5 min</span>\
 					<span class='caret'></span></span>\
 					<ul class='dropdown-menu interval'>\
-						<li data-interval='300'>5 min</li>\
 						<li data-interval='600'>10 min</li>\
 						<li data-interval='1800'>30 min</li>\
 						<li data-interval='3600'>1 hour</li>\
