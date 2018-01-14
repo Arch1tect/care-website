@@ -374,7 +374,7 @@ jQuery(document).ready(function(){
 						<li data-interval='10800'>3 hour</li>\
 						<li data-interval='21600'>6 hour</li>\
 						<li data-interval='43200'>12 hour</li>\
-						<li data-interval='86400'>1 day</li>\
+						<li data-interval='86400'>24 hour</li>\
 					</ul>");
 				var $clockIcon = $("<i class='fa fa-clock-o fa-fw'></i>");
 				$intervalWrapper.append($clockIcon);
