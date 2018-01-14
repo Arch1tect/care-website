@@ -119,31 +119,25 @@ def run_task(t, check_log):
 
 def handle_task(t):
 	now = datetime.utcnow()
-	time_past = (now-t.last_run_time).total_seconds()
-	if time_past >= t.interval:
-		logger.info('[Task {}] start running'.format(t.id))
-		t.running = True
-		t.last_run_by = instance_id
-		session.commit()
-		check_log = TaskLog(task_id=t.id, timestamp=now, success=False)
-		try:
-			run_task(t, check_log)
-		except Exception as e:
-			logger.exception(e)
-			logger.error('[Task {}] fail to run task'.format(t.id))
-		run_time = (datetime.utcnow() - now).total_seconds()
-		logger.info('[Task {}] took {} seconds to finish'.format(t.id, run_time))
-		check_log.run_time = run_time
-		session.add(check_log)
-		t.last_run_time = now
-		t.last_run_id = t.last_run_id + 1
-		t.last_run_took = run_time
-		t.running = False
-		session.commit()
-		return True
-	else:
-		logger.info('[Task {}] no need to run yet'.format(t.id))
-	return False
+	logger.info('[Task {}] start running'.format(t.id))
+	t.running = True
+	t.last_run_by = instance_id
+	session.commit()
+	check_log = TaskLog(task_id=t.id, timestamp=now, success=False, last_run_by= instance_id)
+	try:
+		run_task(t, check_log)
+	except Exception as e:
+		logger.exception(e)
+		logger.error('[Task {}] fail to run task'.format(t.id))
+	run_time = (datetime.utcnow() - now).total_seconds()
+	logger.info('[Task {}] took {} seconds to finish'.format(t.id, run_time))
+	check_log.run_time = run_time
+	session.add(check_log)
+	t.last_run_time = now
+	t.last_run_id = t.last_run_id + 1
+	t.last_run_took = run_time
+	t.running = False
+	session.commit()
 
 
 def scan_tasks():
@@ -163,23 +157,30 @@ def scan_tasks():
 	never_ran_tasks = []
 	other_ran_tasks = []
 
+	now = datetime.utcnow()
 	for t in all_tasks:
-		if t.last_run_by == instance_id:
-			previous_ran_tasks.append(t)
-		elif t.last_run_by == None:
-			never_ran_tasks.append(t)
-		else:
-			other_ran_tasks.append(t)
+		time_past = (now-t.last_run_time).total_seconds()
+		if time_past >= t.interval:
+			if t.last_run_by == instance_id:
+				previous_ran_tasks.append(t)
+			elif t.last_run_by == None:
+				never_ran_tasks.append(t)
+			else:
+				other_ran_tasks.append(t)
+
+	logger.info('previous_ran_tasks: {}, never_ran_tasks: {}, other_ran_tasks: {}' \
+		  .format(len(previous_ran_tasks), len(never_ran_tasks), len(other_ran_tasks)))
+
 
 	for t in previous_ran_tasks:
-		if handle_task(t):
-			return
+		handle_task(t)
+		return
 	for t in never_ran_tasks:
-		if handle_task(t):
-			return
+		handle_task(t)
+		return
 	for t in other_ran_tasks:
-		if handle_task(t):
-			return
+		handle_task(t)
+		return
 
 
 # Get instance id
@@ -190,6 +191,9 @@ try:
 except Exception as e:
 	pass
 logger.info('Instance id: ' + instance_id)
-while True:
+
+run_task_no = 3
+while run_task_no > 0:
 	scan_tasks()
+	run_task_no = run_task_no - 1
 session.remove()

@@ -77,6 +77,7 @@ class TaskLog(Base):
 	success = Column(Boolean)
 	notified = Column(Boolean)
 	run_time = Column(Integer)
+	last_run_by = Column(String(100))
 
 	def as_dict(self):
 		return {
@@ -87,7 +88,9 @@ class TaskLog(Base):
 			'changed': self.changed,
 			'success': self.success,
 			'notified': self.notified,
-			'run_time': self.run_time
+			'run_time': self.run_time,
+			'last_run_by': self.last_run_by
+
 		}
 
 
