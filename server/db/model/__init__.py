@@ -36,13 +36,16 @@ class CareTask(Base):
 	user_id = Column(Integer)
 	name = Column(String(255))
 	interval = Column(Integer)
-	last_run_time = Column(TIMESTAMP, default=datetime.datetime.utcnow)
 	created = Column(TIMESTAMP, default=datetime.datetime.utcnow)
 	url = Column(String(1000))
-	last_run_id = Column(Integer, default=0)
 	roi = Column(String(63))
 	wait = Column(Integer)
 	pause = Column(Boolean)
+	running = Column(Boolean)
+	last_run_id = Column(Integer, default=0)
+	last_run_time = Column(TIMESTAMP, default=datetime.datetime.utcnow)
+	last_run_by = Column(String(100))
+	last_run_took = Column(Integer)
 
 	def as_dict(self):
 		return {
@@ -50,13 +53,16 @@ class CareTask(Base):
 			'user_id': self.user_id,
 			'name': self.name,
 			'interval': self.interval,
-			'last_run_id': self.last_run_id,
-			'last_run_time': self.last_run_time,
 			'created': self.created,
 			'url': self.url,
 			'roi': self.roi,
 			'wait': self.wait,
-			'pause': self.pause
+			'pause': self.pause,
+			'running': self.running,
+			'last_run_id': self.last_run_id,
+			'last_run_time': self.last_run_time,
+			'last_run_by': self.last_run_by,
+			'last_run_took': self.last_run_took
 		}
 
 class TaskLog(Base):
@@ -70,6 +76,8 @@ class TaskLog(Base):
 	changed = Column(Boolean)
 	success = Column(Boolean)
 	notified = Column(Boolean)
+	run_time = Column(Integer)
+
 	def as_dict(self):
 		return {
 			'id': self.id,
@@ -78,7 +86,8 @@ class TaskLog(Base):
 			'timestamp': self.timestamp,
 			'changed': self.changed,
 			'success': self.success,
-			'notified': self.notified
+			'notified': self.notified,
+			'run_time': self.run_time
 		}
 
 

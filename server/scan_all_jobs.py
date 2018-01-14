@@ -2,6 +2,7 @@
 import os
 import logging
 from datetime import datetime
+import requests
 
 import setup
 from db.model import CareTask, TaskLog, CareUser
@@ -25,7 +26,7 @@ def send_email_to_user(t, diff_img_path, diff_img_name):
 def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 	''' 
 		Keep getting new screenshots until the screenshots stay the same
-		for 3 times, first screenshot comes in as tmp_screenshot_path1,
+		for 2 times, first screenshot comes in as tmp_screenshot_path1,
 		take new one as tmp_screenshot_path2, then swap the name as we continue
 
 	'''
@@ -34,7 +35,7 @@ def stabilize_screenshot(t, tmp_screenshot_path1, tmp_screenshot_path2):
 	verification_attempt_count = 0
 	verified_no_change_count = 1
 
-	while verification_attempt_count < 5:
+	while verification_attempt_count < 1:
 
 		verification_attempt_count = verification_attempt_count + 1
 		logger.info('[Task {}] Stabilization attempt: {}'.format(t.id, verification_attempt_count))
@@ -115,23 +116,80 @@ def run_task(t, check_log):
 		f = open('../screenshot/' + new_screenshot_name)
 		res = upload_to_s3(f, 'screenshot/' + new_screenshot_name)
 
-for t in session.query(CareTask).all():
-	now = datetime.utcnow()
-	if t.pause:
-		continue
-	time_past = (now-t.last_run_time).total_seconds()
 
+def handle_task(t):
+	now = datetime.utcnow()
+	time_past = (now-t.last_run_time).total_seconds()
 	if time_past >= t.interval:
+		logger.info('[Task {}] start running'.format(t.id))
+		t.running = True
+		t.last_run_by = instance_id
+		session.commit()
 		check_log = TaskLog(task_id=t.id, timestamp=now, success=False)
 		try:
-			# TODO: store how long it takes to finish running this task
 			run_task(t, check_log)
 		except Exception as e:
 			logger.exception(e)
 			logger.error('[Task {}] fail to run task'.format(t.id))
+		run_time = (datetime.utcnow() - now).total_seconds()
+		logger.info('[Task {}] took {} seconds to finish'.format(t.id, run_time))
+		check_log.run_time = run_time
 		session.add(check_log)
 		t.last_run_time = now
 		t.last_run_id = t.last_run_id + 1
+		t.last_run_took = run_time
+		t.running = False
 		session.commit()
+		return True
+	else:
+		logger.info('[Task {}] no need to run yet'.format(t.id))
+	return False
 
+
+def scan_tasks():
+	# Only one task will be ran when this function is called
+	# to avoid data read from db being stale
+
+	# Get all tasks that need to be ran
+	# Sort them with priorities
+	# 1st priority: ones that were ran by current instance
+	# 2nd priority: ones that weren't ran by any instance
+	# 3rd priority: ones that were ran by other instances
+	logger.info("Start scanning tasks")
+	all_tasks = session.query(CareTask).filter(CareTask.running.isnot(True), \
+				CareTask.pause.isnot(True)).order_by(CareTask.last_run_time).all()
+	# note that != True won't include cases where value is Null, use isnot
+	previous_ran_tasks = []
+	never_ran_tasks = []
+	other_ran_tasks = []
+
+	for t in all_tasks:
+		if t.last_run_by == instance_id:
+			previous_ran_tasks.append(t)
+		elif t.last_run_by == None:
+			never_ran_tasks.append(t)
+		else:
+			other_ran_tasks.append(t)
+
+	for t in previous_ran_tasks:
+		if handle_task(t):
+			return
+	for t in never_ran_tasks:
+		if handle_task(t):
+			return
+	for t in other_ran_tasks:
+		if handle_task(t):
+			return
+
+
+# Get instance id
+instance_id = 'not found'
+try:
+	resp = requests.get('http://169.254.169.254/latest/meta-data/instance-id', timeout=2)
+	instance_id = resp.text
+except Exception as e:
+	pass
+logger.info('Instance id: ' + instance_id)
+while True:
+	scan_tasks()
 session.remove()
