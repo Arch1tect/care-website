@@ -145,7 +145,7 @@ function clearCoords()
 			});
 		}
 
-		var interval = 300
+		var interval = 600;
 
 		$(".searchbar input").on('keyup', function (e) {
 			if (e.keyCode == 13) {
