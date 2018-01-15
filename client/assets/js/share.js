@@ -25,7 +25,7 @@ function sessionActive(email) {
 	window.email = email;
 	$('.manage-link').removeClass('manage-link');
 	$('.account-link').removeClass('account-link');
-	$(".login-link").text('LOGOUT');
+	$(".login-link").text('Logout');
 	$(".login-link").addClass('logout-link');
 	$(".login-link").removeClass('login-link');
 
