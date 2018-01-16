@@ -171,12 +171,13 @@ def scan_tasks():
 	logger.info('previous_ran_tasks: {}, never_ran_tasks: {}, other_ran_tasks: {}' \
 		  .format(len(previous_ran_tasks), len(never_ran_tasks), len(other_ran_tasks)))
 
+	for t in never_ran_tasks:
+		handle_task(t)
 
 	for t in previous_ran_tasks:
 		handle_task(t)
 		return
-	for t in never_ran_tasks:
-		handle_task(t)
+
 		return
 	for t in other_ran_tasks:
 		handle_task(t)
